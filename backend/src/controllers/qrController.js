@@ -1,8 +1,10 @@
 const crypto = require("crypto");
 const { pool } = require("../db");
 
-const DEFAULT_FLYERS_URL =
-  "http://foodhelpline.org/locations/40.873835,-73.87953999999999?utm_source=resourceCard&utm_term=%5B40.873835,-73.87953999999999%5D&utm_content=card&utm_campaign=bronx";
+const DEFAULT_RESOURCE_COORDS = "40.7128,-74.0060";
+const APP_BASE_URL =
+  process.env.APP_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const DEFAULT_FLYERS_URL = `${APP_BASE_URL.replace(/\/$/, "")}/resources/${DEFAULT_RESOURCE_COORDS}`;
 
 async function getOrCreateMyQrCode(req, res) {
   try {

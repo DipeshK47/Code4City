@@ -55,6 +55,13 @@ export type MapLocation = {
   importedAt: string;
 };
 
+export type RegionGap = {
+  category: string;
+  label: string;
+  avgDistanceMiles: number;
+  nearbyCount: number;
+};
+
 export type MapNeedRegion = {
   id: string;
   regionCode: string;
@@ -71,6 +78,8 @@ export type MapNeedRegion = {
   foodNeedScore: number;
   weightedRank: number | null;
   sourceYear: string;
+  dominantGap: RegionGap | null;
+  categoryGaps: RegionGap[];
 };
 
 export type MapBounds = {
@@ -210,6 +219,7 @@ export default function OutreachMapDashboard() {
     printers: true,
     meetups: true,
   });
+  const [isGeneratingFlyer, setIsGeneratingFlyer] = useState(false);
   const [viewport, setViewport] = useState<MapViewportState>({
     zoom: 12,
     bounds: null,
@@ -904,6 +914,35 @@ export default function OutreachMapDashboard() {
     window.open(`https://www.google.com/maps/search/?${params.toString()}`, "_blank", "noopener,noreferrer");
   }
 
+  async function generateFlyerForLocation(location: MapLocation) {
+    setIsGeneratingFlyer(true);
+    setSyncMessage("Building flyer for this spot…");
+    try {
+      const response = await fetch(`/api/flyers/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dropName: location.name,
+          lat: location.lat,
+          lng: location.lng,
+          authToken: token,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || "Failed to generate flyer");
+      }
+      setSyncMessage(null);
+      window.open(`/flyers/${payload.data.id}`, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to generate flyer",
+      );
+    } finally {
+      setIsGeneratingFlyer(false);
+    }
+  }
+
   const mobileFloatingBottom = "max(88px, calc(env(safe-area-inset-bottom) + 18px))";
   const mobileDetailPanelBottom = `calc(${mobileFloatingBottom} + 64px)`;
 
@@ -934,7 +973,7 @@ export default function OutreachMapDashboard() {
         locations={visibleLocations}
         meetups={visibleMeetups}
         printers={layers.printers ? printers : []}
-        highlightedRegions={layers.regions ? highlightedRegions : []}
+        highlightedRegions={layers.regions ? needRegions : []}
         recommendedLocationIds={recommendedLocationIds}
         routeItemDedupeKeys={routeItemDedupeKeys}
         selectedLocation={selectedLocation}
@@ -1001,7 +1040,7 @@ export default function OutreachMapDashboard() {
                   ["uncovered", "Uncovered"],
                   ["covered", "Covered"],
                   ["printers", "Printers"],
-                  ["regions", "High-need regions"],
+                  ["regions", "Need-gap overlay"],
                   ["meetups", "Meetups"],
                 ].map(([key, label]) => {
                   const layerKey = key as keyof LayerVisibility;
@@ -1032,7 +1071,7 @@ export default function OutreachMapDashboard() {
                 })}
               </div>
               <p style={{ fontSize: 11.5, color: "#8A8780", marginTop: 6 }}>
-                Default view shows recommended hotspots, uncovered spots, printers, and high-need regions first.
+                Each neighborhood is color-coded by its biggest unmet need (food, shelter, healthcare, etc.). Hover a region for the gap detail.
               </p>
             </div>
 
@@ -1491,6 +1530,28 @@ export default function OutreachMapDashboard() {
                   Sign in with a full account to upload a proof photo and verify coverage.
                 </p>
               ) : null}
+
+              <button
+                onClick={() => void generateFlyerForLocation(selectedLocation)}
+                disabled={isGeneratingFlyer}
+                style={{
+                  width: "100%",
+                  borderRadius: 15,
+                  padding: "12px 14px",
+                  background: isGeneratingFlyer ? "rgba(255,255,255,0.08)" : "#0B0B0A",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "#F8F6F0",
+                  fontSize: 12.5,
+                  fontWeight: 800,
+                  cursor: isGeneratingFlyer ? "wait" : "pointer",
+                  opacity: isGeneratingFlyer ? 0.7 : 1,
+                }}
+              >
+                {isGeneratingFlyer ? "Building flyer…" : "Generate flyer for this spot"}
+              </button>
+              <p style={{ margin: "4px 2px 0", fontSize: 11, color: "rgba(255,247,222,0.55)", lineHeight: 1.4 }}>
+                AI picks the most-needed cause for this area and the 4 closest matching resources.
+              </p>
             </div>
 
           </div>

@@ -2,15 +2,30 @@ const {
   getStoredNeedRegions,
   importNeedRegionsFromNycOpenData,
 } = require("../services/needRegionService");
+const {
+  getRegionInsightsByCode,
+} = require("../services/regionInsightsService");
 
 const getAllNeedRegions = async (req, res) => {
   try {
-    const regions = await getStoredNeedRegions();
+    const [regions, insights] = await Promise.all([
+      getStoredNeedRegions(),
+      getRegionInsightsByCode().catch(() => new Map()),
+    ]);
+
+    const enriched = regions.map((region) => {
+      const insight = insights.get(region.regionCode);
+      return {
+        ...region,
+        dominantGap: insight?.dominantGap || null,
+        categoryGaps: insight?.categoryGaps || [],
+      };
+    });
 
     res.status(200).json({
       success: true,
-      count: regions.length,
-      data: regions,
+      count: enriched.length,
+      data: enriched,
     });
   } catch (error) {
     res.status(500).json({
@@ -23,6 +38,7 @@ const getAllNeedRegions = async (req, res) => {
 const importNeedRegions = async (req, res) => {
   try {
     const result = await importNeedRegionsFromNycOpenData();
+    require("../services/regionInsightsService").invalidateInsightsCache();
 
     res.status(200).json({
       success: true,

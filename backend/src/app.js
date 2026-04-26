@@ -15,6 +15,8 @@ const messageRoutes = require("./routes/messageRoutes");
 const hotspotProofRoutes = require("./routes/hotspotProofRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const eventRoutes = require("./routes/eventRoutes");
+const serviceResourceRoutes = require("./routes/serviceResourceRoutes");
+const flyerRoutes = require("./routes/flyerRoutes");
 
 const app = express();
 
@@ -39,6 +41,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api", hotspotProofRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/service-resources", serviceResourceRoutes);
+app.use("/api/flyers", flyerRoutes);
 
 app.use("/api/qr", qrRoutes);
 
