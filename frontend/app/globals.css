@@ -1,0 +1,402 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@import "tailwindcss/preflight";
+@tailwind utilities;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-base: #F3F0E9;
+  --bg-card: #F8F6F0;
+  --bg-muted: #EBE7DE;
+  --border-subtle: rgba(11, 11, 10, 0.08);
+  --border-standard: rgba(11, 11, 10, 0.16);
+  --accent-green: #D44A12;
+  --accent-green-muted: rgba(212, 74, 18, 0.10);
+  --accent-amber: #D44A12;
+  --accent-amber-muted: rgba(212, 74, 18, 0.18);
+  --accent-coral: #D64B14;
+  --accent-blue: #D44A12;
+  --text-primary: #0B0B0A;
+  --text-secondary: #1A1917;
+  --text-muted: #8A8780;
+  --text-soft: #B8B3A7;
+  --sidebar-bg: #0B0B0A;
+  --sidebar-text: #F8F6F0;
+  --sidebar-accent: #D44A12;
+  --gradient-hero: #F8F6F0;
+  --gradient-btn-primary: transparent;
+  --gradient-meetup-card: #F8F6F0;
+  --shadow-card: none;
+  --shadow-hover: none;
+  --radius-card: 2px;
+  --radius-btn: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Instrument Serif', Georgia, serif;
+  background-color: var(--bg-base);
+  background-image:
+    linear-gradient(180deg, rgba(248,246,240,0.52), rgba(243,240,233,0.88)),
+    repeating-linear-gradient(90deg, rgba(11,11,10,0.028) 0 1px, transparent 1px 96px),
+    repeating-linear-gradient(0deg, rgba(11,11,10,0.022) 0 1px, transparent 1px 96px);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  transition: color 0.28s ease, background 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
+}
+
+input, select, textarea {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #B8B3A7;
+  border-radius: 99px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(212,74,18,0.28); }
+  50%       { opacity: 0.72; box-shadow: 0 0 0 5px rgba(212,74,18,0); }
+}
+
+@keyframes meetupPulse {
+  0% { transform: scale(0.92); opacity: 0.72; }
+  70% { transform: scale(1.28); opacity: 0; }
+  100% { transform: scale(1.28); opacity: 0; }
+}
+
+@keyframes meetupSpark {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-2px) scale(1.1); opacity: 1; }
+}
+
+@keyframes numPop {
+  0%   { opacity: 0; transform: scale(0.85) translateY(6px); }
+  65%  { opacity: 1; transform: scale(1.04) translateY(-1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes fabEntrance {
+  0%   { opacity: 0; transform: translateY(16px); }
+  60%  { opacity: 1; transform: translateY(-1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fabIdle {
+  0%, 100% { box-shadow: none; }
+  50%      { box-shadow: 0 0 0 1px rgba(212,74,18,0.22); }
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-float {
+  animation: floatAnim 4s ease-in-out infinite;
+}
+.anim-num-pop {
+  animation: numPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+.anim-shimmer {
+  background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.06) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.anim-fab-entrance {
+  animation: fabEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both, fabIdle 3s ease-in-out 2s infinite;
+}
+
+.meetup-marker-ring {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid #D44A12;
+  background: #F8F6F0;
+  box-shadow: 0 0 0 4px rgba(212,74,18,0.10);
+}
+
+.meetup-marker-ring::before,
+.meetup-marker-ring::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+}
+
+.meetup-marker-ring::before {
+  border: 1px solid rgba(212,74,18,0.28);
+  animation: meetupPulse 2.6s ease-out infinite;
+}
+
+.meetup-marker-ring::after {
+  width: 6px;
+  height: 6px;
+  inset: 2px auto auto 14px;
+  background: #D44A12;
+  box-shadow: none;
+  animation: meetupSpark 1.8s ease-in-out infinite;
+}
+
+.d1 { animation-delay: 0.05s; }
+.d2 { animation-delay: 0.12s; }
+.d3 { animation-delay: 0.19s; }
+.d4 { animation-delay: 0.26s; }
+.d5 { animation-delay: 0.33s; }
+.d6 { animation-delay: 0.40s; }
+.d7 { animation-delay: 0.47s; }
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  border-color: #D44A12;
+  color: #D44A12;
+}
+
+.action-btn .tooltip {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0B0B0A;
+  color: #F8F6F0;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.action-btn:hover .tooltip {
+  opacity: 1;
+}
+
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212,74,18,0.30);
+}
+
+.meetup-embed {
+  background: var(--gradient-meetup-card);
+  border: 1px solid var(--border-standard);
+  border-radius: 2px;
+  padding: 16px 20px;
+  margin-top: 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 0;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(248,246,240,0.72);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.15s ease;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nav-item:hover {
+  background: rgba(212,74,18,0.10);
+  color: #F8F6F0;
+}
+
+.nav-item.active {
+  background: transparent;
+  color: #D44A12;
+  font-weight: 600;
+}
+
+.community-hero {
+  background: var(--gradient-hero);
+  border-radius: 2px;
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-subtle);
+}
+
+.community-hero h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #111;
+  margin-bottom: 16px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.stats-row .stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+}
+
+.meetups-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.meetups-panel h3 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.meetup-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.15s ease;
+}
+
+.meetup-row:hover {
+  background: rgba(0,0,0,0.015);
+}
+
+.meetup-row:last-child {
+  border-bottom: none;
+}
+
+.btn-leave {
+  background: transparent;
+  color: #D44A12;
+  border: 1px solid #D44A12;
+  border-radius: 0;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-leave:hover {
+  background: #D44A12;
+  color: #F8F6F0;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: #D44A12;
+  color: #D44A12;
+}
+
+.community-soft-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.community-soft-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
