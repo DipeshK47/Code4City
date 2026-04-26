@@ -7,8 +7,8 @@ import { AuthProvider } from "@/context/AuthContext";
 import AuthGuard from "@/components/auth/AuthGuard";
 
 export const metadata: Metadata = {
-  title: "Lemontree Volunteer Hub",
-  description: "Connect volunteers with food access resources in your community",
+  title: "Volun-Tiers",
+  description: "A civic relay platform for coordinating volunteer outreach missions.",
 };
 
 export default function RootLayout({

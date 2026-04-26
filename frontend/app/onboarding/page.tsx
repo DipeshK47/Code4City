@@ -6,7 +6,7 @@ import PageContainer from "@/components/layout/PageContainer";
 import { useAuth } from "@/context/AuthContext";
 
 const MISSION =
-  "Our mission is to connect neighbors with free food resources in their community. By distributing flyers and sharing information about pantries, community fridges, and food programs, we help reduce food insecurity one door at a time. We believe everyone deserves access to nutritious food and that volunteers like you are essential to making that happen.";
+  "Volun-Tiers helps neighbors discover local support by turning volunteer energy into coordinated outreach missions. We map priority zones, share practical resource cards, and track every route so the work stays visible, repeatable, and useful.";
 
 type Step = "choice" | "login" | "signup" | "mission";
 
@@ -26,10 +26,10 @@ export default function OnboardingPage() {
   const [signConfirm, setSignConfirm] = useState("");
 
   const cardStyle: React.CSSProperties = {
-    background: "#ffffff",
-    border: "1px solid rgba(190,155,70,0.18)",
-    borderRadius: 18,
-    boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+    background: "#F8F6F0",
+    border: "1px solid rgba(11, 11, 10,0.16)",
+    borderRadius: 2,
+    boxShadow: "none",
     padding: "32px 40px",
     maxWidth: 440,
     margin: "0 auto 24px",
@@ -38,43 +38,50 @@ export default function OnboardingPage() {
   const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "12px 14px",
-    borderRadius: 10,
-    border: "1px solid rgba(190,155,70,0.25)",
+    borderRadius: 0,
+    border: "1px solid rgba(11, 11, 10,0.14)",
     fontSize: 14,
-    color: "#1a1600",
+    color: "#0B0B0A",
     marginBottom: 14,
   };
 
   const labelStyle: React.CSSProperties = {
     display: "block",
-    fontSize: 12,
-    fontWeight: 600,
-    color: "#5a4a20",
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 11,
+    fontWeight: 400,
+    letterSpacing: "0.16em",
+    textTransform: "uppercase",
+    color: "#1A1917",
     marginBottom: 6,
   };
 
   const buttonPrimary: React.CSSProperties = {
     width: "100%",
     padding: "12px 20px",
-    borderRadius: 11,
-    border: "none",
-    background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-    color: "#1a1000",
-    fontSize: 14,
-    fontWeight: 700,
+    borderRadius: 0,
+    border: "1px solid #D44A12",
+    background: "transparent",
+    color: "#D44A12",
+    fontSize: 12,
+    fontWeight: 400,
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
     cursor: "pointer",
-    boxShadow: "0 3px 12px rgba(245,200,66,0.35)",
+    boxShadow: "none",
   };
 
   const buttonSecondary: React.CSSProperties = {
     width: "100%",
     padding: "12px 20px",
-    borderRadius: 11,
-    border: "1.5px solid rgba(190,155,70,0.35)",
+    borderRadius: 0,
+    border: "1.5px solid rgba(11, 11, 10,0.12)",
     background: "transparent",
-    color: "#5a4a20",
-    fontSize: 14,
-    fontWeight: 600,
+    color: "#1A1917",
+    fontSize: 12,
+    fontWeight: 400,
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
     cursor: "pointer",
     marginTop: 8,
   };
@@ -136,7 +143,7 @@ export default function OnboardingPage() {
     return (
       <PageContainer>
         <div style={{ textAlign: "center", padding: 48 }}>
-          <p style={{ fontSize: 14, color: "#9a8a60" }}>Taking you to your dashboard...</p>
+          <p style={{ fontSize: 14, color: "#8A8780" }}>Taking you to your dashboard...</p>
         </div>
       </PageContainer>
     );
@@ -149,10 +156,11 @@ export default function OnboardingPage() {
           className="anim-fade-up d1"
           style={{
             position: "relative",
-            borderRadius: 20,
+            borderRadius: 2,
             overflow: "hidden",
-            background: "linear-gradient(130deg, #f5c842 0%, #fbbf24 60%, #f59e0b 100%)",
-            boxShadow: "0 8px 32px rgba(245,200,66,0.35)",
+            background: "#F8F6F0",
+            border: "1px solid rgba(11, 11, 10, 0.16)",
+            boxShadow: "none",
             padding: "40px 48px",
             textAlign: "center",
             marginBottom: 28,
@@ -160,43 +168,56 @@ export default function OnboardingPage() {
         >
           <div
             style={{
-              fontSize: 48,
+              width: 58,
+              height: 58,
+              borderRadius: 0,
+              border: "1px solid #D44A12",
+              background: "transparent",
+              color: "#D44A12",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 13,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 500,
+              letterSpacing: "0.14em",
               marginBottom: 12,
               lineHeight: 1,
-              filter: "drop-shadow(0 0 16px rgba(255,255,255,0.6)) drop-shadow(0 0 32px rgba(245,200,66,0.45))",
             }}
           >
-            🍋
+            VT
           </div>
           <h2
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 28,
-              fontWeight: 700,
-              color: "#1a1000",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 56,
+              fontWeight: 400,
+              color: "#0B0B0A",
+              letterSpacing: "-0.045em",
+              lineHeight: 0.9,
               marginBottom: 8,
             }}
           >
             One more step
           </h2>
-          <p style={{ fontSize: 14, color: "rgba(60,40,0,0.7)", maxWidth: 420, margin: "0 auto" }}>
-            Please read our mission and agree to the terms to start volunteering.
+          <p style={{ fontSize: 22, color: "#1A1917", maxWidth: 520, margin: "0 auto", lineHeight: 1.25 }}>
+            Please read our mission and agree to the terms before you start.
           </p>
         </div>
 
         <div className="anim-fade-up d2" style={cardStyle}>
           <h3
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 18,
-              fontWeight: 700,
-              color: "#1a1600",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 34,
+              fontWeight: 400,
+              color: "#0B0B0A",
               marginBottom: 16,
             }}
           >
             Our mission
           </h3>
-          <p style={{ fontSize: 14, color: "#5a4a20", lineHeight: 1.7, marginBottom: 24 }}>{MISSION}</p>
+          <p style={{ fontSize: 21, color: "#1A1917", lineHeight: 1.3, marginBottom: 24 }}>{MISSION}</p>
           <label
             style={{
               display: "flex",
@@ -210,9 +231,9 @@ export default function OnboardingPage() {
               type="checkbox"
               checked={agree}
               onChange={(event) => setAgree(event.target.checked)}
-              style={{ width: 18, height: 18, marginTop: 2, accentColor: "#f5c842" }}
+              style={{ width: 18, height: 18, marginTop: 2, accentColor: "#D44A12" }}
             />
-            <span style={{ fontSize: 13, color: "#5a4a20" }}>
+            <span style={{ fontSize: 13, color: "#8A8780" }}>
               I agree to the terms of service and community guidelines.
             </span>
           </label>
@@ -231,15 +252,17 @@ export default function OnboardingPage() {
         <div className="anim-fade-up d1" style={{ textAlign: "center", marginBottom: 24 }}>
           <h2
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 26,
-              fontWeight: 700,
-              color: "#1a1000",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 56,
+              fontWeight: 400,
+              color: "#0B0B0A",
+              letterSpacing: "-0.045em",
+              lineHeight: 0.9,
             }}
           >
             Log in
           </h2>
-          <p style={{ fontSize: 14, color: "#9a8a60", marginTop: 6 }}>Welcome back to Lemontree.</p>
+          <p style={{ fontSize: 14, color: "#8A8780", marginTop: 6 }}>Welcome back to Volun-Tiers.</p>
         </div>
         <div className="anim-fade-up d2" style={cardStyle}>
           <form onSubmit={handleLogin}>
@@ -282,15 +305,17 @@ export default function OnboardingPage() {
         <div className="anim-fade-up d1" style={{ textAlign: "center", marginBottom: 24 }}>
           <h2
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 26,
-              fontWeight: 700,
-              color: "#1a1000",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: 56,
+              fontWeight: 400,
+              color: "#0B0B0A",
+              letterSpacing: "-0.045em",
+              lineHeight: 0.9,
             }}
           >
             Create an account
           </h2>
-          <p style={{ fontSize: 14, color: "#9a8a60", marginTop: 6 }}>Join the Lemontree volunteer community.</p>
+          <p style={{ fontSize: 14, color: "#8A8780", marginTop: 6 }}>Join the Volun-Tiers volunteer community.</p>
         </div>
         <div className="anim-fade-up d2" style={cardStyle}>
           <form onSubmit={handleSignup}>
@@ -359,15 +384,15 @@ export default function OnboardingPage() {
 
   const choiceButtonBase = {
     padding: "20px 24px",
-    borderRadius: 16,
-    border: "none",
+    borderRadius: 2,
+    border: "1px solid rgba(11, 11, 10, 0.16)",
     textAlign: "left" as const,
     cursor: "pointer",
     minWidth: 200,
     flex: "1 1 200px",
     maxWidth: 280,
-    boxShadow: "0 4px 20px rgba(0,0,0,0.12), 0 0 32px rgba(255,255,255,0.15)",
-    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+    boxShadow: "none",
+    transition: "transform 0.25s ease, border-color 0.25s ease",
   };
 
   return (
@@ -376,10 +401,11 @@ export default function OnboardingPage() {
         className="anim-fade-up d1"
         style={{
           position: "relative",
-          borderRadius: 20,
+          borderRadius: 2,
           overflow: "hidden",
-          background: "linear-gradient(130deg, #f5c842 0%, #fbbf24 60%, #f59e0b 100%)",
-          boxShadow: "0 8px 32px rgba(245,200,66,0.35)",
+          background: "#F8F6F0",
+          border: "1px solid rgba(11, 11, 10, 0.16)",
+          boxShadow: "none",
           padding: "48px 56px",
           textAlign: "center",
           marginBottom: 28,
@@ -387,27 +413,39 @@ export default function OnboardingPage() {
       >
         <div
           style={{
-            fontSize: 52,
+            width: 62,
+            height: 62,
+            borderRadius: 0,
+            border: "1px solid #D44A12",
+            background: "transparent",
+            color: "#D44A12",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontWeight: 500,
+            letterSpacing: "0.14em",
             marginBottom: 14,
             lineHeight: 1,
-            filter: "drop-shadow(0 0 20px rgba(255,255,255,0.7)) drop-shadow(0 0 40px rgba(245,200,66,0.5))",
           }}
         >
-          🍋
+          VT
         </div>
         <h2
           style={{
-            fontFamily: "'Fraunces', Georgia, serif",
-            fontSize: 34,
-            fontWeight: 700,
-            color: "#1a1000",
-            letterSpacing: "-0.8px",
+            fontFamily: "'Instrument Serif', serif",
+            fontSize: "clamp(56px, 8vw, 108px)",
+            fontWeight: 400,
+            color: "#0B0B0A",
+            letterSpacing: "-0.045em",
+            lineHeight: 0.9,
             marginBottom: 10,
           }}
         >
-          Welcome to the Hub
+          Welcome to Volun-Tiers
         </h2>
-        <p style={{ fontSize: 14.5, color: "rgba(60,40,0,0.65)", maxWidth: 520, margin: "0 auto" }}>
+        <p style={{ fontSize: 24, color: "#1A1917", maxWidth: 620, margin: "0 auto", lineHeight: 1.2 }}>
           Choose how you want to start. Log in, create an account, or explore as a guest.
         </p>
       </div>
@@ -433,22 +471,22 @@ export default function OnboardingPage() {
           }}
           style={{
             ...choiceButtonBase,
-            background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-            color: "#fff",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(59,130,246,0.35)",
+            background: "#F8F6F0",
+            color: "#0B0B0A",
+            boxShadow: "none",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 8px 28px rgba(59,130,246,0.5), 0 0 40px rgba(59,130,246,0.25)";
+            e.currentTarget.style.borderColor = "rgba(212, 74, 18, 0.55)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(59,130,246,0.35)";
+            e.currentTarget.style.borderColor = "rgba(11, 11, 10, 0.16)";
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(255,255,255,0.9)" }}>RETURNING?</span>
-          <h3 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 20, color: "#fff", margin: "6px 0 4px" }}>Log in</h3>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>Use your existing account.</p>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 400, letterSpacing: "0.18em", color: "#D44A12" }}>RETURNING?</span>
+          <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", margin: "8px 0 6px" }}>Log in</h3>
+          <p style={{ fontSize: 18, color: "#8A8780", lineHeight: 1.3 }}>Use your existing account.</p>
         </button>
 
         <button
@@ -459,22 +497,22 @@ export default function OnboardingPage() {
           }}
           style={{
             ...choiceButtonBase,
-            background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-            color: "#1a1000",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(245,200,66,0.4)",
+            background: "#F8F6F0",
+            color: "#0B0B0A",
+            boxShadow: "none",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 8px 28px rgba(245,200,66,0.55), 0 0 44px rgba(245,200,66,0.3)";
+            e.currentTarget.style.borderColor = "rgba(212, 74, 18, 0.55)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(245,200,66,0.4)";
+            e.currentTarget.style.borderColor = "rgba(11, 11, 10, 0.16)";
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(26,16,0,0.7)" }}>EXPLORE</span>
-          <h3 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 20, color: "#1a1000", margin: "6px 0 4px" }}>Continue as guest</h3>
-          <p style={{ fontSize: 13, color: "rgba(26,16,0,0.75)", lineHeight: 1.4 }}>Browse first. Create an account later.</p>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 400, letterSpacing: "0.18em", color: "#D44A12" }}>EXPLORE</span>
+          <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", margin: "8px 0 6px" }}>Continue as guest</h3>
+          <p style={{ fontSize: 18, color: "#8A8780", lineHeight: 1.3 }}>Browse first. Create an account later.</p>
         </button>
 
         <button
@@ -485,29 +523,29 @@ export default function OnboardingPage() {
           }}
           style={{
             ...choiceButtonBase,
-            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            color: "#fff",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(16,185,129,0.35)",
+            background: "#F8F6F0",
+            color: "#0B0B0A",
+            boxShadow: "none",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 8px 28px rgba(16,185,129,0.5), 0 0 40px rgba(16,185,129,0.25)";
+            e.currentTarget.style.borderColor = "rgba(212, 74, 18, 0.55)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.12), 0 0 28px rgba(16,185,129,0.35)";
+            e.currentTarget.style.borderColor = "rgba(11, 11, 10, 0.16)";
           }}
         >
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(255,255,255,0.9)" }}>NEW HERE?</span>
-          <h3 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 20, color: "#fff", margin: "6px 0 4px" }}>Sign up</h3>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>Join and track your impact.</p>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 400, letterSpacing: "0.18em", color: "#D44A12" }}>NEW HERE?</span>
+          <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", margin: "8px 0 6px" }}>Sign up</h3>
+          <p style={{ fontSize: 18, color: "#8A8780", lineHeight: 1.3 }}>Join and track your impact.</p>
         </button>
       </div>
 
       <div className="anim-fade-up d3" style={{ textAlign: "center" }}>
-        <p style={{ fontSize: 13, color: "#9a8a60" }}>
+        <p style={{ fontSize: 13, color: "#8A8780" }}>
           Looking for more information first? Visit the{" "}
-          <Link href="/getstarted" style={{ color: "#d97706", fontWeight: 600 }}>
+          <Link href="/getstarted" style={{ color: "#D44A12", fontWeight: 700 }}>
             getting started guide
           </Link>
           .

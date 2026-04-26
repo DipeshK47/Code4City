@@ -27,11 +27,11 @@ import {
 import type { VolunteerSession } from "@/types/tracker";
 
 const BADGE_CONFIG = [
-  { key: "first_flyer" as const, label: "First Flyer", tone: "#f6e58d", emoji: "📄" },
-  { key: "hundred_flyers" as const, label: "100 Flyers", tone: "#fef3c7", emoji: "💯" },
-  { key: "on_a_streak" as const, label: "On a Streak", tone: "#d9f99d", emoji: "🔥" },
-  { key: "top_5" as const, label: "Top 5", tone: "#fde68a", emoji: "🏅" },
-  { key: "top_1" as const, label: "Top 1", tone: "#f5c842", emoji: "🏆" },
+  { key: "first_flyer" as const, label: "First Proof", tone: "#EBE7DE", emoji: "01" },
+  { key: "hundred_flyers" as const, label: "100 Proofs", tone: "#EBE7DE", emoji: "100" },
+  { key: "on_a_streak" as const, label: "On a Streak", tone: "#EBE7DE", emoji: "ST" },
+  { key: "top_5" as const, label: "Top 5", tone: "#EBE7DE", emoji: "T5" },
+  { key: "top_1" as const, label: "Top 1", tone: "#D44A12", emoji: "T1" },
 ] as const;
 
 function getInitials(name: string) {
@@ -236,7 +236,7 @@ export default function ProfilePage() {
     const scanCount = badgesData?.scans ?? 0;
 
     return [
-      { label: "Flyers Uploaded", value: flyersUploaded.toLocaleString(), icon: "FL", iconBg: "#fef3c7" },
+      { label: "Proofs Logged", value: flyersUploaded.toLocaleString(), icon: "PR", iconBg: "#EBE7DE" },
       { label: "QR Scans", value: scanCount.toLocaleString(), icon: "SC", iconBg: "#ecfccb" },
       { label: "Hours Volunteered", value: formatCompactHours(totalDurationSeconds), icon: "HR", iconBg: "#dcfce7" },
       { label: "Route Sessions", value: sessions.length.toString(), icon: "RS", iconBg: "#d9f99d" },
@@ -361,16 +361,18 @@ export default function ProfilePage() {
                 style={{
                   width: 82,
                   height: 82,
-                  borderRadius: 24,
-                  marginBottom: 14,
-                  background: "linear-gradient(145deg, #f4d84d 0%, #b9cf51 100%)",
+	                  borderRadius: 0,
+	                  marginBottom: 14,
+	                  background: "transparent",
+	                  border: "1px solid #D44A12",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   fontSize: 24,
-                  fontWeight: 800,
-                  color: "#31401f",
-                  boxShadow: "0 10px 24px rgba(185,207,81,0.3)",
+	                  fontFamily: "'JetBrains Mono', monospace",
+	                  fontWeight: 500,
+	                  color: "#D44A12",
+                  boxShadow: "none",
                   overflow: "hidden",
                 }}
               >
@@ -387,10 +389,10 @@ export default function ProfilePage() {
                   getInitials(displayName)
                 )}
               </div>
-              <h2 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 22, fontWeight: 700, color: "#1f2b12", letterSpacing: "-0.4px" }}>
+	              <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 34, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", lineHeight: 1 }}>
                 {displayName}
               </h2>
-              <p style={{ fontSize: 13, color: "#78814f", marginTop: 3 }}>{emailLabel}</p>
+	              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", marginTop: 6, letterSpacing: "0.08em" }}>{emailLabel}</p>
               {!isGuest ? (
                 <>
                   <input
@@ -407,10 +409,10 @@ export default function ProfilePage() {
                     style={{
                       marginTop: 12,
                       padding: "8px 12px",
-                      borderRadius: 999,
-                      border: "1px solid rgba(185,207,81,0.34)",
-                      background: "rgba(244,216,77,0.14)",
-                      color: "#4d5c1e",
+                      borderRadius: 2,
+                      border: "1px solid rgba(212, 74, 18,0.34)",
+                      background: "rgba(212, 74, 18,0.14)",
+                      color: "#D44A12",
                       fontSize: 11.5,
                       fontWeight: 700,
                     }}
@@ -426,8 +428,8 @@ export default function ProfilePage() {
                 style={{
                   marginTop: 10,
                   padding: "6px 12px",
-                  borderRadius: 999,
-                  background: user?.agreed_to_terms ? "#e7f7d6" : "#fff4d4",
+                  borderRadius: 2,
+                  background: user?.agreed_to_terms ? "#e7f7d6" : "#F8F6F0",
                   fontSize: 11.5,
                   fontWeight: 700,
                   color: user?.agreed_to_terms ? "#4d7c0f" : "#9a6700",
@@ -436,15 +438,15 @@ export default function ProfilePage() {
                 {user?.agreed_to_terms ? "Verified Volunteer" : "Terms Pending"}
               </div>
 
-              <div style={{ width: "100%", marginTop: 18, paddingTop: 16, borderTop: "1px solid rgba(190,155,70,0.18)", textAlign: "left" }}>
+              <div style={{ width: "100%", marginTop: 18, paddingTop: 16, borderTop: "1px solid rgba(11, 11, 10,0.18)", textAlign: "left" }}>
                 {[
                   { key: "joined", accent: "#d9f99d", label: joinedLabel },
-                  { key: "community", accent: "#fef3c7", label: "Community Volunteer" },
+                  { key: "community", accent: "#EBE7DE", label: "Community Volunteer" },
                   { key: "language", accent: "#ecfccb", label: "English, Spanish" },
                 ].map((item) => (
                   <div key={item.key} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0" }}>
-                    <span style={{ width: 10, height: 10, borderRadius: 999, background: item.accent, boxShadow: "inset 0 0 0 1px rgba(49,64,31,0.08)" }} />
-                    <span style={{ fontSize: 13, color: "#5a5f2f" }}>{item.label}</span>
+                    <span style={{ width: 10, height: 10, borderRadius: 2, background: item.accent, boxShadow: "none" }} />
+                    <span style={{ fontSize: 13, color: "#8A8780" }}>{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -454,18 +456,18 @@ export default function ProfilePage() {
                   width: "100%",
                   marginTop: 14,
                   padding: "12px 14px",
-                  borderRadius: 16,
-                  background: "#fdf8ec",
-                  border: "1px solid rgba(190,155,70,0.18)",
+                  borderRadius: 2,
+                  background: "#F8F6F0",
+                  border: "1px solid rgba(11, 11, 10,0.18)",
                   textAlign: "left",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
                   <div>
-                    <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#8a8f51" }}>
-                      Flyer Proofs
+                    <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#D44A12" }}>
+                      Outreach Proofs
                     </p>
-                    <p style={{ margin: "6px 0 0", fontSize: 13, color: "#42531d" }}>
+                    <p style={{ margin: "6px 0 0", fontSize: 13, color: "#8A8780" }}>
                       {proofsLoading
                         ? "Loading uploaded proofs..."
                         : `${proofs.length} proof image${proofs.length === 1 ? "" : "s"} saved`}
@@ -493,10 +495,10 @@ export default function ProfilePage() {
                       style={{
                         width: 34,
                         height: 34,
-                        borderRadius: 999,
-                        border: "1px solid rgba(185,207,81,0.34)",
-                        background: "rgba(185,207,81,0.14)",
-                        color: "#4d5c1e",
+                        borderRadius: 2,
+                        border: "1px solid rgba(212, 74, 18,0.34)",
+                        background: "rgba(212, 74, 18,0.14)",
+                        color: "#D44A12",
                         fontSize: 18,
                         fontWeight: 700,
                         cursor: profileProofState === "uploading" ? "not-allowed" : "pointer",
@@ -512,11 +514,11 @@ export default function ProfilePage() {
                           top: 40,
                           padding: "5px 8px",
                           borderRadius: 6,
-                          background: "#243112",
-                          color: "#fffdf2",
+                          background: "#0B0B0A",
+                          color: "#F8F6F0",
                           fontSize: 11,
                           whiteSpace: "nowrap",
-                          boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
+                          boxShadow: "none",
                         }}
                       >
                         Upload proof
@@ -546,10 +548,10 @@ export default function ProfilePage() {
                   style={{
                     marginTop: 10,
                     padding: "8px 12px",
-                    borderRadius: 999,
-                    border: "1px solid rgba(185,207,81,0.34)",
-                    background: proofs.length > 0 ? "rgba(185,207,81,0.14)" : "rgba(0,0,0,0.04)",
-                    color: proofs.length > 0 ? "#4d5c1e" : "#9ca3af",
+                    borderRadius: 2,
+                    border: "1px solid rgba(212, 74, 18,0.34)",
+                    background: proofs.length > 0 ? "rgba(212, 74, 18,0.14)" : "rgba(0,0,0,0.04)",
+                    color: proofs.length > 0 ? "#D44A12" : "#9ca3af",
                     fontSize: 11.5,
                     fontWeight: 700,
                     cursor: proofsLoading || proofs.length === 0 ? "not-allowed" : "pointer",
@@ -567,8 +569,8 @@ export default function ProfilePage() {
                     width: "100%",
                     marginTop: 18,
                     padding: "10px 14px",
-                    borderRadius: 12,
-                    border: "1px solid rgba(190,155,70,0.28)",
+                    borderRadius: 2,
+                    border: "1px solid rgba(11, 11, 10,0.28)",
                     background: "rgba(239,68,68,0.08)",
                     color: "#b91c1c",
                     fontSize: 13,
@@ -584,7 +586,7 @@ export default function ProfilePage() {
 
           <SectionCard title="Badges" subtitle="Earned from your volunteer activity and leaderboard standing.">
             {badgesLoading ? (
-              <p style={{ fontSize: 13, color: "#8a7a50" }}>Loading badges...</p>
+              <p style={{ fontSize: 13, color: "#8A8780" }}>Loading badges...</p>
             ) : (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
                 {BADGE_CONFIG.map((badge) => {
@@ -598,15 +600,15 @@ export default function ProfilePage() {
                         alignItems: "center",
                         gap: 6,
                         padding: "12px 8px",
-                        borderRadius: 14,
+                        borderRadius: 2,
                         textAlign: "center",
-                        background: earned ? badge.tone : "#f8f7f0",
-                        border: `1px solid ${earned ? "rgba(185,207,81,0.35)" : "rgba(0,0,0,0.05)"}`,
+                        background: earned ? badge.tone : "#F8F6F0",
+                        border: `1px solid ${earned ? "rgba(212, 74, 18,0.35)" : "rgba(0,0,0,0.05)"}`,
                         opacity: earned ? 1 : 0.58,
                       }}
                     >
-                      <span style={{ fontSize: 28, lineHeight: 1 }}>{badge.emoji}</span>
-                      <span style={{ fontSize: 10.5, fontWeight: 700, color: "#243112", lineHeight: 1.25 }}>{badge.label}</span>
+                      <span style={{ minWidth: 34, height: 30, borderRadius: 2, background: "rgba(11, 11, 10,0.06)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", lineHeight: 1 }}>{badge.emoji}</span>
+                      <span style={{ fontSize: 10.5, fontWeight: 700, color: "#0B0B0A", lineHeight: 1.25 }}>{badge.label}</span>
                     </div>
                   );
                 })}
@@ -624,11 +626,11 @@ export default function ProfilePage() {
 
           <SectionCard title="Recent Activity" subtitle="Your last 5 saved route sessions">
             {loading || sessionsLoading ? (
-              <p style={{ fontSize: 13, color: "#8a7a50" }}>Loading your profile activity...</p>
+              <p style={{ fontSize: 13, color: "#8A8780" }}>Loading your profile activity...</p>
             ) : sessionsError ? (
               <p style={{ fontSize: 13, color: "#b91c1c" }}>{sessionsError}</p>
             ) : recentSessions.length === 0 ? (
-              <p style={{ fontSize: 13, color: "#8a7a50" }}>No saved route sessions yet. Start a tracker session to build your activity history.</p>
+              <p style={{ fontSize: 13, color: "#8A8780" }}>No saved route sessions yet. Start a tracker session to build your activity history.</p>
             ) : (
               <div style={{ display: "grid", gap: 10 }}>
                 {recentSessions.map((session) => (
@@ -640,9 +642,9 @@ export default function ProfilePage() {
                       gap: 14,
                       alignItems: "center",
                       padding: "12px 14px",
-                      borderRadius: 16,
-                      background: "#fdf8ec",
-                      border: "1px solid rgba(190,155,70,0.18)",
+                      borderRadius: 2,
+                      background: "#F8F6F0",
+                      border: "1px solid rgba(11, 11, 10,0.18)",
                     }}
                   >
                     {session.routeImageUrl ? (
@@ -656,8 +658,8 @@ export default function ProfilePage() {
                           width: 84,
                           height: 84,
                           objectFit: "cover",
-                          borderRadius: 12,
-                          border: "1px solid rgba(185,207,81,0.22)",
+                          borderRadius: 2,
+                          border: "1px solid rgba(212, 74, 18,0.22)",
                         }}
                       />
                     ) : null}
@@ -678,10 +680,10 @@ export default function ProfilePage() {
                           style={{
                             marginTop: 8,
                             padding: "7px 10px",
-                            borderRadius: 999,
-                            border: "1px solid rgba(185,207,81,0.34)",
-                            background: "rgba(244,216,77,0.14)",
-                            color: "#4d5c1e",
+                            borderRadius: 2,
+                            border: "1px solid rgba(212, 74, 18,0.34)",
+                            background: "rgba(212, 74, 18,0.14)",
+                            color: "#D44A12",
                             fontSize: 11.5,
                             fontWeight: 700,
                           }}
@@ -690,7 +692,7 @@ export default function ProfilePage() {
                         </button>
                       ) : null}
                     </div>
-                    <span style={{ fontSize: 12, color: "#a3955e", flexShrink: 0 }}>
+                    <span style={{ fontSize: 12, color: "#8A8780", flexShrink: 0 }}>
                       {new Date(session.startTime).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
                     </span>
                   </div>
@@ -705,14 +707,14 @@ export default function ProfilePage() {
           >
             <div style={{ padding: "8px 0" }}>
               {leaderboardLoading ? (
-                <p style={{ fontSize: 13, color: "#8a7a50" }}>Loading your ranking...</p>
+                <p style={{ fontSize: 13, color: "#8A8780" }}>Loading your ranking...</p>
               ) : myRankEntry?.rank === 1 ? (
                 <div style={{ textAlign: "center", padding: "12px 0" }}>
-                  <p style={{ fontSize: 18, fontWeight: 700, color: "#1a1600", fontFamily: "'Fraunces', Georgia, serif", margin: 0 }}>
+                  <p style={{ fontSize: 18, fontWeight: 700, color: "#0B0B0A", fontFamily: "'Instrument Serif', serif", margin: 0 }}>
                     You&rsquo;re the greatest volunteer
                   </p>
-                  <p style={{ fontSize: 12, color: "#7a6a40", marginTop: 6 }}>
-                    #1 with {myRankEntry.flyers.toLocaleString()} flyers
+                  <p style={{ fontSize: 12, color: "#8A8780", marginTop: 6 }}>
+                    #1 with {myRankEntry.flyers.toLocaleString()} proofs
                   </p>
                 </div>
               ) : myRankEntry && personAhead ? (
@@ -724,35 +726,35 @@ export default function ProfilePage() {
                   return (
                     <>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                        <span style={{ fontSize: 12, color: "#7a6a40" }}>You | {myFlyers.toLocaleString()} flyers</span>
-                        <span style={{ fontSize: 12, color: "#7a6a40" }}>{personAhead.username} #{personAhead.rank} | {personAhead.flyers.toLocaleString()} flyers</span>
+                        <span style={{ fontSize: 12, color: "#8A8780" }}>You | {myFlyers.toLocaleString()} proofs</span>
+                        <span style={{ fontSize: 12, color: "#8A8780" }}>{personAhead.username} #{personAhead.rank} | {personAhead.flyers.toLocaleString()} proofs</span>
                       </div>
-                      <p style={{ fontSize: 11, color: "#9a8a60", marginBottom: 6 }}>
-                        Progress to match {personAhead.username}&rsquo;s flyers
+                      <p style={{ fontSize: 11, color: "#8A8780", marginBottom: 6 }}>
+                        Progress to match {personAhead.username}&rsquo;s proofs
                       </p>
-                      <div style={{ height: 10, borderRadius: 99, background: "rgba(0,0,0,0.08)", overflow: "hidden" }}>
+                      <div style={{ height: 10, borderRadius: 2, background: "rgba(0,0,0,0.08)", overflow: "hidden" }}>
                         <div
                           style={{
                             height: "100%",
                             width: `${progressPercent}%`,
-                            borderRadius: 99,
-                            background: "linear-gradient(90deg,#e0c13a,#b9cf51)",
-                            boxShadow: "0 0 8px rgba(185,207,81,0.5)",
+                            borderRadius: 2,
+                            background: "#D44A12",
+                            boxShadow: "none",
                             transition: "width 0.3s ease",
                           }}
                         />
                       </div>
                       <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-                        <span style={{ fontSize: 11, color: "#7a6a40" }}>
+                        <span style={{ fontSize: 11, color: "#8A8780" }}>
                           {progressPercent.toFixed(0)}% of the way there
                         </span>
-                        <span style={{ fontSize: 11, color: "#9a8a60" }}>
-                          {remaining.toLocaleString()} flyers left to match
+                        <span style={{ fontSize: 11, color: "#8A8780" }}>
+                          {remaining.toLocaleString()} proofs left to match
                         </span>
                       </div>
-                      <p style={{ fontSize: 12, color: "#9a8a60", marginTop: 10 }}>
-                        <strong style={{ color: "#1a1600" }}>
-                          {Math.max(0, personAhead.flyers - myFlyers + 1).toLocaleString()} more flyers
+                      <p style={{ fontSize: 12, color: "#8A8780", marginTop: 10 }}>
+                        <strong style={{ color: "#0B0B0A" }}>
+                          {Math.max(0, personAhead.flyers - myFlyers + 1).toLocaleString()} more proofs
                         </strong>{" "}
                         to reach rank #{personAhead.rank}
                       </p>
@@ -760,42 +762,42 @@ export default function ProfilePage() {
                   );
                 })()
               ) : myRankEntry ? (
-                <p style={{ fontSize: 13, color: "#8a7a50" }}>You&rsquo;re on the board at rank #{myRankEntry.rank} with {myRankEntry.flyers.toLocaleString()} flyers.</p>
+                <p style={{ fontSize: 13, color: "#8A8780" }}>You&rsquo;re on the board at rank #{myRankEntry.rank} with {myRankEntry.flyers.toLocaleString()} proofs.</p>
               ) : (
-                <p style={{ fontSize: 13, color: "#8a7a50" }}>Complete route sessions to appear on the leaderboard.</p>
+                <p style={{ fontSize: 13, color: "#8A8780" }}>Complete route sessions to appear on the leaderboard.</p>
               )}
             </div>
           </SectionCard>
 
           <div
             style={{
-              borderRadius: 18,
+              borderRadius: 2,
               overflow: "hidden",
-              background: "linear-gradient(145deg, #f5e6b8 0%, #e8c547 35%, #d4a82b 100%)",
-              boxShadow: "0 0 32px rgba(212,168,43,0.4), 0 8px 24px rgba(0,0,0,0.12)",
-              border: "1px solid rgba(255,236,179,0.6)",
+              background: "#F8F6F0",
+              boxShadow: "none",
+	              border: "1px solid rgba(11, 11, 10,0.16)",
               padding: "20px 18px",
             }}
           >
             <div style={{ textAlign: "center", marginBottom: 14 }}>
-              <span style={{ fontSize: 32, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }}>📜</span>
+	              <span style={{ width: 46, height: 38, borderRadius: 0, background: "transparent", border: "1px solid rgba(212, 74, 18,0.22)", color: "#D44A12", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 500, letterSpacing: "0.08em" }}>CERT</span>
               <p
                 style={{
                   margin: "10px 0 4px",
-                  fontFamily: "'Fraunces', Georgia, serif",
-                  fontSize: 18,
-                  fontWeight: 700,
-                  color: "#2d2208",
-                  letterSpacing: "-0.3px",
-                  textShadow: "0 1px 2px rgba(255,255,255,0.4)",
+                  fontFamily: "'Instrument Serif', serif",
+	                  fontSize: 32,
+	                  fontWeight: 400,
+                  color: "#0B0B0A",
+	                  letterSpacing: "-0.035em",
+	                  textShadow: "none",
                 }}
               >
                 Generate Certificate
               </p>
-              <p style={{ fontSize: 11, color: "rgba(45,34,8,0.7)" }}>
+	              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", letterSpacing: "0.08em" }}>
                 {((badgesData?.flyers ?? 0) >= 1)
                   ? "Download your volunteer certificate"
-                  : "Distribute at least 1 flyer to unlock"}
+                  : "Log at least 1 proof to unlock"}
               </p>
             </div>
             {certificateError && (
@@ -830,23 +832,23 @@ export default function ProfilePage() {
                 style={{
                   width: "100%",
                   padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid rgba(45,34,8,0.25)",
-                  background: (badgesData?.flyers ?? 0) >= 1 && certificateLoading === "idle"
-                    ? "linear-gradient(180deg, #fff9e6 0%, #f5e6b8 100%)"
-                    : "rgba(0,0,0,0.12)",
-                  color: (badgesData?.flyers ?? 0) >= 1 && certificateLoading === "idle" ? "#2d2208" : "rgba(45,34,8,0.5)",
-                  fontSize: 13,
-                  fontWeight: 700,
+                  borderRadius: 2,
+                  border: "1px solid rgba(11, 11, 10,0.25)",
+	                  background: "transparent",
+	                  color: (badgesData?.flyers ?? 0) >= 1 && certificateLoading === "idle" ? "#D44A12" : "rgba(11, 11, 10,0.5)",
+	                  fontSize: 11,
+	                  fontWeight: 400,
+	                  letterSpacing: "0.16em",
+	                  textTransform: "uppercase",
                   cursor: (badgesData?.flyers ?? 0) >= 1 && certificateLoading === "idle" ? "pointer" : "not-allowed",
-                  boxShadow: (badgesData?.flyers ?? 0) >= 1 && certificateLoading === "idle" ? "0 4px 16px rgba(212,168,43,0.35)" : "none",
+	                  boxShadow: "none",
                 }}
               >
                 {certificateLoading === "pdf"
                   ? "Generating…"
                   : (badgesData?.flyers ?? 0) >= 1
                     ? "Download certificate (PDF)"
-                    : "🔒 Locked"}
+                    : "Locked"}
               </button>
               {(badgesData?.flyers ?? 0) >= 1 && (
                 <button
@@ -876,10 +878,10 @@ export default function ProfilePage() {
                   }}
                   style={{
                     padding: "6px 12px",
-                    borderRadius: 8,
-                    border: "1px solid rgba(45,34,8,0.2)",
+                    borderRadius: 2,
+                    border: "1px solid rgba(11, 11, 10,0.2)",
                     background: "transparent",
-                    color: "rgba(45,34,8,0.85)",
+                    color: "rgba(11, 11, 10,0.85)",
                     fontSize: 12,
                     cursor: certificateLoading === "idle" ? "pointer" : "not-allowed",
                   }}
@@ -914,11 +916,11 @@ export default function ProfilePage() {
             onClick={(event) => event.stopPropagation()}
             style={{
               width: "min(100%, 720px)",
-              borderRadius: 24,
+              borderRadius: 2,
               overflow: "hidden",
-              background: "#fffdf2",
-              boxShadow: "0 24px 60px rgba(0,0,0,0.24)",
-              border: "1px solid rgba(185,207,81,0.22)",
+              background: "#F8F6F0",
+              boxShadow: "none",
+              border: "1px solid rgba(212, 74, 18,0.22)",
             }}
           >
             <div
@@ -928,14 +930,14 @@ export default function ProfilePage() {
                 justifyContent: "space-between",
                 gap: 12,
                 padding: "14px 16px",
-                borderBottom: "1px solid rgba(190,155,70,0.16)",
+                borderBottom: "1px solid rgba(11, 11, 10,0.16)",
               }}
             >
               <div>
-                <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#8a8f51" }}>
+                <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#D44A12" }}>
                   Route Preview
                 </p>
-                <p style={{ margin: "4px 0 0", fontSize: 15, fontWeight: 700, color: "#243112" }}>
+                <p style={{ margin: "4px 0 0", fontSize: 15, fontWeight: 700, color: "#0B0B0A" }}>
                   {selectedRoute.title}
                 </p>
               </div>
@@ -977,7 +979,7 @@ export default function ProfilePage() {
               style={{
                 maxHeight: "70vh",
                 overflow: "auto",
-                background: "#f7f3df",
+                background: "#F8F6F0",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -1023,11 +1025,11 @@ export default function ProfilePage() {
             onClick={(event) => event.stopPropagation()}
             style={{
               width: "min(100%, 760px)",
-              borderRadius: 24,
+              borderRadius: 2,
               overflow: "hidden",
-              background: "#fffdf2",
-              boxShadow: "0 24px 60px rgba(0,0,0,0.24)",
-              border: "1px solid rgba(185,207,81,0.22)",
+              background: "#F8F6F0",
+              boxShadow: "none",
+              border: "1px solid rgba(212, 74, 18,0.22)",
             }}
           >
             <div
@@ -1037,14 +1039,14 @@ export default function ProfilePage() {
                 justifyContent: "space-between",
                 gap: 12,
                 padding: "14px 16px",
-                borderBottom: "1px solid rgba(190,155,70,0.16)",
+                borderBottom: "1px solid rgba(11, 11, 10,0.16)",
               }}
             >
               <div>
-                <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#8a8f51" }}>
-                  Flyer proof {selectedProofIndex + 1} of {proofs.length}
+                <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#D44A12" }}>
+                  Outreach proof {selectedProofIndex + 1} of {proofs.length}
                 </p>
-                <p style={{ margin: "4px 0 0", fontSize: 15, fontWeight: 700, color: "#243112" }}>
+                <p style={{ margin: "4px 0 0", fontSize: 15, fontWeight: 700, color: "#0B0B0A" }}>
                   {proofs[selectedProofIndex].hotspotName || "Hotspot proof"}
                 </p>
               </div>
@@ -1074,10 +1076,10 @@ export default function ProfilePage() {
                 </button>
               </div>
             </div>
-            <div style={{ padding: 16, background: "#f7f3df" }}>
+            <div style={{ padding: 16, background: "#F8F6F0" }}>
               <Image
                 src={proofs[selectedProofIndex].photoUrl}
-                alt={proofs[selectedProofIndex].hotspotName || "Flyer proof"}
+                alt={proofs[selectedProofIndex].hotspotName || "Outreach proof"}
                 width={1200}
                 height={900}
                 unoptimized
@@ -1087,19 +1089,19 @@ export default function ProfilePage() {
                   height: "auto",
                   maxHeight: "60vh",
                   objectFit: "contain",
-                  borderRadius: 18,
+                  borderRadius: 2,
                   background: "#efe8c7",
                 }}
               />
               <div style={{ display: "grid", gap: 6, marginTop: 14 }}>
-                <p style={{ margin: 0, fontSize: 12.5, color: "#42531d" }}>
+                <p style={{ margin: 0, fontSize: 12.5, color: "#8A8780" }}>
                   {proofs[selectedProofIndex].hotspotAddress || "Address unavailable"}
                 </p>
-                <p style={{ margin: 0, fontSize: 12, color: "#7a6a40" }}>
+                <p style={{ margin: 0, fontSize: 12, color: "#8A8780" }}>
                   Submitted {new Date(proofs[selectedProofIndex].submittedAt).toLocaleString()}
                 </p>
                 {proofs[selectedProofIndex].notes ? (
-                  <p style={{ margin: 0, fontSize: 12.5, color: "#5a5f2f", lineHeight: 1.55 }}>
+                  <p style={{ margin: 0, fontSize: 12.5, color: "#8A8780", lineHeight: 1.55 }}>
                     {proofs[selectedProofIndex].notes}
                   </p>
                 ) : null}
@@ -1125,10 +1127,10 @@ const zoomButtonStyle: React.CSSProperties = {
   minWidth: 36,
   height: 36,
   padding: "0 10px",
-  borderRadius: 999,
-  border: "1px solid rgba(190,155,70,0.18)",
-  background: "#fffaf0",
-  color: "#42531d",
+  borderRadius: 2,
+  border: "1px solid rgba(11, 11, 10,0.18)",
+  background: "#F8F6F0",
+  color: "#8A8780",
   fontSize: 13,
   fontWeight: 700,
 };

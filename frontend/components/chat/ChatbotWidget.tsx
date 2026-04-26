@@ -19,15 +19,15 @@ interface Message {
 
 const SUGGESTED_CHIPS = [
   "How do I get started?",
-  "Where can I print flyers?",
-  "How do I flyer?",
+  "Where can I print cards?",
+  "How do missions work?",
   "How does the map work?",
 ];
 
 const WELCOME: Message = {
   id: 0,
   role: "bot",
-  text: "Hi! I'm Citrus 🍋 Ask me anything about volunteering, printing flyers, or using the map.",
+  text: "Hi, I'm Relay. Ask me about missions, print points, outreach kits, or using the map.",
 };
 
 
@@ -37,21 +37,22 @@ function BotBubble({ message, onLinkClick }: { message: Message; onLinkClick: ()
   return (
     <div style={{ display: "flex", gap: 8, alignItems: "flex-end", marginBottom: 12 }}>
       <div style={{
-        width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-        background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14,
+        width: 28, height: 28, borderRadius: 0, flexShrink: 0,
+        background: "transparent",
+        border: "1px solid #D44A12",
+        display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", color: "#D44A12",
       }}>
-        🍋
+        RL
       </div>
       <div style={{ maxWidth: "80%" }}>
         <div style={{
-          background: "#ffffff",
-          border: "1px solid rgba(190,155,70,0.18)",
-          borderRadius: "4px 14px 14px 14px",
+          background: "#F8F6F0",
+          border: "1px solid rgba(11, 11, 10,0.16)",
+          borderRadius: 2,
           padding: "10px 14px",
-          fontSize: 13,
-          color: "#3a2e10",
-          lineHeight: 1.65,
+          fontSize: 18,
+          color: "#1A1917",
+          lineHeight: 1.35,
           whiteSpace: "pre-wrap",
         }}>
           {message.text}
@@ -60,8 +61,8 @@ function BotBubble({ message, onLinkClick }: { message: Message; onLinkClick: ()
               display: "inline-block",
               width: 8,
               height: 13,
-              background: "#c9a84c",
-              borderRadius: 2,
+              background: "#D44A12",
+              borderRadius: 0,
               marginLeft: 2,
               verticalAlign: "middle",
               animation: "blink 0.8s step-end infinite",
@@ -75,17 +76,20 @@ function BotBubble({ message, onLinkClick }: { message: Message; onLinkClick: ()
             style={{
               display: "inline-block",
               marginTop: 6,
-              padding: "4px 12px",
-              borderRadius: 20,
-              background: "rgba(245,200,66,0.15)",
-              color: "#d97706",
-              fontSize: 12,
-              fontWeight: 600,
+              padding: "6px 12px",
+              borderRadius: 0,
+              background: "transparent",
+              color: "#D44A12",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 11,
+              fontWeight: 400,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
               textDecoration: "none",
-              border: "1px solid rgba(245,200,66,0.3)",
+              border: "1px solid rgba(212, 74, 18,0.24)",
             }}
           >
-            {message.link.label} →
+            {message.link.label} -&gt;
           </Link>
         )}
       </div>
@@ -98,13 +102,14 @@ function UserBubble({ message }: { message: Message }) {
     <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
       <div style={{
         maxWidth: "80%",
-        background: "linear-gradient(135deg, #f5c842, #f59e0b)",
-        borderRadius: "14px 4px 14px 14px",
+        background: "#0B0B0A",
+        borderRadius: 2,
         padding: "10px 14px",
-        fontSize: 13,
-        fontWeight: 600,
-        color: "#1a1000",
-        lineHeight: 1.5,
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: 12,
+        fontWeight: 400,
+        color: "#F8F6F0",
+        lineHeight: 1.6,
       }}>
         {message.text}
       </div>
@@ -116,16 +121,17 @@ function TypingIndicator() {
   return (
     <div style={{ display: "flex", gap: 8, alignItems: "flex-end", marginBottom: 12 }}>
       <div style={{
-        width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-        background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14,
+        width: 28, height: 28, borderRadius: 0, flexShrink: 0,
+        background: "transparent",
+        border: "1px solid #D44A12",
+        display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", color: "#D44A12",
       }}>
-        🍋
+        RL
       </div>
       <div style={{
-        background: "#ffffff",
-        border: "1px solid rgba(190,155,70,0.18)",
-        borderRadius: "4px 14px 14px 14px",
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10,0.16)",
+        borderRadius: 2,
         padding: "12px 16px",
         display: "flex",
         gap: 4,
@@ -139,7 +145,7 @@ function TypingIndicator() {
               width: 6,
               height: 6,
               borderRadius: "50%",
-              background: "#c9a84c",
+              background: "#D44A12",
               display: "inline-block",
               animationDelay: `${i * 0.15}s`,
             }}
@@ -285,17 +291,18 @@ export default function ChatbotWidget() {
           width: isMobile ? "100%" : 400,
           height: isMobile ? "100%" : "min(70vh, 600px)",
           zIndex: 10001,
-          borderRadius: isMobile ? 0 : 20,
-          border: isMobile ? "none" : "1px solid rgba(190,155,70,0.22)",
-          boxShadow: isMobile ? "none" : "0 12px 48px rgba(0,0,0,0.16)",
+          borderRadius: isMobile ? 0 : 2,
+          border: isMobile ? "none" : "1px solid rgba(11, 11, 10,0.12)",
+          boxShadow: "none",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
-          background: "#fdf8e8",
+          background: "#F3F0E9",
         }}>
           {/* Header */}
           <div style={{
-            background: "linear-gradient(135deg, #1a1200 0%, #2c1e00 100%)",
+            background: "#0B0B0A",
+            borderBottom: "1px solid rgba(212, 74, 18, 0.18)",
             padding: "14px 18px",
             display: "flex",
             alignItems: "center",
@@ -304,26 +311,26 @@ export default function ChatbotWidget() {
           }}>
             <div>
               <div style={{
-                fontFamily: "'Fraunces', Georgia, serif",
-                fontSize: 15,
-                fontWeight: 600,
-                color: "#f5c842",
-                letterSpacing: "-0.2px",
+                fontFamily: "'Instrument Serif', serif",
+                fontSize: 26,
+                fontWeight: 400,
+                color: "#F8F6F0",
+                letterSpacing: "-0.035em",
               }}>
-                Citrus
+                Relay
               </div>
             </div>
             <button
               onClick={() => setOpen(false)}
               style={{
-                width: 32, height: 32, borderRadius: 9,
-                background: "rgba(255,255,255,0.08)",
-                border: "1px solid rgba(245,200,66,0.2)",
-                color: "#ede5cc", cursor: "pointer",
+                width: 32, height: 32, borderRadius: 0,
+                background: "transparent",
+                border: "1px solid rgba(212, 74, 18,0.22)",
+                color: "#D44A12", cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14,
               }}
             >
-              ✕
+              X
             </button>
           </div>
 
@@ -348,7 +355,7 @@ export default function ChatbotWidget() {
               padding: "8px 14px",
               overflowX: "auto",
               flexShrink: 0,
-              borderTop: "1px solid rgba(190,155,70,0.12)",
+              borderTop: "1px solid rgba(11, 11, 10,0.08)",
             }}>
               {SUGGESTED_CHIPS.map((chip, i) => (
                 <button
@@ -357,11 +364,13 @@ export default function ChatbotWidget() {
                   style={{
                     whiteSpace: "nowrap",
                     padding: "6px 12px",
-                    borderRadius: 20,
-                    background: "#ffffff",
-                    border: "1px solid rgba(190,155,70,0.22)",
-                    color: "#7a6a40",
-                    fontSize: 12,
+                    borderRadius: 0,
+                    background: "#F8F6F0",
+                    border: "1px solid rgba(11, 11, 10,0.16)",
+                    color: "#8A8780",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 11,
+                    letterSpacing: "0.08em",
                     cursor: "pointer",
                     flexShrink: 0,
                   }}
@@ -377,9 +386,9 @@ export default function ChatbotWidget() {
             display: "flex",
             gap: 8,
             padding: "10px 14px",
-            borderTop: "1px solid rgba(190,155,70,0.12)",
+            borderTop: "1px solid rgba(11, 11, 10,0.08)",
             flexShrink: 0,
-            background: "#fdf8e8",
+            background: "#F3F0E9",
           }}>
             <input
               ref={inputRef}
@@ -391,11 +400,11 @@ export default function ChatbotWidget() {
               style={{
                 flex: 1,
                 padding: "9px 14px",
-                borderRadius: 12,
-                border: "1px solid rgba(190,155,70,0.22)",
-                background: "#ffffff",
+                borderRadius: 0,
+                border: "1px solid rgba(11, 11, 10,0.12)",
+                background: "#F8F6F0",
                 fontSize: 13,
-                color: "#1a1600",
+                color: "#0B0B0A",
                 outline: "none",
               }}
             />
@@ -404,14 +413,16 @@ export default function ChatbotWidget() {
               disabled={!input.trim() || isLoading}
               style={{
                 padding: "9px 16px",
-                borderRadius: 12,
+                borderRadius: 0,
                 background: input.trim() && !isLoading
-                  ? "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)"
+                  ? "transparent"
                   : "rgba(0,0,0,0.06)",
-                color: input.trim() && !isLoading ? "#1a1000" : "#b0a070",
-                fontSize: 13,
-                fontWeight: 600,
-                border: "none",
+                color: input.trim() && !isLoading ? "#D44A12" : "#B8B3A7",
+                fontSize: 11,
+                fontWeight: 400,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                border: input.trim() && !isLoading ? "1px solid #D44A12" : "1px solid rgba(11, 11, 10,0.08)",
                 cursor: input.trim() && !isLoading ? "pointer" : "not-allowed",
                 transition: "background 0.15s",
               }}
@@ -435,10 +446,10 @@ export default function ChatbotWidget() {
             alignItems: "center",
             gap: 8,
             padding: "10px 16px",
-            borderRadius: "14px 14px 4px 14px",
-            background: "#fffdf5",
-            border: "1px solid rgba(245,200,66,0.25)",
-            boxShadow: "0 8px 28px rgba(0,0,0,0.10), 0 2px 8px rgba(245,200,66,0.12)",
+            borderRadius: 2,
+            background: "#F8F6F0",
+            border: "1px solid rgba(212, 74, 18,0.22)",
+            boxShadow: "none",
             cursor: "pointer",
           }}
           onClick={() => {
@@ -447,8 +458,8 @@ export default function ChatbotWidget() {
             setNudgeDismissed(true);
           }}
         >
-          <span style={{ fontSize: 16 }}>🍋</span>
-          <span style={{ fontSize: 13, fontWeight: 600, color: "#5f502d", whiteSpace: "nowrap" }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, color: "#D44A12", letterSpacing: "0.08em" }}>RL</span>
+          <span style={{ fontSize: 18, color: "#1A1917", whiteSpace: "nowrap" }}>
             Need any help?
           </span>
           <button
@@ -462,10 +473,10 @@ export default function ChatbotWidget() {
               marginLeft: 4,
               width: 18,
               height: 18,
-              borderRadius: 99,
+              borderRadius: 0,
               border: "none",
               background: "rgba(0,0,0,0.06)",
-              color: "#9a8a60",
+              color: "#8A8780",
               fontSize: 11,
               display: "flex",
               alignItems: "center",
@@ -498,27 +509,28 @@ export default function ChatbotWidget() {
           zIndex: 10002,
           width: 52,
           height: 52,
-          borderRadius: 16,
-          background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-          boxShadow: fabHovered
-            ? "0 6px 24px rgba(245,200,66,0.65)"
-            : "0 4px 18px rgba(245,200,66,0.45)",
-          border: "none",
+          borderRadius: 0,
+          background: fabHovered ? "#D44A12" : "#F8F6F0",
+          boxShadow: "none",
+          border: "1px solid #D44A12",
           cursor: "pointer",
-          fontSize: 22,
+          fontSize: 11,
+          fontWeight: 800,
+          letterSpacing: "0.06em",
+          color: fabHovered ? "#F8F6F0" : "#D44A12",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          transform: fabHovered ? "scale(1.07)" : undefined,
-          transition: "transform 0.18s",
+          transform: fabHovered ? "translateY(-2px)" : undefined,
+          transition: "transform 0.25s, background 0.25s, color 0.25s",
         }}
       >
         {open ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1000" strokeWidth="2.5" strokeLinecap="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={fabHovered ? "#F8F6F0" : "#D44A12"} strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
-        ) : "🍋"}
+        ) : "RL"}
       </button>
     </>
   );

@@ -7,35 +7,35 @@ import RecentActivity from "@/components/home/RecentActivity";
 import { getLeaderboard } from "@/lib/leaderboard-api";
 
 const QUICK = [
-  { href: "/map",         emoji: "🗺️", label: "Map",             desc: "Find high-need areas near you",        bg: "#fef9c3", border: "#fde68a" },
-  { href: "/guide",        emoji: "📖", label: "Guide",           desc: "Tips for effective flyering",           bg: "#ede9fe", border: "#ddd6fe" },
-  { href: "/leaderboard", emoji: "🏆", label: "Leaderboard",     desc: "See this month's top volunteers",      bg: "#dcfce7", border: "#bbf7d0" },
-  { href: "/community",   emoji: "💬", label: "Community",       desc: "Posts, meetups, and coordination",     bg: "#fce7f3", border: "#fbcfe8" },
+  { href: "/map",         emoji: "MAP", label: "Map",             desc: "Find priority zones near you" },
+  { href: "/guide",       emoji: "KIT", label: "Guide",           desc: "Run a clean outreach mission" },
+  { href: "/leaderboard", emoji: "TOP", label: "Leaderboard",     desc: "See this month's top volunteers" },
+  { href: "/community",   emoji: "COM", label: "Community",       desc: "Posts, meetups, and coordination" },
 ];
 
 const card: React.CSSProperties = {
-  background: "#ffffff",
-  border: "1px solid rgba(190,155,70,0.18)",
-  borderRadius: 16,
-  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+  background: "#F8F6F0",
+  border: "1px solid rgba(11, 11, 10, 0.16)",
+  borderRadius: 2,
+  boxShadow: "none",
 };
 
 export default function HomePage() {
   const [stats, setStats] = useState([
-    { label: "Total Scans",        value: "—", change: "Loading...",       icon: "📄", iconBg: "#fef3c7" },
-    { label: "Active Volunteers",   value: "—", change: "Loading...",      icon: "🙌", iconBg: "#dcfce7" },
-    { label: "Locations Covered",   value: "12", change: "Across NYC",     icon: "📍", iconBg: "#ede9fe" },
-    { label: "Total Hours",         value: "—", change: "Loading...",      icon: "⏱️", iconBg: "#fee2e2" },
+    { label: "Total Scans",        value: "-", change: "Loading...",       icon: "SC", iconBg: "#EBE7DE" },
+    { label: "Active Volunteers",  value: "-", change: "Loading...",       icon: "VT", iconBg: "#EBE7DE" },
+    { label: "Locations Covered",  value: "12", change: "Across NYC",      icon: "ZN", iconBg: "#EBE7DE" },
+    { label: "Total Hours",        value: "-", change: "Loading...",       icon: "HR", iconBg: "#EBE7DE" },
   ]);
 
   useEffect(() => {
     getLeaderboard("all")
       .then((res) => {
         setStats([
-          { label: "Total Scans",        value: (res.totalScans ?? 0).toLocaleString(), change: "All time",        icon: "📄", iconBg: "#fef3c7" },
-          { label: "Active Volunteers",   value: (res.totalVolunteers ?? 0).toLocaleString(), change: "Registered users", icon: "🙌", iconBg: "#dcfce7" },
-          { label: "Locations Covered",   value: "12",                                   change: "Across NYC",      icon: "📍", iconBg: "#ede9fe" },
-          { label: "Total Hours",         value: String(res.totalHours ?? 0),            change: "All time",        icon: "⏱️", iconBg: "#fee2e2" },
+          { label: "Total Scans",        value: (res.totalScans ?? 0).toLocaleString(),      change: "All time",         icon: "SC", iconBg: "#EBE7DE" },
+          { label: "Active Volunteers",  value: (res.totalVolunteers ?? 0).toLocaleString(), change: "Registered users", icon: "VT", iconBg: "#EBE7DE" },
+          { label: "Locations Covered",  value: "12",                                        change: "Across NYC",       icon: "ZN", iconBg: "#EBE7DE" },
+          { label: "Total Hours",        value: String(res.totalHours ?? 0),                 change: "All time",         icon: "HR", iconBg: "#EBE7DE" },
         ]);
       })
       .catch(() => {});
@@ -49,54 +49,62 @@ export default function HomePage() {
         className="anim-fade-up d1"
         style={{
           position: "relative",
-          borderRadius: 20,
+          borderRadius: 2,
           overflow: "hidden",
-          background: "linear-gradient(130deg, #f5c842 0%, #fbbf24 55%, #f59e0b 100%)",
-          boxShadow: "0 8px 32px rgba(245,200,66,0.38)",
+          background: "#F8F6F0",
+          border: "1px solid rgba(11, 11, 10, 0.16)",
+          boxShadow: "none",
           marginBottom: 24,
-          minHeight: 175,
+          minHeight: 315,
         }}
       >
-        {/* Decorative circles */}
-        <div style={{ position: "absolute", top: -50, right: 120, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.12)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: -60, right: -20, width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,0.08)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", left: 0, right: 0, top: 80, height: 1, background: "rgba(11, 11, 10, 0.08)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", left: "64%", top: 0, bottom: 0, width: 1, background: "rgba(11, 11, 10, 0.08)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", right: 34, bottom: 32, width: 132, height: 132, border: "1px solid rgba(212, 74, 18, 0.18)", borderRadius: "50%", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", right: 69, bottom: 67, width: 62, height: 62, border: "1px solid rgba(11, 11, 10, 0.16)", borderRadius: "50%", pointerEvents: "none" }} />
 
-        {/* Floating lemon */}
         <div
-          className="anim-float"
           style={{
-            position: "absolute", right: 48, top: "50%", transform: "translateY(-50%)",
-            fontSize: 72, lineHeight: 1,
-            filter: "drop-shadow(0 8px 18px rgba(0,0,0,0.14))",
+            position: "absolute", right: 28, top: 24,
+            width: 52, height: 52,
+            border: "1px solid #D44A12",
+            background: "transparent",
+            color: "#D44A12",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 11, fontWeight: 500, letterSpacing: "0.22em",
+            boxShadow: "none",
             pointerEvents: "none", userSelect: "none",
           }}
         >
-          🍋
+          VT
         </div>
 
-        <div style={{ position: "relative", zIndex: 1, padding: "clamp(24px, 4vw, 36px) clamp(20px, 4vw, 44px)" }}>
-          <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(90,60,0,0.65)", marginBottom: 8 }}>
-            Community Food Access
+        <div style={{ position: "relative", zIndex: 1, padding: "clamp(32px, 5vw, 58px) clamp(20px, 5vw, 64px)" }}>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 400, letterSpacing: "0.28em", textTransform: "uppercase", color: "#8A8780", marginBottom: 20 }}>
+            Civic Coordination
           </p>
-          <h2 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 32, fontWeight: 700, color: "#1a1000", lineHeight: 1.15, letterSpacing: "-0.6px", marginBottom: 8 }}>
-            Spread the Word.<br />
-            <span style={{ fontStyle: "italic", fontWeight: 400 }}>Feed the Community.</span>
+          <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(54px, 9vw, 132px)", fontWeight: 400, color: "#0B0B0A", lineHeight: 0.9, letterSpacing: "-0.045em", marginBottom: 18 }}>
+            Volun-Tiers<br />
+            <span style={{ fontStyle: "italic", color: "#D44A12" }}>Find the gaps. Reach the people.</span>
           </h2>
-          <p style={{ fontSize: 13.5, color: "rgba(60,40,0,0.62)", marginBottom: 22, maxWidth: 380 }}>
-            There&rsquo;s more than enough food to go around &mdash; we just have to help our neighbors find it.
+          <p style={{ fontSize: "clamp(21px, 2.1vw, 34px)", color: "#1A1917", lineHeight: 1.18, marginBottom: 30, maxWidth: 720 }}>
+            Coordinate outreach, cover priority zones, and turn volunteer energy into measurable local action.
           </p>
-          {/* Static link — no hover handlers needed on hero CTA */}
           <Link
             href="/getstarted"
             style={{
               display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "10px 22px", borderRadius: 11,
-              background: "rgba(18,12,0,0.84)", color: "#f5c842",
-              fontSize: 13, fontWeight: 600, letterSpacing: "-0.1px",
-              textDecoration: "none", boxShadow: "0 3px 12px rgba(0,0,0,0.22)",
+              padding: "18px 34px", borderRadius: 0,
+              background: "transparent", color: "#D44A12",
+              border: "1px solid #D44A12",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12, fontWeight: 400, letterSpacing: "0.32em",
+              textTransform: "uppercase",
+              textDecoration: "none", boxShadow: "none",
             }}
           >
-            Start Volunteering
+            Start a Mission
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
             </svg>
@@ -113,18 +121,18 @@ export default function HomePage() {
             style={{ ...card, padding: "20px 22px" }}
           >
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
-              <span style={{ fontSize: 12, color: "#8a7a50", fontWeight: 500 }}>{s.label}</span>
-              <div style={{ width: 32, height: 32, borderRadius: 10, background: s.iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0 }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", fontWeight: 400, letterSpacing: "0.18em", textTransform: "uppercase" }}>{s.label}</span>
+              <div style={{ width: 32, height: 32, borderRadius: 0, background: "#EBE7DE", border: "1px solid rgba(11, 11, 10, 0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, color: "#D44A12", flexShrink: 0 }}>
                 {s.icon}
               </div>
             </div>
             <div
               className={`anim-num-pop d${i + 3}`}
-              style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 30, fontWeight: 700, color: "#1a1600", letterSpacing: "-1px", lineHeight: 1, marginBottom: 5 }}
+              style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(38px, 4vw, 60px)", fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.04em", lineHeight: 0.92, marginBottom: 8 }}
             >
               {s.value}
             </div>
-            <p style={{ fontSize: 11.5, color: "#9a8a60" }}>{s.change}</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", letterSpacing: "0.08em" }}>{s.change}</p>
           </div>
         ))}
       </div>
@@ -136,10 +144,10 @@ export default function HomePage() {
       >
         {/* Quick Actions */}
         <div style={{ ...card, padding: "24px" }}>
-          <h3 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 17, fontWeight: 700, color: "#1a1600", letterSpacing: "-0.3px" }}>
+          <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 34, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", lineHeight: 1 }}>
             Quick Actions
           </h3>
-          <p style={{ fontSize: 12, color: "#9a8a60", marginTop: 3, marginBottom: 18 }}>Jump to what you need</p>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", marginTop: 8, marginBottom: 22, letterSpacing: "0.14em", textTransform: "uppercase" }}>Jump to what you need</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             {QUICK.map((q) => (
               <HoverLink
@@ -147,19 +155,19 @@ export default function HomePage() {
                 href={q.href}
                 baseStyle={{
                   display: "flex", alignItems: "center", gap: 12,
-                  padding: "14px 16px", borderRadius: 12,
-                  background: q.bg, border: `1px solid ${q.border}`,
-                  transition: "transform 0.18s, box-shadow 0.18s",
+                  padding: "16px", borderRadius: 0,
+                  background: "transparent", border: "1px solid rgba(11, 11, 10, 0.12)",
+                  transition: "transform 0.25s, border-color 0.25s",
                 }}
                 hoverStyle={{
                   transform: "translateY(-2px)",
-                  boxShadow: "0 6px 20px rgba(0,0,0,0.09)",
+                  borderColor: "rgba(212, 74, 18, 0.55)",
                 }}
               >
-                <span style={{ fontSize: 24, lineHeight: 1, flexShrink: 0 }}>{q.emoji}</span>
+                <span style={{ width: 38, height: 32, borderRadius: 0, background: "transparent", border: "1px solid rgba(212, 74, 18, 0.18)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, letterSpacing: "0.12em", color: "#D44A12", lineHeight: 1, flexShrink: 0 }}>{q.emoji}</span>
                 <div>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1a1600", marginBottom: 2 }}>{q.label}</p>
-                  <p style={{ fontSize: 11.5, color: "#7a6a40", lineHeight: 1.3 }}>{q.desc}</p>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 500, color: "#0B0B0A", marginBottom: 4, letterSpacing: "0.12em", textTransform: "uppercase" }}>{q.label}</p>
+                  <p style={{ fontSize: 18, color: "#8A8780", lineHeight: 1.18 }}>{q.desc}</p>
                 </div>
               </HoverLink>
             ))}
@@ -170,12 +178,12 @@ export default function HomePage() {
         <div style={{ ...card, padding: "24px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
             <div>
-              <h3 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 17, fontWeight: 700, color: "#1a1600", letterSpacing: "-0.3px" }}>
+              <h3 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 34, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.035em", lineHeight: 1 }}>
                 Recent Activity
               </h3>
-              <p style={{ fontSize: 12, color: "#9a8a60", marginTop: 3 }}>Community updates</p>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", marginTop: 8, letterSpacing: "0.14em", textTransform: "uppercase" }}>Community updates</p>
             </div>
-            <span style={{ fontSize: 12, color: "#9a8a60", cursor: "pointer" }}>View all →</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#D44A12", cursor: "pointer", letterSpacing: "0.14em", textTransform: "uppercase" }}>View all -&gt;</span>
           </div>
           <RecentActivity />
         </div>
@@ -186,37 +194,41 @@ export default function HomePage() {
         className="anim-fade-up d6"
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap",
-          gap: 16, padding: "22px clamp(16px, 3vw, 32px)", borderRadius: 18,
-          background: "linear-gradient(120deg, #1a1200 55%, #2c1e00 100%)",
-          border: "1px solid rgba(245,200,66,0.14)",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.14)",
+          gap: 16, padding: "26px clamp(16px, 3vw, 32px)", borderRadius: 2,
+          background: "#0B0B0A",
+          border: "1px solid rgba(212, 74, 18, 0.18)",
+          boxShadow: "none",
         }}
       >
         <div>
-          <h4 style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 16, fontWeight: 700, color: "#f5c842", letterSpacing: "-0.3px", marginBottom: 4 }}>
-            Ready to make a real difference?
+          <h4 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 30, fontWeight: 400, color: "#F8F6F0", letterSpacing: "-0.03em", marginBottom: 6 }}>
+            Ready to move a mission forward?
           </h4>
-          <p style={{ fontSize: 12.5, color: "rgba(237,218,170,0.52)" }}>
-            Join {stats[1].value} active volunteers and help connect your neighbors to free food resources.
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "rgba(248, 246, 240,0.60)", letterSpacing: "0.08em" }}>
+            Join {stats[1].value} active volunteers and help cover the next priority zone.
           </p>
         </div>
         <HoverLink
           href="/getstarted"
           baseStyle={{
             flexShrink: 0, display: "flex", alignItems: "center", gap: 8,
-            padding: "11px 24px", borderRadius: 12,
-            background: "#f5c842", color: "#1a1000",
-            fontSize: 13, fontWeight: 700,
-            boxShadow: "0 4px 16px rgba(245,200,66,0.32)",
-            letterSpacing: "-0.1px",
-            transition: "transform 0.15s, box-shadow 0.15s",
+            padding: "14px 24px", borderRadius: 0,
+            background: "transparent", color: "#D44A12",
+            border: "1px solid #D44A12",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12, fontWeight: 400,
+            boxShadow: "none",
+            letterSpacing: "0.26em",
+            textTransform: "uppercase",
+            transition: "transform 0.25s, background 0.25s, color 0.25s",
           }}
           hoverStyle={{
             transform: "translateY(-1px)",
-            boxShadow: "0 6px 24px rgba(245,200,66,0.45)",
+            background: "#D44A12",
+            color: "#F8F6F0",
           }}
         >
-          🚀 Get Started
+          Launch Mission
         </HoverLink>
       </div>
 

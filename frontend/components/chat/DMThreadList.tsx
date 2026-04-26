@@ -93,9 +93,9 @@ export default function DMThreadList({
           justifyContent: "center",
           gap: 8,
           padding: "10px 14px",
-          borderRadius: 12,
-          border: "1px solid rgba(245,200,66,0.22)",
-          background: showCompose ? "rgba(245,200,66,0.12)" : "rgba(245,200,66,0.06)",
+          borderRadius: 2,
+          border: "1px solid rgba(212, 74, 18,0.22)",
+          background: showCompose ? "rgba(212, 74, 18,0.12)" : "rgba(212, 74, 18,0.06)",
           color: "#7a5200",
           fontSize: 12.5,
           fontWeight: 700,
@@ -112,9 +112,9 @@ export default function DMThreadList({
       {showCompose && (
         <div
           style={{
-            borderRadius: 14,
-            border: "1px solid rgba(245,200,66,0.20)",
-            background: "#fffdf7",
+            borderRadius: 2,
+            border: "1px solid rgba(212, 74, 18,0.20)",
+            background: "#F8F6F0",
             padding: 12,
             display: "grid",
             gap: 8,
@@ -127,18 +127,18 @@ export default function DMThreadList({
             placeholder="Search by name or username..."
             style={{
               width: "100%",
-              borderRadius: 10,
-              border: "1px solid rgba(190,155,70,0.20)",
-              background: "#ffffff",
+              borderRadius: 2,
+              border: "1px solid rgba(11, 11, 10,0.20)",
+              background: "#F8F6F0",
               padding: "9px 12px",
               fontSize: 13,
               outline: "none",
-              color: "#1a1600",
+              color: "#0B0B0A",
             }}
           />
           <div style={{ maxHeight: 200, overflowY: "auto", display: "grid", gap: 2 }}>
             {isSearching ? (
-              <div style={{ padding: "10px 4px", fontSize: 12, color: "#9a8a60" }}>
+              <div style={{ padding: "10px 4px", fontSize: 12, color: "#8A8780" }}>
                 Searching...
               </div>
             ) : results.length > 0 ? (
@@ -153,7 +153,7 @@ export default function DMThreadList({
                     alignItems: "center",
                     gap: 10,
                     padding: "9px 10px",
-                    borderRadius: 10,
+                    borderRadius: 2,
                     border: "none",
                     background: "transparent",
                     cursor: "pointer",
@@ -162,7 +162,7 @@ export default function DMThreadList({
                     opacity: isCreating ? 0.6 : 1,
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "rgba(245,200,66,0.08)";
+                    (e.currentTarget as HTMLElement).style.background = "rgba(212, 74, 18,0.08)";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.background = "transparent";
@@ -172,31 +172,31 @@ export default function DMThreadList({
                     style={{
                       width: 30,
                       height: 30,
-                      borderRadius: 9,
-                      background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
+                      borderRadius: 2,
+                      background: "#D44A12",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       fontSize: 11,
                       fontWeight: 700,
-                      color: "#1a1000",
+                      color: "#0B0B0A",
                       flexShrink: 0,
                     }}
                   >
                     {(user.fullName || user.username || "?")[0].toUpperCase()}
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1600" }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "#0B0B0A" }}>
                       {user.fullName || user.username}
                     </div>
-                    <div style={{ fontSize: 11, color: "#9a8a60" }}>
+                    <div style={{ fontSize: 11, color: "#8A8780" }}>
                       @{user.username}
                     </div>
                   </div>
                 </button>
               ))
             ) : (
-              <div style={{ padding: "10px 4px", fontSize: 12, color: "#9a8a60" }}>
+              <div style={{ padding: "10px 4px", fontSize: 12, color: "#8A8780" }}>
                 No users found.
               </div>
             )}
@@ -207,11 +207,11 @@ export default function DMThreadList({
       {threads.length === 0 && !showCompose ? (
         <div
           style={{
-            borderRadius: 18,
-            border: "1px dashed rgba(190,155,70,0.24)",
+            borderRadius: 2,
+            border: "1px dashed rgba(11, 11, 10,0.24)",
             background: "rgba(255,255,255,0.72)",
             padding: "24px 18px",
-            color: "#8a7a50",
+            color: "#8A8780",
             textAlign: "center",
             fontSize: 13,
             lineHeight: 1.6,
@@ -233,12 +233,12 @@ export default function DMThreadList({
                   display: "block",
                   width: "100%",
                   textAlign: "left",
-                  borderRadius: 12,
+                  borderRadius: 2,
                   border: isActive
-                    ? "1px solid rgba(245,200,66,0.30)"
-                    : "1px solid rgba(190,155,70,0.12)",
-                  background: isActive ? "rgba(245,200,66,0.10)" : "#ffffff",
-                  boxShadow: "0 2px 8px rgba(31,43,18,0.04)",
+                    ? "1px solid rgba(212, 74, 18,0.30)"
+                    : "1px solid rgba(11, 11, 10,0.12)",
+                  background: isActive ? "rgba(212, 74, 18,0.10)" : "#F8F6F0",
+                  boxShadow: "none",
                   padding: "10px 12px",
                   cursor: "pointer",
                 }}
@@ -254,9 +254,9 @@ export default function DMThreadList({
                       style={{
                         minWidth: 22,
                         height: 22,
-                        borderRadius: 999,
-                        background: "#d97706",
-                        color: "#fffbeb",
+                        borderRadius: 2,
+                        background: "#D44A12",
+                        color: "#F8F6F0",
                         fontSize: 11,
                         fontWeight: 800,
                         display: "flex",
@@ -272,7 +272,7 @@ export default function DMThreadList({
                 <div style={{ marginTop: 6, fontSize: 12, color: "#4b5563", lineHeight: 1.45, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {thread.lastMessageText || `Start a conversation with ${formatDisplayName(thread.otherUser)}.`}
                 </div>
-                <div style={{ marginTop: 4, fontSize: 10.5, color: "#8a7a50" }}>
+                <div style={{ marginTop: 4, fontSize: 10.5, color: "#8A8780" }}>
                   {thread.lastMessageAt ? formatRelativeTime(thread.lastMessageAt) : "New thread"}
                 </div>
               </button>

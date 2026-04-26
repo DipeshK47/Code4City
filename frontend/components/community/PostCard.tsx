@@ -175,7 +175,7 @@ export default function PostCard({
     <article
       className="post-card anim-fade-up"
       style={{
-        borderRadius: 12,
+        borderRadius: 2,
         overflow: "hidden",
       }}
     >
@@ -206,11 +206,11 @@ export default function PostCard({
               style={{
                 width: 42,
                 height: 42,
-                borderRadius: 14,
+                borderRadius: 2,
                 border: `1px solid ${
-                  post.viewerHasLiked ? "rgba(245,200,66,0.3)" : "var(--border-subtle)"
+                  post.viewerHasLiked ? "rgba(212, 74, 18,0.3)" : "var(--border-subtle)"
                 }`,
-                background: post.viewerHasLiked ? "rgba(255,248,230,0.92)" : "#ffffff",
+                background: post.viewerHasLiked ? "rgba(255,248,230,0.92)" : "#F8F6F0",
                 color: post.viewerHasLiked ? "#7a5200" : "var(--text-muted)",
                 fontSize: 18,
                 fontWeight: 900,
@@ -228,9 +228,9 @@ export default function PostCard({
               style={{
                 width: 42,
                 height: 42,
-                borderRadius: 14,
+                borderRadius: 2,
                 border: "1px solid var(--border-subtle)",
-                background: showComments ? "rgba(255,244,214,0.9)" : "#ffffff",
+                background: showComments ? "rgba(255,244,214,0.9)" : "#F8F6F0",
                 color: "var(--text-muted)",
                 fontSize: 17,
                 fontWeight: 900,
@@ -261,9 +261,9 @@ export default function PostCard({
                     alignItems: "center",
                     gap: 6,
                     padding: "5px 9px",
-                    borderRadius: 999,
+                    borderRadius: 2,
                     background: post.meetup ? "rgba(34,197,94,0.12)" : "var(--accent-amber-muted)",
-                    color: post.meetup ? "#166534" : "#7a5200",
+                    color: post.meetup ? "#D44A12" : "#7a5200",
                     fontSize: 10.5,
                     fontWeight: 800,
                     textTransform: "uppercase",
@@ -342,7 +342,7 @@ export default function PostCard({
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: isMobile ? 23 : 28,
                   lineHeight: 1.12,
-                  letterSpacing: "-0.04em",
+                  letterSpacing: 0,
                   color: "var(--text-primary)",
                   fontWeight: 900,
                 }}
@@ -388,11 +388,11 @@ export default function PostCard({
                 onClick={() => void handleLikeToggle()}
                 style={{
                   ...reactionButtonStyle,
-                  color: post.viewerHasLiked ? "#7a5200" : "#5f502d",
+                  color: post.viewerHasLiked ? "#7a5200" : "#1A1917",
                   borderColor: post.viewerHasLiked
-                    ? "rgba(245,200,66,0.3)"
-                    : "rgba(190,155,70,0.18)",
-                  background: post.viewerHasLiked ? "rgba(255,248,230,0.9)" : "#fffdf7",
+                    ? "rgba(212, 74, 18,0.3)"
+                    : "rgba(11, 11, 10,0.18)",
+                  background: post.viewerHasLiked ? "rgba(255,248,230,0.9)" : "#F8F6F0",
                   opacity: !token || isGuest ? 0.55 : 1,
                 }}
               >
@@ -422,7 +422,7 @@ export default function PostCard({
           {showComments ? (
             <section
               style={{
-                borderTop: "1px solid rgba(190,155,70,0.12)",
+                borderTop: "1px solid rgba(11, 11, 10,0.12)",
                 paddingTop: 14,
                 display: "grid",
                 gap: 14,
@@ -433,7 +433,7 @@ export default function PostCard({
                   style={{
                     display: "grid",
                     gap: 10,
-                    borderRadius: 18,
+                    borderRadius: 2,
                     background: "#FCFCFA",
                     border: "1px solid var(--border-subtle)",
                     padding: 14,
@@ -490,7 +490,7 @@ export default function PostCard({
 }
 
 const ghostButtonStyle: React.CSSProperties = {
-  borderRadius: 8,
+  borderRadius: 2,
   border: "1px solid var(--border-subtle)",
   background: "transparent",
   color: "var(--text-muted)",
@@ -500,7 +500,7 @@ const ghostButtonStyle: React.CSSProperties = {
 };
 
 const reactionButtonStyle: React.CSSProperties = {
-  borderRadius: 8,
+  borderRadius: 2,
   border: "1px solid var(--border-subtle)",
   background: "transparent",
   color: "var(--text-muted)",

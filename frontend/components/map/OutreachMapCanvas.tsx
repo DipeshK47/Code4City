@@ -35,8 +35,8 @@ const nycBounds = latLngBounds(
 
 function createMarkerIcon(covered: boolean, selected: boolean, recommended: boolean) {
   const size = 18;
-  const fill = covered ? "#16a34a" : recommended ? "#60a5fa" : "#f59e0b";
-  const ring = selected ? "#1f1a0b" : recommended ? "#eff6ff" : "#ffffff";
+  const fill = covered ? "#D44A12" : recommended ? "#8A8780" : "#D64B14";
+  const ring = selected ? "#1f1a0b" : recommended ? "#eff6ff" : "#F8F6F0";
   const shadow = covered
     ? "rgba(22,163,74,0.22)"
     : recommended
@@ -84,7 +84,7 @@ function createClusterIcon(count: number, kind: "recommended" | "uncovered") {
         background: ${background};
         border: 3px solid ${ring};
         box-shadow: 0 10px 20px ${shadow};
-        color: #fffdf8;
+        color: #F8F6F0;
         font-size: 12px;
         font-weight: 800;
       ">${count}</div>
@@ -105,13 +105,13 @@ function createPrinterIcon() {
         height: ${size}px;
         border-radius: 999px;
         background: #f8fafc;
-        border: 2px solid #475569;
+        border: 2px solid #8A8780;
         box-shadow: 0 10px 20px rgba(51,65,85,0.18);
         display: flex;
         align-items: center;
         justify-content: center;
       ">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1A1917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polyline points="6 9 6 2 18 2 18 9"></polyline>
           <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
           <rect x="6" y="14" width="12" height="8"></rect>
@@ -288,7 +288,7 @@ export default function OutreachMapCanvas({
             color: "#c2410c",
             weight: 1.5,
             opacity: 0.7,
-            fillColor: "#f59e0b",
+            fillColor: "#D64B14",
             fillOpacity: 0.12,
           }}
           eventHandlers={{
@@ -494,7 +494,7 @@ function PrinterMarkers({
               <div style={{ minWidth: 210 }}>
                 <strong>{printer.name}</strong>
                 <div style={{ marginTop: 4 }}>{printer.address}</div>
-                <div style={{ marginTop: 6, color: "#475569", fontSize: 12 }}>
+                <div style={{ marginTop: 6, color: "#8A8780", fontSize: 12 }}>
                   {printer.hours} · {printer.distance.toFixed(1)} mi
                 </div>
                 {chain ? (
@@ -508,7 +508,7 @@ function PrinterMarkers({
                         fontSize: 11.5,
                         fontWeight: 700,
                         padding: "2px 8px",
-                        borderRadius: 999,
+                        borderRadius: 2,
                         background: level.bg,
                         color: level.color,
                         display: "inline-block",
@@ -534,10 +534,10 @@ function PrinterMarkers({
                           fontSize: 11,
                           fontWeight: 600,
                           padding: "2px 8px",
-                          borderRadius: 999,
+                          borderRadius: 2,
                           background: "#f8fafc",
                           border: "1px solid rgba(148,163,184,0.35)",
-                          color: "#475569",
+                          color: "#8A8780",
                         }}
                       >
                         {tag}
@@ -660,7 +660,7 @@ function MeetupMarkers({
               <div style={{ marginTop: 6 }}>
                 {new Date(meetup.startTime).toLocaleString()}
               </div>
-              <div style={{ marginTop: 6, color: "#166534" }}>
+              <div style={{ marginTop: 6, color: "#D44A12" }}>
                 {meetup.joinedCount} volunteer{meetup.joinedCount === 1 ? "" : "s"} joined
               </div>
             </div>

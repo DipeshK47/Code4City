@@ -78,16 +78,16 @@ function CommentNode({
       style={{
         marginLeft: depth > 0 ? 18 : 0,
         paddingLeft: depth > 0 ? 14 : 0,
-        borderLeft: depth > 0 ? "2px solid rgba(190,155,70,0.18)" : "none",
+        borderLeft: depth > 0 ? "2px solid rgba(11, 11, 10,0.18)" : "none",
         display: "grid",
         gap: 10,
       }}
     >
       <div
         style={{
-          borderRadius: 16,
-          background: "#fffdf7",
-          border: "1px solid rgba(190,155,70,0.16)",
+          borderRadius: 2,
+          background: "#F8F6F0",
+          border: "1px solid rgba(11, 11, 10,0.16)",
           padding: "14px 14px 12px",
         }}
       >
@@ -100,7 +100,7 @@ function CommentNode({
           style={{
             margin: "10px 0 0",
             fontSize: 13,
-            color: comment.isDeleted ? "#9ca3af" : "#243112",
+            color: comment.isDeleted ? "#9ca3af" : "#0B0B0A",
             lineHeight: 1.55,
           }}
         >
@@ -135,9 +135,9 @@ function CommentNode({
               placeholder="Write a reply"
               style={{
                 width: "100%",
-                borderRadius: 14,
-                border: "1px solid rgba(190,155,70,0.22)",
-                background: "#ffffff",
+                borderRadius: 2,
+                border: "1px solid rgba(11, 11, 10,0.22)",
+                background: "#F8F6F0",
                 padding: "12px 14px",
                 outline: "none",
                 fontSize: 13,

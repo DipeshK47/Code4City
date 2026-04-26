@@ -371,7 +371,7 @@ async function createProfileProofHotspot(client, { userId, lat, lng, notes }) {
       "proof",
       "Volunteer Proof Spot",
       "Custom Proof",
-      "GPS-tagged flyer proof upload",
+      "GPS-tagged outreach proof upload",
       "Volunteer submitted",
       matchedRegion?.regionCode || null,
       matchedRegion?.regionName || null,

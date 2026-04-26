@@ -32,35 +32,35 @@ type PodiumRow = {
 };
 
 const STATIC_FALLBACK = [
-  { flyers: 820, zones: 14, badge: "1", color: "#f5c842" },
+  { flyers: 820, zones: 14, badge: "1", color: "#D44A12" },
   { flyers: 710, zones: 11, badge: "2", color: "#c0c0c0" },
   { flyers: 640, zones: 10, badge: "3", color: "#cd7f32" },
-  { flyers: 340, zones: 8, badge: null, color: "#f5c842" },
+  { flyers: 340, zones: 8, badge: null, color: "#D44A12" },
   { flyers: 310, zones: 7, badge: null, color: "#6b7280" },
   { flyers: 280, zones: 6, badge: null, color: "#6b7280" },
   { flyers: 250, zones: 5, badge: null, color: "#6b7280" },
   { flyers: 200, zones: 4, badge: null, color: "#6b7280" },
 ];
 
-const rankColors: Record<number, string> = { 1: "#f5c842", 2: "#9ca3af", 3: "#b45309" };
+const rankColors: Record<number, string> = { 1: "#D44A12", 2: "#9ca3af", 3: "#b45309" };
 const monthlyStatHighlights = [
   {
-    background: "linear-gradient(135deg, rgba(254, 226, 226, 0.95), rgba(254, 242, 242, 0.92))",
+    background: "#F8F6F0",
     shadow: "0 10px 24px rgba(239,68,68,0.14)",
     pill: "#ef4444",
   },
   {
-    background: "linear-gradient(135deg, rgba(219, 234, 254, 0.95), rgba(239, 246, 255, 0.92))",
+    background: "#F8F6F0",
     shadow: "0 10px 24px rgba(59,130,246,0.14)",
-    pill: "#2563eb",
+    pill: "#D64B14",
   },
   {
-    background: "linear-gradient(135deg, rgba(220, 252, 231, 0.95), rgba(240, 253, 244, 0.92))",
+    background: "#F8F6F0",
     shadow: "0 10px 24px rgba(34,197,94,0.14)",
-    pill: "#16a34a",
+    pill: "#D44A12",
   },
   {
-    background: "linear-gradient(135deg, rgba(254, 249, 195, 0.95), rgba(255, 251, 235, 0.92))",
+    background: "#F8F6F0",
     shadow: "0 10px 24px rgba(234,179,8,0.14)",
     pill: "#ca8a04",
   },
@@ -122,7 +122,7 @@ function MedalSymbol({ color, label }: { color: string; label: string }) {
       }}
     >
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-        <path d="M5 1.5h3l1 4H6z" fill="#7c3aed" />
+        <path d="M5 1.5h3l1 4H6z" fill="#D44A12" />
         <path d="M10 1.5h3l-1 4H9z" fill="#dc2626" />
         <circle cx="9" cy="10.5" r="5" fill={color} stroke="rgba(26,22,0,0.18)" strokeWidth="0.8" />
         <text
@@ -217,12 +217,17 @@ export default function LeaderboardPage() {
 
   const selectedMetricKeys = (["flyers", "scans", "hours"] as const).filter((key) => visibleMetrics[key]);
   const primaryMetric = selectedMetricKeys[0] ?? "flyers";
+  const metricNames = {
+    flyers: "proofs",
+    scans: "scans",
+    hours: "hours",
+  } as const;
   const metricLabelLower =
     selectedMetricKeys.length === 1
-      ? primaryMetric
+      ? metricNames[primaryMetric]
       : selectedMetricKeys.length === 3
         ? "selected metrics"
-        : selectedMetricKeys.join(" + ");
+        : selectedMetricKeys.map((key) => metricNames[key]).join(" + ");
 
   const metricValueForEntry = (entry: LeaderboardEntry | DisplayRow | null | undefined) => {
     if (!entry) return 0;
@@ -252,7 +257,7 @@ export default function LeaderboardPage() {
               : primaryMetric === "scans"
                 ? p.scans ?? 0
                 : p.flyers ?? 0,
-          color: rankColors[slot.rank] ?? "#f5c842",
+          color: rankColors[slot.rank] ?? "#D44A12",
           height: slot.height,
           rank: slot.rank,
           pos: slot.pos,
@@ -276,7 +281,7 @@ export default function LeaderboardPage() {
 
   const computedStats = useMemo(() => {
     return [
-      { label: "Flyers Uploaded", value: totalFlyersAll.toLocaleString(), icon: "FL" },
+      { label: "Proofs Logged", value: totalFlyersAll.toLocaleString(), icon: "PR" },
       { label: "QR Scans", value: totalScansAll.toLocaleString(), icon: "SC" },
       { label: "Active Volunteers", value: totalVolunteers.toLocaleString(), icon: "AV" },
       { label: "Total Hours", value: String(totalHoursAll), icon: "HR" },
@@ -332,7 +337,7 @@ export default function LeaderboardPage() {
               right: 0,
               zIndex: 10,
               padding: "20px 24px",
-              background: "linear-gradient(to bottom, rgba(26,18,0,0.92) 0%, transparent 100%)",
+              background: "rgba(11, 11, 10, 0.72)",
             }}
           >
             <div
@@ -347,16 +352,16 @@ export default function LeaderboardPage() {
               <div>
                 <h3
                   style={{
-                    fontFamily: "'Fraunces', Georgia, serif",
+                    fontFamily: "'Instrument Serif', serif",
                     fontSize: 20,
                     fontWeight: 700,
-                    color: "#f5c842",
-                    letterSpacing: "-0.4px",
+                    color: "#D44A12",
+                    letterSpacing: 0,
                   }}
                 >
                   Champions Podium
                 </h3>
-                <p style={{ fontSize: 12, color: "rgba(245,200,66,0.45)", marginTop: 2 }}>
+                <p style={{ fontSize: 12, color: "rgba(212, 74, 18,0.45)", marginTop: 2 }}>
                   {periodLabel} &middot; Ranked by {metricLabelLower}
                 </p>
               </div>
@@ -372,7 +377,7 @@ export default function LeaderboardPage() {
                       name: "Volunteer One",
                       avatar: "VO",
                       flyers: 820,
-                      color: "#f5c842",
+                      color: "#D44A12",
                       height: 1.9,
                       rank: 1,
                       pos: 0,
@@ -407,7 +412,7 @@ export default function LeaderboardPage() {
               right: 0,
               zIndex: 10,
               padding: "16px 24px",
-              background: "linear-gradient(to top, rgba(26,18,0,0.95) 0%, transparent 100%)",
+              background: "rgba(11, 11, 10, 0.72)",
               display: "flex",
               justifyContent: "center",
               gap: 20,
@@ -420,13 +425,13 @@ export default function LeaderboardPage() {
                   style={{
                     fontSize: 11,
                     fontWeight: 700,
-                    color: rankColors[row.rank] ?? "#f5c842",
+                    color: rankColors[row.rank] ?? "#D44A12",
                     marginBottom: 1,
                   }}
                 >
                   #{row.rank} | {row.name}
                 </p>
-                <p style={{ fontSize: 10.5, color: "rgba(245,200,66,0.4)" }}>
+                <p style={{ fontSize: 10.5, color: "rgba(212, 74, 18,0.4)" }}>
                   {formatMetricValue(metricValueForEntry(podiumEntries[row.rank - 1]))}
                 </p>
               </div>
@@ -437,7 +442,7 @@ export default function LeaderboardPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <SectionCard dark title="Your Standing" subtitle={`${periodLabel} ranking`}>
             {loading ? (
-              <p style={{ fontSize: 12.5, color: "rgba(245,200,66,0.56)" }}>
+              <p style={{ fontSize: 12.5, color: "rgba(212, 74, 18,0.56)" }}>
                 Loading your ranking...
               </p>
             ) : yourStanding ? (
@@ -445,26 +450,26 @@ export default function LeaderboardPage() {
                 <div style={{ textAlign: "center", padding: "8px 0 12px" }}>
                   <div
                     style={{
-                      fontFamily: "'Fraunces', Georgia, serif",
+                      fontFamily: "'Instrument Serif', serif",
                       fontSize: 56,
                       fontWeight: 700,
-                      color: "#f5c842",
+                      color: "#D44A12",
                       lineHeight: 1,
-                      letterSpacing: "-2px",
+                      letterSpacing: 0,
                     }}
                   >
                     #{yourStanding.rank}
                   </div>
-                  <p style={{ fontSize: 12, color: "rgba(245,200,66,0.45)", marginTop: 4 }}>
+                  <p style={{ fontSize: 12, color: "rgba(212, 74, 18,0.45)", marginTop: 4 }}>
                     out of {displayRows.length} volunteers
                   </p>
                 </div>
                 <div style={{ marginTop: 4 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontSize: 11, color: "rgba(245,200,66,0.5)" }}>
+                    <span style={{ fontSize: 11, color: "rgba(212, 74, 18,0.5)" }}>
                       You | {formatMetricValue(yourFlyers)} {metricLabelLower}
                     </span>
-                    <span style={{ fontSize: 11, color: "rgba(245,200,66,0.5)" }}>
+                    <span style={{ fontSize: 11, color: "rgba(212, 74, 18,0.5)" }}>
                       {personAhead
                         ? `${personAhead.username} | ${formatMetricValue(aheadFlyers)} ${metricLabelLower}`
                         : "Top position"}
@@ -473,7 +478,7 @@ export default function LeaderboardPage() {
                   <div
                     style={{
                       height: 6,
-                      borderRadius: 99,
+                      borderRadius: 2,
                       background: "rgba(255,255,255,0.08)",
                       overflow: "hidden",
                     }}
@@ -482,16 +487,16 @@ export default function LeaderboardPage() {
                       style={{
                         height: "100%",
                         width: `${progressToNext}%`,
-                        borderRadius: 99,
-                        background: "linear-gradient(90deg, #f5c842, #fbbf24)",
-                        boxShadow: "0 0 8px rgba(245,200,66,0.6)",
+                        borderRadius: 2,
+                        background: "#D44A12",
+                        boxShadow: "none",
                       }}
                     />
                   </div>
                   <p
                     style={{
                       fontSize: 11.5,
-                      color: "rgba(245,200,66,0.65)",
+                      color: "rgba(212, 74, 18,0.65)",
                       marginTop: 10,
                       textAlign: "center",
                     }}
@@ -504,8 +509,8 @@ export default function LeaderboardPage() {
               </>
             ) : (
               <div style={{ textAlign: "center", padding: "16px 0" }}>
-                <div style={{ fontSize: 32, marginBottom: 10 }}>🍋</div>
-                <p style={{ fontSize: 13, color: "rgba(245,200,66,0.65)", lineHeight: 1.5, maxWidth: 240, margin: "0 auto" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 2, margin: "0 auto 10px", background: "rgba(212, 74, 18,0.14)", color: "#D44A12", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, letterSpacing: "0.08em" }}>VT</div>
+                <p style={{ fontSize: 13, color: "rgba(212, 74, 18,0.65)", lineHeight: 1.5, maxWidth: 240, margin: "0 auto" }}>
                   You&apos;re not in the top 10 yet. Keep volunteering to climb the ranks!
                 </p>
               </div>
@@ -526,12 +531,12 @@ export default function LeaderboardPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "12px 14px",
-                  borderRadius: 18,
+                  borderRadius: 2,
                   background: highlight.background,
-                  boxShadow: `${highlight.shadow}, inset 0 1px 0 rgba(255,255,255,0.6)`,
+                  boxShadow: "none",
                   marginBottom: index < computedStats.length - 1 ? 8 : 0,
                   borderBottom:
-                    index < computedStats.length - 1 ? "1px solid rgba(190,155,70,0.06)" : "none",
+                    index < computedStats.length - 1 ? "1px solid rgba(11, 11, 10,0.06)" : "none",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -539,9 +544,9 @@ export default function LeaderboardPage() {
                     style={{
                       minWidth: 34,
                       padding: "5px 8px",
-                      borderRadius: 999,
+                      borderRadius: 2,
                       background: "rgba(255,255,255,0.78)",
-                      boxShadow: highlight.shadow,
+                      boxShadow: "none",
                       fontSize: 10,
                       fontWeight: 700,
                       color: highlight.pill,
@@ -550,14 +555,14 @@ export default function LeaderboardPage() {
                   >
                     {stat.icon}
                   </span>
-                  <span style={{ fontSize: 12.5, color: "#7a6a40" }}>{stat.label}</span>
+                  <span style={{ fontSize: 12.5, color: "#8A8780" }}>{stat.label}</span>
                 </div>
                 <span
                   style={{
                     fontSize: 14,
                     fontWeight: 700,
-                    color: "#1a1600",
-                    fontFamily: "'Fraunces', Georgia, serif",
+                    color: "#0B0B0A",
+                    fontFamily: "'Instrument Serif', serif",
                   }}
                 >
                   {stat.value}
@@ -584,11 +589,11 @@ export default function LeaderboardPage() {
                   style={{
                     fontSize: 11.5,
                     padding: "5px 12px",
-                    borderRadius: 20,
+                    borderRadius: 2,
                     cursor: "pointer",
-                    border: `1px solid ${isActive ? "#f5c842" : "rgba(190,155,70,0.2)"}`,
-                    background: isActive ? "#fef9c3" : "transparent",
-                    color: isActive ? "#92400e" : "#9a8a60",
+                    border: `1px solid ${isActive ? "#D44A12" : "rgba(11, 11, 10,0.2)"}`,
+                    background: isActive ? "#F8F6F0" : "transparent",
+                    color: isActive ? "#D44A12" : "#8A8780",
                     fontWeight: isActive ? 600 : 400,
                   }}
                 >
@@ -602,7 +607,7 @@ export default function LeaderboardPage() {
         {error ? (
           <p style={{ fontSize: 13, color: "#b91c1c" }}>{error}</p>
         ) : loading ? (
-          <p style={{ fontSize: 13, color: "#8a7a50" }}>Loading leaderboard...</p>
+          <p style={{ fontSize: 13, color: "#8A8780" }}>Loading leaderboard...</p>
         ) : (
           <div style={{ marginTop: 6, overflowX: "auto" }}>
             <div
@@ -611,7 +616,7 @@ export default function LeaderboardPage() {
                 gridTemplateColumns: "44px minmax(180px, 1fr) 90px 90px 70px",
                 gap: 12,
                 padding: "0 10px 10px",
-                borderBottom: "1px solid rgba(190,155,70,0.15)",
+                borderBottom: "1px solid rgba(11, 11, 10,0.15)",
                 minWidth: 500,
               }}
             >
@@ -619,7 +624,7 @@ export default function LeaderboardPage() {
                 style={{
                   fontSize: 10.5,
                   fontWeight: 600,
-                  color: "#9a8a60",
+                  color: "#8A8780",
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
                 }}
@@ -630,7 +635,7 @@ export default function LeaderboardPage() {
                 style={{
                   fontSize: 10.5,
                   fontWeight: 600,
-                  color: "#9a8a60",
+                  color: "#8A8780",
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
                 }}
@@ -638,7 +643,7 @@ export default function LeaderboardPage() {
                 Volunteer
               </span>
               {([
-                ["Flyers", "flyers"],
+                ["Proofs", "flyers"],
                 ["Scans", "scans"],
                 ["Hours", "hours"],
               ] as const).map(([heading, key]) => (
@@ -650,7 +655,7 @@ export default function LeaderboardPage() {
                     gap: 8,
                     fontSize: 10.5,
                     fontWeight: 600,
-                    color: "#9a8a60",
+                    color: "#8A8780",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                     cursor: "pointer",
@@ -666,9 +671,9 @@ export default function LeaderboardPage() {
                       width: 16,
                       height: 16,
                       borderRadius: 5,
-                      border: `1.5px solid ${visibleMetrics[key] ? "#7c3aed" : "rgba(190,155,70,0.28)"}`,
-                      background: visibleMetrics[key] ? "linear-gradient(135deg, #f3e8ff, #ede9fe)" : "#fffdf8",
-                      boxShadow: visibleMetrics[key] ? "inset 0 0 0 4px #7c3aed" : "none",
+                      border: `1.5px solid ${visibleMetrics[key] ? "#D44A12" : "rgba(11, 11, 10,0.28)"}`,
+                      background: visibleMetrics[key] ? "#F8F6F0" : "#F8F6F0",
+                      boxShadow: visibleMetrics[key] ? "inset 0 0 0 4px #D44A12" : "none",
                       margin: 0,
                       cursor: "pointer",
                     }}
@@ -681,22 +686,22 @@ export default function LeaderboardPage() {
               (() => {
                 const topThreeBackground =
                   volunteer.rank === 1
-                    ? "linear-gradient(90deg, rgba(245,200,66,0.18), rgba(255,248,220,0.55))"
+                    ? "rgba(212, 74, 18,0.08)"
                     : volunteer.rank === 2
-                      ? "linear-gradient(90deg, rgba(156,163,175,0.16), rgba(248,250,252,0.65))"
+                      ? "rgba(11, 11, 10,0.04)"
                       : volunteer.rank === 3
-                        ? "linear-gradient(90deg, rgba(180,83,9,0.16), rgba(255,247,237,0.62))"
+                        ? "rgba(212, 74, 18,0.05)"
                         : null;
 
                 const rowBorder =
                   volunteer.rank === 1
-                    ? "1.5px solid rgba(245,200,66,0.34)"
+                    ? "1.5px solid rgba(212, 74, 18,0.34)"
                     : volunteer.rank === 2
                       ? "1.5px solid rgba(156,163,175,0.28)"
                       : volunteer.rank === 3
                         ? "1.5px solid rgba(180,83,9,0.24)"
                         : volunteer.isYou
-                          ? "1.5px solid rgba(245,200,66,0.30)"
+                          ? "1.5px solid rgba(212, 74, 18,0.30)"
                           : "1.5px solid transparent";
 
                 return (
@@ -710,16 +715,16 @@ export default function LeaderboardPage() {
                   gap: 12,
                   alignItems: "center",
                   padding: "10px 10px",
-                  borderRadius: 10,
+                  borderRadius: 2,
                   background:
                     topThreeBackground ??
                     (volunteer.isYou
-                      ? "rgba(245,200,66,0.07)"
+                      ? "rgba(212, 74, 18,0.07)"
                       : index % 2 === 0
                         ? "transparent"
                         : "rgba(0,0,0,0.015)"),
                   border: rowBorder,
-                  boxShadow: topThreeBackground ? `0 10px 24px ${rankColors[volunteer.rank]}18` : "none",
+                  boxShadow: "none",
                   marginBottom: 3,
                   minWidth: 500,
                 }}
@@ -734,27 +739,27 @@ export default function LeaderboardPage() {
                         minWidth: 58,
                         height: 28,
                         padding: "0 10px",
-                        borderRadius: 999,
-                        background: `linear-gradient(135deg, ${rankColors[volunteer.rank] ?? "#9a8a60"}33, rgba(255,255,255,0.9))`,
+                        borderRadius: 2,
+                        background: "#F8F6F0",
                         color: "#1f1600",
                         fontSize: 10.5,
                         fontWeight: 700,
                         letterSpacing: "0.06em",
-                        boxShadow: `0 10px 20px ${rankColors[volunteer.rank] ?? "#9a8a60"}22`,
+                        boxShadow: "none",
                       }}
                     >
                       <MedalSymbol
-                        color={rankColors[volunteer.rank] ?? "#9a8a60"}
+                        color={rankColors[volunteer.rank] ?? "#8A8780"}
                         label={String(volunteer.rank)}
                       />
                     </span>
                   ) : (
                     <span
                       style={{
-                        fontFamily: "'Fraunces', Georgia, serif",
+                        fontFamily: "'Instrument Serif', serif",
                         fontSize: 14,
                         fontWeight: 700,
-                        color: rankColors[volunteer.rank] ?? "#9a8a60",
+                        color: rankColors[volunteer.rank] ?? "#8A8780",
                       }}
                     >
                       {volunteer.rank}
@@ -767,23 +772,23 @@ export default function LeaderboardPage() {
                     style={{
                       width: 34,
                       height: 34,
-                      borderRadius: 10,
+                      borderRadius: 2,
                       flexShrink: 0,
                       background: volunteer.isYou
-                        ? "#f5c842"
+                        ? "#D44A12"
                         : volunteer.rank <= 3
                           ? `${rankColors[volunteer.rank]}33`
-                          : "#f3f0e8",
+                          : "#F8F6F0",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       fontSize: 11,
                       fontWeight: 700,
                       color: volunteer.isYou
-                        ? "#1a1000"
+                        ? "#0B0B0A"
                         : volunteer.rank <= 3
                           ? rankColors[volunteer.rank]
-                          : "#5a4a20",
+                          : "#1A1917",
                       overflow: "hidden",
                     }}
                   >
@@ -801,14 +806,14 @@ export default function LeaderboardPage() {
                     )}
                   </div>
                   <div>
-                    <p style={{ fontSize: 13.5, fontWeight: 600, color: "#1a1600" }}>
+                    <p style={{ fontSize: 13.5, fontWeight: 600, color: "#0B0B0A" }}>
                       {volunteer.username}
                       {volunteer.isYou ? (
                         <span
                           style={{
                             fontSize: 10.5,
                             fontWeight: 400,
-                            color: "#9a8a60",
+                            color: "#8A8780",
                             marginLeft: 6,
                           }}
                         >
@@ -823,8 +828,8 @@ export default function LeaderboardPage() {
                   style={{
                     fontSize: 14,
                     fontWeight: 700,
-                    color: visibleMetrics.flyers ? "#1a1600" : "#8a7a50",
-                    fontFamily: "'Fraunces', Georgia, serif",
+                    color: visibleMetrics.flyers ? "#0B0B0A" : "#8A8780",
+                    fontFamily: "'Instrument Serif', serif",
                     opacity: visibleMetrics.flyers ? 1 : 0.62,
                   }}
                 >
@@ -835,8 +840,8 @@ export default function LeaderboardPage() {
                   style={{
                     fontSize: 14,
                     fontWeight: 700,
-                    color: visibleMetrics.scans ? "#7c3aed" : "#8a7a50",
-                    fontFamily: "'Fraunces', Georgia, serif",
+                    color: visibleMetrics.scans ? "#D44A12" : "#8A8780",
+                    fontFamily: "'Instrument Serif', serif",
                     opacity: visibleMetrics.scans ? 1 : 0.62,
                   }}
                 >
@@ -846,7 +851,7 @@ export default function LeaderboardPage() {
                 <span
                   style={{
                     fontSize: 13,
-                    color: visibleMetrics.hours ? "#5a4a20" : "#8a7a50",
+                    color: visibleMetrics.hours ? "#1A1917" : "#8A8780",
                     opacity: visibleMetrics.hours ? 1 : 0.62,
                   }}
                 >

@@ -140,7 +140,7 @@ export default function TrackerMap({
 
     const handleBackgroundClick = (event: mapboxgl.MapMouseEvent) => {
       const target = event.originalEvent.target as HTMLElement | null;
-      if (target?.closest(".lemontree-planned-marker")) {
+      if (target?.closest(".voluntiers-planned-marker")) {
         return;
       }
 
@@ -301,7 +301,7 @@ export default function TrackerMap({
     const endPoint = currentPoint ?? routeEndPoint;
     if (endPoint && (!currentPoint || normalizedRoutePoints.length > 1)) {
       endMarkerRef.current = new mapboxgl.Marker({
-        element: createTerminalMarkerElement("#6f8f2f", "#fffdf2", "E"),
+        element: createTerminalMarkerElement("#D44A12", "#F8F6F0", "E"),
         anchor: "center",
       })
         .setLngLat([endPoint.lng, endPoint.lat])
@@ -344,7 +344,7 @@ export default function TrackerMap({
     plannedMarkersRef.current.forEach((marker) => marker.remove());
     plannedMarkersRef.current = plannedItems.map((item) => {
       const element = document.createElement("div");
-      element.className = "lemontree-planned-marker";
+      element.className = "voluntiers-planned-marker";
       element.style.width = "36px";
       element.style.height = "50px";
       element.style.backgroundRepeat = "no-repeat";
@@ -353,7 +353,7 @@ export default function TrackerMap({
       element.style.filter =
         item.itemType === "printer"
           ? "drop-shadow(0 14px 22px rgba(51,65,85,0.22))"
-          : "drop-shadow(0 14px 22px rgba(37,99,235,0.24))";
+          : "drop-shadow(0 14px 22px rgba(212, 74, 18,0.24))";
       element.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(
         getPlannedPinSvg(item.itemType),
       )}")`;
@@ -394,11 +394,11 @@ export default function TrackerMap({
       style={{
         position: "relative",
         height,
-        borderRadius: 24,
+        borderRadius: 2,
         overflow: "hidden",
-        background: "linear-gradient(160deg, #efe7cd 0%, #f8f3e3 100%)",
-        border: "1px solid rgba(190,155,70,0.18)",
-        boxShadow: "0 18px 38px rgba(190,155,70,0.14)",
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10,0.18)",
+        boxShadow: "none",
       }}
     >
       <div ref={mapContainerRef} style={{ position: "absolute", inset: 0 }} />
@@ -431,7 +431,7 @@ export default function TrackerMap({
           style={{
             position: "absolute",
             inset: 16,
-            borderRadius: 16,
+            borderRadius: 2,
             background: "rgba(26,18,0,0.78)",
             color: "#f8f1d8",
             display: "flex",
@@ -460,19 +460,19 @@ function getPlannedPinSvg(itemType: SavedRouteItem["itemType"]) {
   if (itemType === "printer") {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="50" viewBox="0 0 36 50" fill="none">
-        <path d="M18 48C18 48 31 31.7 31 19C31 10.7 25.3 4 18 4C10.7 4 5 10.7 5 19C5 31.7 18 48 18 48Z" fill="#F8FAFC" stroke="#475569" stroke-width="3"/>
-        <circle cx="18" cy="19" r="8.5" fill="#F8FAFC" stroke="#475569" stroke-width="2"/>
-        <path d="M14 17V13.5H22V17" stroke="#334155" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M14 22H12.8C11.8 22 11 21.2 11 20.2V17.8C11 16.8 11.8 16 12.8 16H23.2C24.2 16 25 16.8 25 17.8V20.2C25 21.2 24.2 22 23.2 22H22" stroke="#334155" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="14" y="20.5" width="8" height="5.5" rx="0.8" stroke="#334155" stroke-width="1.8"/>
+        <path d="M18 48C18 48 31 31.7 31 19C31 10.7 25.3 4 18 4C10.7 4 5 10.7 5 19C5 31.7 18 48 18 48Z" fill="#F8F6F0" stroke="#8A8780" stroke-width="3"/>
+        <circle cx="18" cy="19" r="8.5" fill="#F8F6F0" stroke="#8A8780" stroke-width="2"/>
+        <path d="M14 17V13.5H22V17" stroke="#1A1917" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 22H12.8C11.8 22 11 21.2 11 20.2V17.8C11 16.8 11.8 16 12.8 16H23.2C24.2 16 25 16.8 25 17.8V20.2C25 21.2 24.2 22 23.2 22H22" stroke="#1A1917" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="14" y="20.5" width="8" height="5.5" rx="0.8" stroke="#1A1917" stroke-width="1.8"/>
       </svg>
     `;
   }
 
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="50" viewBox="0 0 36 50" fill="none">
-      <path d="M18 48C18 48 31 31.7 31 19C31 10.7 25.3 4 18 4C10.7 4 5 10.7 5 19C5 31.7 18 48 18 48Z" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
-      <circle cx="18" cy="19" r="9" fill="#DBEAFE" stroke="#60A5FA" stroke-width="2"/>
+      <path d="M18 48C18 48 31 31.7 31 19C31 10.7 25.3 4 18 4C10.7 4 5 10.7 5 19C5 31.7 18 48 18 48Z" fill="#FFFFFF" stroke="#D64B14" stroke-width="3"/>
+      <circle cx="18" cy="19" r="9" fill="#EBE7DE" stroke="#60A5FA" stroke-width="2"/>
       <circle cx="18" cy="19" r="5.5" fill="#60A5FA"/>
     </svg>
   `;
@@ -570,8 +570,8 @@ async function captureRouteSnapshot({
       context,
       snapshotMap,
       currentPoint ?? routePoints[routePoints.length - 1],
-      "#6f8f2f",
-      "#fffdf2",
+      "#D44A12",
+      "#F8F6F0",
       "E",
     );
 
@@ -628,7 +628,7 @@ function drawStopMarkers(
     context.fillStyle = "#5d8c2a";
     context.fill();
     context.lineWidth = 3;
-    context.strokeStyle = "#fff8d6";
+    context.strokeStyle = "#F8F6F0";
     context.stroke();
     context.restore();
   });
@@ -654,7 +654,7 @@ function drawTerminalMarker(
   context.fillStyle = fillColor;
   context.fill();
   context.lineWidth = 4;
-  context.strokeStyle = "#fffdf2";
+  context.strokeStyle = "#F8F6F0";
   context.stroke();
   context.fillStyle = textColor;
   context.font = "700 11px sans-serif";
@@ -692,7 +692,7 @@ function createTerminalMarkerElement(fillColor: string, textColor: string, label
   element.style.height = "28px";
   element.style.borderRadius = "999px";
   element.style.background = fillColor;
-  element.style.border = "3px solid #fffdf2";
+  element.style.border = "3px solid #F8F6F0";
   element.style.color = textColor;
   element.style.display = "flex";
   element.style.alignItems = "center";

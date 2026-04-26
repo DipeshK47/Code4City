@@ -35,10 +35,10 @@ export default function CommunityComposerShell({
             alignItems: "center",
             gap: 8,
             width: "fit-content",
-            borderRadius: 999,
-            border: "1px solid rgba(190,155,70,0.16)",
-            background: "#fffdf7",
-            color: "#5f502d",
+            borderRadius: 2,
+            border: "1px solid rgba(11, 11, 10,0.16)",
+            background: "#F8F6F0",
+            color: "#1A1917",
             padding: "10px 14px",
             fontSize: 12.5,
             fontWeight: 800,
@@ -52,11 +52,11 @@ export default function CommunityComposerShell({
         <div
           className="anim-fade-up"
           style={{
-            borderRadius: 28,
-            border: "1px solid rgba(190,155,70,0.14)",
+            borderRadius: 2,
+            border: "1px solid rgba(11, 11, 10,0.14)",
             background:
-              "radial-gradient(circle at top left, rgba(245,200,66,0.16) 0%, transparent 34%), radial-gradient(circle at bottom right, rgba(245,200,66,0.10) 0%, transparent 32%), rgba(255,251,243,0.96)",
-            boxShadow: "0 24px 48px rgba(31,43,18,0.08)",
+              "#F8F6F0",
+            boxShadow: "none",
             padding: "24px 24px 22px",
           }}
         >
@@ -66,8 +66,8 @@ export default function CommunityComposerShell({
               alignItems: "center",
               gap: 8,
               padding: "6px 10px",
-              borderRadius: 999,
-              background: "rgba(245,200,66,0.15)",
+              borderRadius: 2,
+              background: "rgba(212, 74, 18,0.15)",
               color: "#7a5200",
               fontSize: 11,
               fontWeight: 800,
@@ -80,10 +80,10 @@ export default function CommunityComposerShell({
           <h1
             style={{
               margin: "12px 0 0",
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "'Instrument Serif', serif",
               fontSize: "clamp(2rem, 4vw, 2.25rem)",
               lineHeight: 1.02,
-              letterSpacing: "-0.05em",
+              letterSpacing: 0,
               color: "#18140b",
             }}
           >
@@ -95,7 +95,7 @@ export default function CommunityComposerShell({
               maxWidth: 620,
               fontSize: 14,
               lineHeight: 1.7,
-              color: "#5f502d",
+              color: "#1A1917",
             }}
           >
             {subtitle}
@@ -104,9 +104,9 @@ export default function CommunityComposerShell({
           <div
             style={{
               marginTop: 20,
-              borderRadius: 24,
+              borderRadius: 2,
               background: "rgba(255,255,255,0.9)",
-              border: "1px solid rgba(190,155,70,0.12)",
+              border: "1px solid rgba(11, 11, 10,0.12)",
               padding: "20px 18px 18px",
             }}
           >

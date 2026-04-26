@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getRecentActivity, formatActivityTime, type RecentActivityItem } from "@/lib/activity-api";
 
-const COLORS = ["#f5c842", "#22c55e", "#8b5cf6", "#f97316", "#06b6d4"];
+const COLORS = ["#D44A12", "#22c55e", "#8b5cf6", "#f97316", "#06b6d4"];
 
 function getInitials(name: string) {
   if (!name?.trim()) return "?";
@@ -36,7 +36,7 @@ export default function RecentActivity() {
   if (loading) {
     return (
       <div style={{ padding: "12px 0" }}>
-        <p style={{ fontSize: 13, color: "#9a8a60" }}>Loading recent activity...</p>
+        <p style={{ fontSize: 13, color: "#8A8780" }}>Loading recent activity...</p>
       </div>
     );
   }
@@ -52,7 +52,7 @@ export default function RecentActivity() {
   if (items.length === 0) {
     return (
       <div style={{ padding: "12px 0" }}>
-        <p style={{ fontSize: 13, color: "#9a8a60" }}>No recent activity yet. Be the first to complete a route!</p>
+        <p style={{ fontSize: 13, color: "#8A8780" }}>No recent activity yet. Be the first to complete a route!</p>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default function RecentActivity() {
             style={{
               width: 34,
               height: 34,
-              borderRadius: 10,
+              borderRadius: 2,
               background: (COLORS[i % COLORS.length] ?? COLORS[0]) + "28",
               display: "flex",
               alignItems: "center",
@@ -74,15 +74,15 @@ export default function RecentActivity() {
               fontWeight: 700,
               color: COLORS[i % COLORS.length] ?? COLORS[0],
               flexShrink: 0,
-              letterSpacing: "-0.3px",
+              letterSpacing: 0,
             }}
           >
             {getInitials(a.username)}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 12.5, fontWeight: 600, color: "#1a1600", lineHeight: 1.1 }}>{a.username}</p>
-            <p style={{ fontSize: 12, color: "#5a4a20", marginTop: 2, lineHeight: 1.35 }}>{a.action}</p>
-            <p style={{ fontSize: 11, color: "#b0a070", marginTop: 2 }}>{formatActivityTime(a.time)}</p>
+            <p style={{ fontSize: 12.5, fontWeight: 600, color: "#0B0B0A", lineHeight: 1.1 }}>{a.username}</p>
+            <p style={{ fontSize: 12, color: "#1A1917", marginTop: 2, lineHeight: 1.35 }}>{a.action}</p>
+            <p style={{ fontSize: 11, color: "#B8B3A7", marginTop: 2 }}>{formatActivityTime(a.time)}</p>
           </div>
         </div>
       ))}

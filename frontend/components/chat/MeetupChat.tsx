@@ -91,9 +91,9 @@ export default function MeetupChat({
   return (
     <div
       style={{
-        borderRadius: 18,
-        border: "1px solid rgba(190,155,70,0.18)",
-        background: "#fffdf8",
+        borderRadius: 2,
+        border: "1px solid rgba(11, 11, 10,0.18)",
+        background: "#F8F6F0",
         overflow: "hidden",
       }}
     >
@@ -106,11 +106,11 @@ export default function MeetupChat({
           display: "grid",
           gap: 10,
           background:
-            "linear-gradient(180deg, rgba(255,253,248,1) 0%, rgba(248,250,241,1) 100%)",
+            "#F8F6F0",
         }}
       >
         {isLoading ? (
-          <p style={{ margin: 0, fontSize: 12.5, color: "#8a7a50" }}>Loading chat...</p>
+          <p style={{ margin: 0, fontSize: 12.5, color: "#8A8780" }}>Loading chat...</p>
         ) : messages.length > 0 ? (
           messages.map((message) => {
             const isMine = currentUserId === message.userId;
@@ -120,11 +120,11 @@ export default function MeetupChat({
                 style={{
                   justifySelf: isMine ? "end" : "start",
                   maxWidth: "78%",
-                  borderRadius: 18,
+                  borderRadius: 2,
                   padding: "11px 13px",
-                  background: isMine ? "rgba(217,249,157,0.9)" : "#ffffff",
-                  border: "1px solid rgba(190,155,70,0.16)",
-                  boxShadow: "0 8px 16px rgba(31,43,18,0.05)",
+                  background: isMine ? "rgba(217,249,157,0.9)" : "#F8F6F0",
+                  border: "1px solid rgba(11, 11, 10,0.16)",
+                  boxShadow: "none",
                 }}
               >
                 <div style={{ fontSize: 11, fontWeight: 800, color: "#4b5563", marginBottom: 4 }}>
@@ -140,7 +140,7 @@ export default function MeetupChat({
             );
           })
         ) : (
-          <p style={{ margin: 0, fontSize: 12.5, color: "#8a7a50" }}>
+          <p style={{ margin: 0, fontSize: 12.5, color: "#8A8780" }}>
             No messages yet. Set the tone for the meetup.
           </p>
         )}
@@ -148,11 +148,11 @@ export default function MeetupChat({
       </div>
       <div
         style={{
-          borderTop: "1px solid rgba(190,155,70,0.16)",
+          borderTop: "1px solid rgba(11, 11, 10,0.16)",
           padding: 14,
           display: "grid",
           gap: 10,
-          background: "#fffef9",
+          background: "#F8F6F0",
         }}
       >
         <textarea
@@ -162,9 +162,9 @@ export default function MeetupChat({
           placeholder="Send a meetup message"
           style={{
             width: "100%",
-            borderRadius: 14,
-            border: "1px solid rgba(190,155,70,0.22)",
-            background: "#ffffff",
+            borderRadius: 2,
+            border: "1px solid rgba(11, 11, 10,0.22)",
+            background: "#F8F6F0",
             padding: "12px 14px",
             fontSize: 13,
             resize: "vertical",
@@ -190,10 +190,10 @@ export default function MeetupChat({
 }
 
 const emptyStateStyle: React.CSSProperties = {
-  borderRadius: 18,
-  border: "1px dashed rgba(190,155,70,0.26)",
+  borderRadius: 2,
+  border: "1px dashed rgba(11, 11, 10,0.26)",
   padding: "24px 18px",
   textAlign: "center",
-  color: "#8a7a50",
+  color: "#8A8780",
   background: "rgba(255,255,255,0.72)",
 };

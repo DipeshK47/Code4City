@@ -55,8 +55,8 @@ export default function CreatePostForm({
         <p style={{ margin: 0, fontSize: 12, color: "#b91c1c" }}>{error}</p>
       ) : null}
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-        <p style={{ margin: 0, fontSize: 11.5, color: "#8a7a50", lineHeight: 1.5 }}>
-          Posts can link to meetups, flyer plans, volunteer tips, or neighborhood updates.
+        <p style={{ margin: 0, fontSize: 11.5, color: "#8A8780", lineHeight: 1.5 }}>
+          Posts can link to meetups, mission plans, volunteer tips, or neighborhood updates.
         </p>
         <button
           type="submit"
@@ -76,9 +76,9 @@ export default function CreatePostForm({
 
 export const inputStyle: React.CSSProperties = {
   width: "100%",
-  borderRadius: 10,
+  borderRadius: 2,
   border: "1px solid var(--border-subtle)",
-  background: "#fff",
+  background: "#F8F6F0",
   padding: "12px 14px",
   outline: "none",
   fontSize: 13,
@@ -86,12 +86,12 @@ export const inputStyle: React.CSSProperties = {
 };
 
 export const primaryButtonStyle: React.CSSProperties = {
-  borderRadius: 8,
-  border: "1px solid rgba(245,200,66,0.24)",
+  borderRadius: 2,
+  border: "1px solid rgba(212, 74, 18,0.24)",
   background: "var(--gradient-btn-primary)",
-  color: "#ffffff",
+  color: "#F8F6F0",
   padding: "10px 16px",
   fontSize: 12.5,
   fontWeight: 700,
-  boxShadow: "var(--shadow-card)",
+  boxShadow: "none",
 };

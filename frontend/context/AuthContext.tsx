@@ -4,8 +4,8 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useRouter } from "next/navigation";
 import * as authApi from "@/lib/auth-api";
 
-const TOKEN_KEY = "lemontree_token";
-const GUEST_KEY = "lemontree_guest";
+const TOKEN_KEY = "voluntiers_token";
+const GUEST_KEY = "voluntiers_guest";
 
 type User = authApi.User;
 

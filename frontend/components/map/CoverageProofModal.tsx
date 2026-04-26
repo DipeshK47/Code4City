@@ -172,8 +172,8 @@ export default function CoverageProofModal({
           borderRadius: isMobile ? 20 : 24,
           border: "1px solid rgba(74, 222, 128, 0.18)",
           background:
-            "linear-gradient(180deg, rgba(20, 28, 21, 0.98) 0%, rgba(13, 19, 15, 0.98) 100%)",
-          boxShadow: "0 28px 60px rgba(0, 0, 0, 0.36)",
+            "#0B0B0A",
+          boxShadow: "none",
           color: "#effff3",
           overflow: "hidden",
           display: "flex",
@@ -206,7 +206,7 @@ export default function CoverageProofModal({
               {hotspot.name}
             </h3>
             <p style={{ margin: 0, fontSize: isMobile ? 12 : 13, lineHeight: 1.5, color: "rgba(239,255,243,0.72)" }}>
-              Upload a quick photo of the flyer placement. On mobile, the camera option can open
+              Upload a quick photo of the outreach placement. On mobile, the camera option can open
               your rear camera directly.
             </p>
           </div>
@@ -222,7 +222,7 @@ export default function CoverageProofModal({
               width: 34,
               height: 34,
               flexShrink: 0,
-              borderRadius: 999,
+              borderRadius: 2,
               border: "1px solid rgba(255,255,255,0.12)",
               background: "rgba(255,255,255,0.06)",
               color: "#effff3",
@@ -248,7 +248,7 @@ export default function CoverageProofModal({
         >
           <div
             style={{
-              borderRadius: 18,
+              borderRadius: 2,
               border: "1px solid rgba(255,255,255,0.08)",
               background: "rgba(255,255,255,0.03)",
               padding: 14,
@@ -306,7 +306,7 @@ export default function CoverageProofModal({
 
             <div
               style={{
-                borderRadius: 18,
+                borderRadius: 2,
                 border: "1px dashed rgba(134, 239, 172, 0.28)",
                 background: "rgba(22, 163, 74, 0.05)",
                 minHeight: isMobile ? 132 : 220,
@@ -363,7 +363,7 @@ export default function CoverageProofModal({
               style={{
                 width: "100%",
                 resize: "vertical",
-                borderRadius: 16,
+                borderRadius: 2,
                 border: "1px solid rgba(255,255,255,0.10)",
                 background: "rgba(255,255,255,0.04)",
                 color: "#effff3",
@@ -378,7 +378,7 @@ export default function CoverageProofModal({
           {errorMessage ? (
             <div
               style={{
-                borderRadius: 14,
+                borderRadius: 2,
                 padding: "10px 12px",
                 background: "rgba(127, 29, 29, 0.24)",
                 border: "1px solid rgba(248, 113, 113, 0.22)",
@@ -427,7 +427,7 @@ export default function CoverageProofModal({
 }
 
 const pickerButtonStyle: CSSProperties = {
-  borderRadius: 14,
+  borderRadius: 2,
   padding: "12px 14px",
   border: "1px solid rgba(74, 222, 128, 0.18)",
   background: "rgba(22, 163, 74, 0.08)",
@@ -438,7 +438,7 @@ const pickerButtonStyle: CSSProperties = {
 };
 
 const secondaryButtonStyle: CSSProperties = {
-  borderRadius: 14,
+  borderRadius: 2,
   padding: "11px 14px",
   border: "1px solid rgba(255,255,255,0.12)",
   background: "rgba(255,255,255,0.04)",
@@ -449,13 +449,13 @@ const secondaryButtonStyle: CSSProperties = {
 };
 
 const primaryButtonStyle: CSSProperties = {
-  borderRadius: 14,
+  borderRadius: 2,
   padding: "11px 16px",
   border: "none",
-  background: "linear-gradient(135deg, #4ade80 0%, #16a34a 100%)",
+  background: "#D44A12",
   color: "#052e16",
   fontSize: 12.5,
   fontWeight: 800,
   cursor: "pointer",
-  boxShadow: "0 14px 28px rgba(22, 163, 74, 0.24)",
+  boxShadow: "none",
 };

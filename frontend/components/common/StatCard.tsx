@@ -9,24 +9,24 @@ interface StatCardProps {
 export default function StatCard({ label, value, icon, iconBg, change }: StatCardProps) {
   return (
     <div style={{
-      background: "#ffffff",
-      border: "1px solid rgba(190,155,70,0.18)",
-      borderRadius: 16,
-      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+      background: "#F8F6F0",
+      border: "1px solid rgba(11, 11, 10, 0.16)",
+      borderRadius: 2,
+      boxShadow: "none",
       padding: "20px 22px",
     }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
-        <span style={{ fontSize: 12, color: "#8a7a50", fontWeight: 500 }}>{label}</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase" }}>{label}</span>
         {icon && (
-          <div style={{ width: 32, height: 32, borderRadius: 10, background: iconBg ?? "#fef3c7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 0, background: iconBg ?? "#EBE7DE", border: "1px solid rgba(11, 11, 10, 0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 500, color: "#D44A12", flexShrink: 0 }}>
             {icon}
           </div>
         )}
       </div>
-      <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 30, fontWeight: 700, color: "#1a1600", letterSpacing: "-1px", lineHeight: 1, marginBottom: 5 }}>
+      <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 46, fontWeight: 400, color: "#0B0B0A", letterSpacing: "-0.04em", lineHeight: 0.9, marginBottom: 8 }}>
         {value}
       </div>
-      {change && <p style={{ fontSize: 11.5, color: "#9a8a60" }}>{change}</p>}
+      {change && <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#8A8780", letterSpacing: "0.08em" }}>{change}</p>}
     </div>
   );
 }

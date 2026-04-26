@@ -37,7 +37,7 @@ const API_BASE_URL =
     "http://localhost:5001"
   ).replace(/\/$/, "");
 
-const TRACKER_SESSION_DRAFT_STORAGE_KEY = "lemontree.tracker.active-session";
+const TRACKER_SESSION_DRAFT_STORAGE_KEY = "voluntiers.tracker.active-session";
 
 interface TrackerSessionExperienceProps {
   token: string | null;
@@ -485,9 +485,9 @@ export default function TrackerSessionExperience({
                   style={{
                     maxWidth: "72%",
                     padding: "12px 14px",
-                    borderRadius: 18,
+                    borderRadius: 2,
                     background: "rgba(26,18,0,0.72)",
-                    color: "#fff8e8",
+                    color: "#F8F6F0",
                     backdropFilter: "blur(14px)",
                     pointerEvents: "auto",
                   }}
@@ -499,7 +499,7 @@ export default function TrackerSessionExperience({
                       fontWeight: 700,
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
-                      color: "rgba(245,200,66,0.76)",
+                      color: "rgba(212, 74, 18,0.76)",
                     }}
                   >
                     Route Tracker
@@ -520,9 +520,9 @@ export default function TrackerSessionExperience({
                     style={{
                       alignSelf: "flex-start",
                       padding: "10px 12px",
-                      borderRadius: 18,
+                      borderRadius: 2,
                       background: "rgba(255,248,232,0.14)",
-                      color: "#fff1c7",
+                      color: "#F8F6F0",
                       backdropFilter: "blur(12px)",
                       textAlign: "right",
                     }}
@@ -534,7 +534,7 @@ export default function TrackerSessionExperience({
                         fontWeight: 700,
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        color: "rgba(245,200,66,0.72)",
+                        color: "rgba(212, 74, 18,0.72)",
                       }}
                     >
                       Planned
@@ -548,11 +548,11 @@ export default function TrackerSessionExperience({
                     onClick={onExit}
                     style={{
                       alignSelf: "flex-start",
-                      borderRadius: 999,
+                      borderRadius: 2,
                       padding: "10px 14px",
                       background: "rgba(26,18,0,0.72)",
-                      color: "#fff8e8",
-                      border: "1px solid rgba(245,200,66,0.16)",
+                      color: "#F8F6F0",
+                      border: "1px solid rgba(212, 74, 18,0.16)",
                       backdropFilter: "blur(14px)",
                       fontSize: 12,
                       fontWeight: 800,
@@ -579,9 +579,9 @@ export default function TrackerSessionExperience({
                 <div
                   style={{
                     padding: "10px 14px",
-                    borderRadius: 999,
+                    borderRadius: 2,
                     background: "rgba(26,18,0,0.74)",
-                    color: "#fff8e8",
+                    color: "#F8F6F0",
                     fontSize: 12.5,
                     fontWeight: 700,
                     backdropFilter: "blur(12px)",
@@ -615,12 +615,12 @@ export default function TrackerSessionExperience({
               flex: 1,
               minWidth: 0,
               padding: "10px 12px",
-              borderRadius: 18,
+              borderRadius: 2,
               background: "rgba(26,18,0,0.76)",
-              color: "#fff8e8",
+              color: "#F8F6F0",
               backdropFilter: "blur(14px)",
               pointerEvents: "auto",
-              boxShadow: "0 16px 32px rgba(17,14,6,0.18)",
+              boxShadow: "none",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -631,7 +631,7 @@ export default function TrackerSessionExperience({
                   fontWeight: 700,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
-                  color: "rgba(245,200,66,0.76)",
+                  color: "rgba(212, 74, 18,0.76)",
                 }}
               >
                 Route Tracker
@@ -639,9 +639,9 @@ export default function TrackerSessionExperience({
               <span
                 style={{
                   padding: "4px 8px",
-                  borderRadius: 999,
+                  borderRadius: 2,
                   background: "rgba(255,248,232,0.12)",
-                  color: "#fff1c7",
+                  color: "#F8F6F0",
                   fontSize: 10.5,
                   fontWeight: 700,
                 }}
@@ -668,15 +668,15 @@ export default function TrackerSessionExperience({
               pointerEvents: "auto",
               flexShrink: 0,
               minHeight: 48,
-              borderRadius: 18,
+              borderRadius: 2,
               padding: "0 14px",
               background: "rgba(26,18,0,0.82)",
-              color: "#fff8e8",
-              border: "1px solid rgba(245,200,66,0.16)",
+              color: "#F8F6F0",
+              border: "1px solid rgba(212, 74, 18,0.16)",
               backdropFilter: "blur(14px)",
               fontSize: 12,
               fontWeight: 800,
-              boxShadow: "0 16px 32px rgba(17,14,6,0.18)",
+              boxShadow: "none",
             }}
           >
             Back
@@ -703,18 +703,18 @@ export default function TrackerSessionExperience({
               borderRadius: 22,
               padding: "16px 16px 14px",
               background: "rgba(26,22,11,0.92)",
-              border: "1px solid rgba(245,200,66,0.14)",
-              color: "#fff7de",
+              border: "1px solid rgba(212, 74, 18,0.14)",
+              color: "#F8F6F0",
               backdropFilter: "blur(18px)",
-              boxShadow: "0 22px 40px rgba(17,14,6,0.24)",
+              boxShadow: "none",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
               <div>
-                <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,200,66,0.56)", marginBottom: 6 }}>
+                <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(212, 74, 18,0.56)", marginBottom: 6 }}>
                   Saved Route Stop
                 </p>
-                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: "-0.5px" }}>
+                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: 0 }}>
                   {selectedPlannedItem.name}
                 </h3>
               </div>
@@ -724,9 +724,9 @@ export default function TrackerSessionExperience({
                 style={{
                   width: 30,
                   height: 30,
-                  borderRadius: 999,
+                  borderRadius: 2,
                   background: "rgba(255,255,255,0.08)",
-                  color: "#fff7de",
+                  color: "#F8F6F0",
                   fontSize: 16,
                   lineHeight: 1,
                 }}
@@ -745,7 +745,7 @@ export default function TrackerSessionExperience({
               <span
                 style={{
                   padding: "6px 10px",
-                  borderRadius: 999,
+                  borderRadius: 2,
                   background:
                     selectedPlannedItem.itemType === "printer"
                       ? "rgba(148,163,184,0.18)"
@@ -762,7 +762,7 @@ export default function TrackerSessionExperience({
                 <span
                   style={{
                     padding: "6px 10px",
-                    borderRadius: 999,
+                    borderRadius: 2,
                     background: "rgba(245,158,11,0.16)",
                     color: "#fcd34d",
                     fontSize: 11.5,
@@ -793,10 +793,10 @@ export default function TrackerSessionExperience({
                 padding: "12px 14px",
                 background: "rgba(255,255,255,0.08)",
                 border: "1px solid rgba(255,255,255,0.10)",
-                color: "#fff7de",
+                color: "#F8F6F0",
                 fontSize: 12.5,
                 fontWeight: 800,
-                boxShadow: "0 10px 22px rgba(15,23,42,0.18)",
+                boxShadow: "none",
               }}
             >
               View on Maps
@@ -853,12 +853,12 @@ export default function TrackerSessionExperience({
                 maxHeight: "min(48dvh, 460px)",
                 overflowY: "auto",
                 pointerEvents: "auto",
-                borderRadius: 24,
+                borderRadius: 2,
                 padding: 14,
                 background: "rgba(255,252,244,0.97)",
-                border: "1px solid rgba(190,155,70,0.18)",
+                border: "1px solid rgba(11, 11, 10,0.18)",
                 backdropFilter: "blur(18px)",
-                boxShadow: "0 18px 40px rgba(32,24,8,0.16)",
+                boxShadow: "none",
                 display: "grid",
                 gap: 12,
               }}
@@ -892,12 +892,12 @@ export default function TrackerSessionExperience({
               pointerEvents: "auto",
               minWidth: 156,
               minHeight: 50,
-              borderRadius: 999,
+              borderRadius: 2,
               padding: "11px 20px",
-              background: "linear-gradient(135deg, rgba(26,18,0,0.92) 0%, rgba(58,39,0,0.96) 100%)",
-              border: "1px solid rgba(245,200,66,0.24)",
-              color: "#fff7de",
-              boxShadow: "0 16px 34px rgba(26,16,0,0.22)",
+              background: "#0B0B0A",
+              border: "1px solid rgba(212, 74, 18,0.24)",
+              color: "#F8F6F0",
+              boxShadow: "none",
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
@@ -924,12 +924,12 @@ export default function TrackerSessionExperience({
         >
           <div
             style={{
-              borderRadius: 24,
+              borderRadius: 2,
               padding: 18,
               background: "rgba(255,252,244,0.96)",
-              border: "1px solid rgba(190,155,70,0.18)",
+              border: "1px solid rgba(11, 11, 10,0.18)",
               backdropFilter: "blur(18px)",
-              boxShadow: "0 18px 40px rgba(32,24,8,0.12)",
+              boxShadow: "none",
               display: "grid",
               gap: 12,
             }}
@@ -975,11 +975,11 @@ function OverlayPill({
         padding: compact ? "9px 10px" : "10px 12px",
         borderRadius: compact ? 16 : 18,
         background: compact ? "rgba(255,248,232,0.92)" : "rgba(255,248,232,0.16)",
-        color: compact ? "#2f2410" : "#fff8e8",
+        color: compact ? "#2f2410" : "#F8F6F0",
         backdropFilter: compact ? "blur(16px)" : "blur(12px)",
         minWidth: compact ? 0 : 82,
-        border: compact ? "1px solid rgba(245,200,66,0.22)" : "none",
-        boxShadow: compact ? "0 12px 28px rgba(17,14,6,0.16)" : "none",
+        border: compact ? "1px solid rgba(212, 74, 18,0.22)" : "none",
+        boxShadow: "none",
       }}
     >
       <p
@@ -989,7 +989,7 @@ function OverlayPill({
           fontWeight: 700,
           letterSpacing: "0.08em",
           textTransform: "uppercase",
-          color: compact ? "#a36f00" : "rgba(245,200,66,0.72)",
+          color: compact ? "#a36f00" : "rgba(212, 74, 18,0.72)",
         }}
       >
         {label}

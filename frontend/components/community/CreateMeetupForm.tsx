@@ -189,10 +189,10 @@ export default function CreateMeetupForm({
               left: 0,
               right: 0,
               zIndex: 10,
-              borderRadius: 16,
-              background: "#fffef8",
-              border: "1px solid rgba(190,155,70,0.18)",
-              boxShadow: "0 18px 32px rgba(31,43,18,0.12)",
+              borderRadius: 2,
+              background: "#F8F6F0",
+              border: "1px solid rgba(11, 11, 10,0.18)",
+              boxShadow: "none",
               overflow: "hidden",
             }}
           >
@@ -206,13 +206,13 @@ export default function CreateMeetupForm({
                   textAlign: "left",
                   padding: "12px 14px",
                   background: "transparent",
-                  borderBottom: "1px solid rgba(190,155,70,0.12)",
+                  borderBottom: "1px solid rgba(11, 11, 10,0.12)",
                 }}
               >
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1f2b12" }}>
                   {suggestion.main}
                 </div>
-                <div style={{ fontSize: 11.5, color: "#8a7a50", marginTop: 3 }}>
+                <div style={{ fontSize: 11.5, color: "#8A8780", marginTop: 3 }}>
                   {suggestion.secondary || suggestion.label}
                 </div>
               </button>
@@ -223,12 +223,12 @@ export default function CreateMeetupForm({
       {selectedPlace ? (
         <div
           style={{
-            borderRadius: 14,
+            borderRadius: 2,
             border: "1px solid rgba(34,197,94,0.18)",
             background: "rgba(236,253,245,0.82)",
             padding: "10px 12px",
             fontSize: 12,
-            color: "#166534",
+            color: "#D44A12",
           }}
         >
           Map location locked: {selectedPlace.label}
@@ -272,7 +272,7 @@ export default function CreateMeetupForm({
           alignItems: "center",
           gap: 10,
           fontSize: 12.5,
-          color: "#5f502d",
+          color: "#1A1917",
         }}
       >
         <input
@@ -287,9 +287,9 @@ export default function CreateMeetupForm({
           style={{
             display: "grid",
             gap: 10,
-            borderRadius: 16,
-            background: "#fffaf0",
-            border: "1px solid rgba(190,155,70,0.18)",
+            borderRadius: 2,
+            background: "#F8F6F0",
+            border: "1px solid rgba(11, 11, 10,0.18)",
             padding: 14,
           }}
         >
@@ -312,7 +312,7 @@ export default function CreateMeetupForm({
         <p style={{ margin: 0, fontSize: 12, color: "#b91c1c" }}>{error}</p>
       ) : null}
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-        <p style={{ margin: 0, fontSize: 11.5, color: "#8a7a50", lineHeight: 1.5 }}>
+        <p style={{ margin: 0, fontSize: 11.5, color: "#8A8780", lineHeight: 1.5 }}>
           {isLoadingPlaces
             ? "Searching places..."
             : "Meetups appear in the community feed and on the map layer after creation."}

@@ -1,15 +1,15 @@
-# Lemontree Volunteer Hub
+# Volun-Tiers
 
-Lemontree Volunteer Hub is a hackathon MVP for coordinating flyer-based outreach that helps neighbors find free food resources. The product combines volunteer onboarding, hotspot discovery, route tracking, nearby printing support, and food-need-aware map prioritization.
+Volun-Tiers is a hackathon MVP for coordinating resource-card-based outreach that helps neighbors find free food resources. The product combines volunteer onboarding, hotspot discovery, route tracking, nearby printing support, and food-need-aware map prioritization.
 
-This README is anchored to the product definition in [PRD.md](/d:/sharvin1/Hackathons/Track-A---Team-2/PRD.md). Where the current build differs from the intended product, the gaps are called out below so the team can focus on demo readiness.
+This README is anchored to the product definition in [PRD.md](PRD.md). Where the current build differs from the intended product, the gaps are called out below so the team can focus on demo readiness.
 
 ## What the product does
 
 - Helps volunteers find high-priority outreach locations on a map.
-- Guides new volunteers through onboarding and the flyering workflow.
+- Guides new volunteers through onboarding and the outreach workflow.
 - Tracks volunteer walking sessions and stop points.
-- Helps volunteers find nearby print shops for flyer production.
+- Helps volunteers find nearby print shops for outreach card production.
 - Surfaces higher-need regions so outreach effort can be directed intentionally.
 
 ## Current implementation snapshot
@@ -76,7 +76,7 @@ For a fresh Supabase project, follow [SUPABASE_SETUP.md](SUPABASE_SETUP.md).
 
 ### Backend
 
-See [`backend/.env.example`](/d:/sharvin1/Hackathons/Track-A---Team-2/backend/.env.example).
+See [`backend/.env.example`](backend/.env.example).
 
 Required for auth:
 
@@ -112,9 +112,9 @@ The intended demo path from the current product direction is:
 
 ## Known product and engineering gaps
 
-- Auth routes exist in the backend but are not currently mounted in [`backend/src/app.js`](/d:/sharvin1/Hackathons/Track-A---Team-2/backend/src/app.js).
-- Session routes exist in the backend but are not currently mounted in [`backend/src/app.js`](/d:/sharvin1/Hackathons/Track-A---Team-2/backend/src/app.js).
-- The frontend references `/getstarted`, while the repo currently contains [`frontend/app/guide/page.tsx`](/d:/sharvin1/Hackathons/Track-A---Team-2/frontend/app/guide/page.tsx) rather than a `/getstarted` route.
+- Auth routes exist in the backend but are not currently mounted in [`backend/src/app.js`](backend/src/app.js).
+- Session routes exist in the backend but are not currently mounted in [`backend/src/app.js`](backend/src/app.js).
+- The frontend references `/getstarted`, while the repo currently contains [`frontend/app/guide/page.tsx`](frontend/app/guide/page.tsx) rather than a `/getstarted` route.
 - The frontend mixes `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_API_BASE_URL`.
 - The tracker references backend session APIs that may not respond until session routes are wired.
 - The onboarding/auth flow depends on backend auth plus a configured database.
@@ -123,7 +123,7 @@ The intended demo path from the current product direction is:
 
 Ordered by severity and urgency for an immediate working demo:
 
-1. `Critical`: Mount `authRoutes` and `sessionRoutes` in [`backend/src/app.js`](/d:/sharvin1/Hackathons/Track-A---Team-2/backend/src/app.js).
+1. `Critical`: Mount `authRoutes` and `sessionRoutes` in [`backend/src/app.js`](backend/src/app.js).
 2. `Critical`: Fix the get-started route mismatch by either creating `/getstarted` or changing all links back to `/guide`.
 3. `Critical`: Verify the auth flow end to end with a real `DATABASE_URL` and `JWT_SECRET`.
 4. `High`: Standardize the frontend API base environment variable naming and update all callers.
@@ -136,4 +136,4 @@ Ordered by severity and urgency for an immediate working demo:
 
 ## Product definition
 
-For scope, goals, users, current status, and demo priorities, see [PRD.md](/d:/sharvin1/Hackathons/Track-A---Team-2/PRD.md).
+For scope, goals, users, current status, and demo priorities, see [PRD.md](PRD.md).

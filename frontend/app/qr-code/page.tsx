@@ -91,16 +91,16 @@ export default function QrCodePage() {
     <PageContainer>
       <SectionCard
         title="Volunteer QR Code"
-        subtitle="Manual QR page for flyer scan tracking."
+        subtitle="Manual QR page for outreach scan tracking."
       >
         {!loading && (!token || !user || user.id === 0 || isGuest) ? (
-          <p style={{ fontSize: 13, color: "#8a7a50", lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: "#8A8780", lineHeight: 1.6 }}>
             Sign in with a full account to generate your personal QR code.
           </p>
         ) : null}
 
         {isLoadingQr ? (
-          <p style={{ fontSize: 13, color: "#8a7a50" }}>Generating your QR code...</p>
+          <p style={{ fontSize: 13, color: "#8A8780" }}>Generating your QR code...</p>
         ) : null}
 
         {error ? (
@@ -117,13 +117,13 @@ export default function QrCodePage() {
           >
             <img
               src={qrImageUrl}
-              alt="Your Lemontree QR code"
+              alt="Your Volun-Tiers QR code"
               style={{
                 width: 260,
                 height: 260,
-                borderRadius: 16,
-                background: "#fff",
-                border: "1px solid rgba(190,155,70,0.18)",
+                borderRadius: 2,
+                background: "#F8F6F0",
+                border: "1px solid rgba(11, 11, 10,0.10)",
               }}
             />
             <p
@@ -131,13 +131,13 @@ export default function QrCodePage() {
                 maxWidth: 480,
                 textAlign: "center",
                 fontSize: 12,
-                color: "#7a6a40",
+                color: "#8A8780",
                 wordBreak: "break-all",
               }}
             >
               {qrUrl}
             </p>
-            <p style={{ fontSize: 13, color: "#6b4f1f", textAlign: "center" }}>
+            <p style={{ fontSize: 13, color: "#8A8780", textAlign: "center" }}>
               Anyone who scans this code will count as a scan on your volunteer stats.
             </p>
           </div>

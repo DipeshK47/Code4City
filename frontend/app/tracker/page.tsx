@@ -40,7 +40,7 @@ const API_BASE_URL =
     "http://localhost:5001"
   ).replace(/\/$/, "");
 
-const TRACKER_SESSION_DRAFT_STORAGE_KEY = "lemontree.tracker.active-session";
+const TRACKER_SESSION_DRAFT_STORAGE_KEY = "voluntiers.tracker.active-session";
 
 export default function TrackerPage() {
   const { token, isGuest } = useAuth();
@@ -383,12 +383,12 @@ export default function TrackerPage() {
       <div style={{ display: "grid", gap: 16, maxWidth: 980, margin: "0 auto" }}>
         <div
           style={{
-            borderRadius: 28,
-            background: "linear-gradient(180deg, #201300 0%, #2b1800 100%)",
+            borderRadius: 2,
+            background: "#F8F6F0",
             padding: isMobile ? 16 : 20,
-            color: "#fff8e8",
-            boxShadow: "0 18px 44px rgba(46,27,0,0.18)",
-            border: "1px solid rgba(245,200,66,0.08)",
+            color: "#0B0B0A",
+            boxShadow: "none",
+            border: "1px solid rgba(11, 11, 10,0.16)",
           }}
         >
           <div
@@ -406,10 +406,11 @@ export default function TrackerPage() {
                 style={{
                   margin: 0,
                   fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontWeight: 400,
+                  letterSpacing: "0.28em",
                   textTransform: "uppercase",
-                  color: "rgba(245,200,66,0.72)",
+                  color: "#8A8780",
                 }}
               >
                 Route Tracker
@@ -417,11 +418,12 @@ export default function TrackerPage() {
               <h2
                 style={{
                   margin: "6px 0 0",
-                  fontFamily: "'Fraunces', Georgia, serif",
-                  fontSize: isMobile ? 28 : 34,
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.04em",
-                  color: "#f7e3ad",
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: isMobile ? 42 : 72,
+                  fontWeight: 400,
+                  lineHeight: 0.92,
+                  letterSpacing: "-0.045em",
+                  color: "#0B0B0A",
                 }}
               >
                 Keep the map front and center while you walk.
@@ -430,9 +432,9 @@ export default function TrackerPage() {
             <div
               style={{
                 padding: "10px 14px",
-                borderRadius: 999,
-                background: isTracking ? "rgba(245,200,66,0.16)" : "rgba(255,255,255,0.08)",
-                color: isTracking ? "#f5c842" : "rgba(245,228,166,0.86)",
+                borderRadius: 2,
+                background: isTracking ? "rgba(212, 74, 18,0.16)" : "rgba(255,255,255,0.08)",
+                color: isTracking ? "#D44A12" : "rgba(245,228,166,0.86)",
                 fontSize: 13,
                 fontWeight: 700,
                 minWidth: 110,
@@ -471,13 +473,13 @@ export default function TrackerPage() {
                     style={{
                       maxWidth: "70%",
                       padding: "12px 14px",
-                      borderRadius: 18,
+                      borderRadius: 2,
                       background: "rgba(26,18,0,0.72)",
-                      color: "#fff8e8",
+                      color: "#F8F6F0",
                       backdropFilter: "blur(14px)",
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(245,200,66,0.76)" }}>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(212, 74, 18,0.76)" }}>
                       Live Map
                     </p>
                     <p style={{ margin: "4px 0 0", fontSize: isMobile ? 18 : 20, fontWeight: 700, lineHeight: 1.2 }}>
@@ -488,14 +490,14 @@ export default function TrackerPage() {
                     style={{
                       alignSelf: "flex-start",
                       padding: "10px 12px",
-                      borderRadius: 18,
+                      borderRadius: 2,
                       background: "rgba(255,248,232,0.14)",
-                      color: "#fff1c7",
+                      color: "#F8F6F0",
                       backdropFilter: "blur(12px)",
                       textAlign: "right",
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(245,200,66,0.72)" }}>
+                    <p style={{ margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(212, 74, 18,0.72)" }}>
                       Distance
                     </p>
                     <p style={{ margin: "3px 0 0", fontSize: 18, fontWeight: 700 }}>{liveStats.distance}</p>
@@ -516,9 +518,9 @@ export default function TrackerPage() {
                   <div
                     style={{
                       padding: "10px 14px",
-                      borderRadius: 999,
+                      borderRadius: 2,
                       background: "rgba(26,18,0,0.74)",
-                      color: "#fff8e8",
+                      color: "#F8F6F0",
                       fontSize: 12.5,
                       fontWeight: 700,
                       backdropFilter: "blur(12px)",
@@ -534,7 +536,7 @@ export default function TrackerPage() {
           <SectionCard
             title="Controls"
             subtitle="Large mobile controls live under the map so the route stays visible first."
-            style={{ borderRadius: 24, alignSelf: "start" }}
+            style={{ borderRadius: 2, alignSelf: "start" }}
           >
             <TrackerControls
               isTracking={Boolean(isTracking)}
@@ -592,9 +594,9 @@ function OverlayPill({ label, value }: { label: string; value: string }) {
     <div
       style={{
         padding: "10px 12px",
-        borderRadius: 18,
+        borderRadius: 2,
         background: "rgba(255,248,232,0.16)",
-        color: "#fff8e8",
+        color: "#F8F6F0",
         backdropFilter: "blur(12px)",
         minWidth: 82,
       }}
@@ -606,7 +608,7 @@ function OverlayPill({ label, value }: { label: string; value: string }) {
           fontWeight: 700,
           letterSpacing: "0.08em",
           textTransform: "uppercase",
-          color: "rgba(245,200,66,0.72)",
+          color: "rgba(212, 74, 18,0.72)",
         }}
       >
         {label}
@@ -621,13 +623,13 @@ function InfoTile({ title, body }: { title: string; body: string }) {
     <div
       style={{
         padding: "14px 16px",
-        borderRadius: 14,
-        background: "#fffdf5",
-        border: "1px solid rgba(190,155,70,0.14)",
+        borderRadius: 2,
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10,0.14)",
       }}
     >
-      <p style={{ fontSize: 13, fontWeight: 700, color: "#1a1600", marginBottom: 6 }}>{title}</p>
-      <p style={{ fontSize: 12.5, color: "#8a7a50", lineHeight: 1.55 }}>{body}</p>
+      <p style={{ fontSize: 13, fontWeight: 700, color: "#0B0B0A", marginBottom: 6 }}>{title}</p>
+      <p style={{ fontSize: 12.5, color: "#8A8780", lineHeight: 1.55 }}>{body}</p>
     </div>
   );
 }

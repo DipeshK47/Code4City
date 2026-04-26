@@ -122,7 +122,7 @@ export default function MessagesPageClient({
       >
         <SectionCard title="Direct Messages" subtitle="Private volunteer coordination threads.">
           {loading ? (
-            <p style={{ margin: 0, fontSize: 13, color: "#8a7a50" }}>Loading threads...</p>
+            <p style={{ margin: 0, fontSize: 13, color: "#8A8780" }}>Loading threads...</p>
           ) : error ? (
             <p style={{ margin: 0, fontSize: 13, color: "#b91c1c" }}>{error}</p>
           ) : (

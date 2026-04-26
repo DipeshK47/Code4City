@@ -447,10 +447,10 @@ export default function OutreachMapDashboard() {
       }
     }
 
-    window.addEventListener("lemontree:map-search", handleSearch as EventListener);
+    window.addEventListener("voluntiers:map-search", handleSearch as EventListener);
 
     return () => {
-      window.removeEventListener("lemontree:map-search", handleSearch as EventListener);
+      window.removeEventListener("voluntiers:map-search", handleSearch as EventListener);
     };
   }, []);
 
@@ -985,14 +985,14 @@ export default function OutreachMapDashboard() {
               borderRadius: 22,
               padding: "16px 16px 14px",
               background: "rgba(255,252,244,0.95)",
-              border: "1px solid rgba(190,155,70,0.18)",
+              border: "1px solid rgba(11, 11, 10,0.18)",
               backdropFilter: "blur(18px)",
-              boxShadow: "0 18px 40px rgba(32,24,8,0.12)",
+              boxShadow: "none",
               pointerEvents: "auto",
             }}
           >
             <div style={{ marginBottom: 12 }}>
-              <p style={{ fontSize: 11.5, color: "#8a7a50", fontWeight: 700, marginBottom: 8 }}>
+              <p style={{ fontSize: 11.5, color: "#8A8780", fontWeight: 700, marginBottom: 8 }}>
                 Map layers
               </p>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -1018,10 +1018,10 @@ export default function OutreachMapDashboard() {
                       }
                       style={{
                         padding: "7px 11px",
-                        borderRadius: 999,
-                        border: `1px solid ${active ? "#f5c842" : "rgba(190,155,70,0.18)"}`,
-                        background: active ? "#fff1b8" : "#fffaf0",
-                        color: active ? "#8a5a00" : "#7a6a40",
+                        borderRadius: 2,
+                        border: `1px solid ${active ? "#D44A12" : "rgba(11, 11, 10,0.18)"}`,
+                        background: active ? "#F8F6F0" : "#F8F6F0",
+                        color: active ? "#8a5a00" : "#8A8780",
                         fontSize: 11.5,
                         fontWeight: 700,
                       }}
@@ -1031,24 +1031,24 @@ export default function OutreachMapDashboard() {
                   );
                 })}
               </div>
-              <p style={{ fontSize: 11.5, color: "#8a7a50", marginTop: 6 }}>
+              <p style={{ fontSize: 11.5, color: "#8A8780", marginTop: 6 }}>
                 Default view shows recommended hotspots, uncovered spots, printers, and high-need regions first.
               </p>
             </div>
 
-            <p style={{ marginTop: 10, fontSize: 11.5, color: "#8a7a50", lineHeight: 1.45 }}>
+            <p style={{ marginTop: 10, fontSize: 11.5, color: "#8A8780", lineHeight: 1.45 }}>
               Use the search bar in the page header to jump to any address,
               neighborhood, or landmark in NYC.
             </p>
 
             {syncMessage && (
-              <p style={{ marginTop: 10, fontSize: 11.5, color: "#6b5a22", background: "#fff6d6", border: "1px solid rgba(245,200,66,0.25)", borderRadius: 12, padding: "10px 12px" }}>
+              <p style={{ marginTop: 10, fontSize: 11.5, color: "#6b5a22", background: "#F8F6F0", border: "1px solid rgba(212, 74, 18,0.25)", borderRadius: 2, padding: "10px 12px" }}>
                 {syncMessage}
               </p>
             )}
 
             {errorMessage && (
-              <p style={{ marginTop: 10, fontSize: 11.5, color: "#b91c1c", background: "rgba(254,226,226,0.72)", border: "1px solid rgba(239,68,68,0.18)", borderRadius: 12, padding: "10px 12px" }}>
+              <p style={{ marginTop: 10, fontSize: 11.5, color: "#b91c1c", background: "rgba(254,226,226,0.72)", border: "1px solid rgba(239,68,68,0.18)", borderRadius: 2, padding: "10px 12px" }}>
                 {errorMessage}
               </p>
             )}
@@ -1090,10 +1090,10 @@ export default function OutreachMapDashboard() {
                       style={{
                         width: 14,
                         height: 14,
-                        borderRadius: 999,
-                        background: "#60a5fa",
+                        borderRadius: 2,
+                        background: "#8A8780",
                         border: "3px solid #eff6ff",
-                        boxShadow: "0 6px 14px rgba(96,165,250,0.18)",
+                        boxShadow: "none",
                         display: "inline-block",
                       }}
                     />
@@ -1106,10 +1106,10 @@ export default function OutreachMapDashboard() {
                       style={{
                         width: 14,
                         height: 14,
-                        borderRadius: 999,
-                        background: "#f59e0b",
-                        border: "3px solid #ffffff",
-                        boxShadow: "0 6px 14px rgba(245,158,11,0.18)",
+                        borderRadius: 2,
+                        background: "#D64B14",
+                        border: "3px solid #F8F6F0",
+                        boxShadow: "none",
                         display: "inline-block",
                       }}
                     />
@@ -1122,10 +1122,10 @@ export default function OutreachMapDashboard() {
                       style={{
                         width: 14,
                         height: 14,
-                        borderRadius: 999,
-                        background: "#16a34a",
-                        border: "3px solid #ffffff",
-                        boxShadow: "0 6px 14px rgba(22,163,74,0.18)",
+                        borderRadius: 2,
+                        background: "#D44A12",
+                        border: "3px solid #F8F6F0",
+                        boxShadow: "none",
                         display: "inline-block",
                       }}
                     />
@@ -1138,10 +1138,10 @@ export default function OutreachMapDashboard() {
                       style={{
                         width: 18,
                         height: 18,
-                        borderRadius: 999,
+                        borderRadius: 2,
                         background: "#f8fafc",
-                        border: "2px solid #475569",
-                        color: "#334155",
+                        border: "2px solid #8A8780",
+                        color: "#1A1917",
                         display: "inline-flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -1152,7 +1152,7 @@ export default function OutreachMapDashboard() {
                         height="10"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke="#334155"
+                        stroke="#1A1917"
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1214,10 +1214,10 @@ export default function OutreachMapDashboard() {
             key={item.key}
             style={{
               pointerEvents: "auto",
-              borderRadius: 999,
+              borderRadius: 2,
               padding: "10px 14px",
               background: "rgba(255,252,244,0.92)",
-              boxShadow: "0 8px 24px rgba(26,22,11,0.10)",
+              boxShadow: "none",
               color: "#6f5e37",
               fontSize: 11.5,
               fontWeight: 700,
@@ -1253,7 +1253,7 @@ export default function OutreachMapDashboard() {
               border: "1px solid rgba(74,222,128,0.18)",
               color: "#effff3",
               backdropFilter: "blur(18px)",
-              boxShadow: "0 22px 40px rgba(10,28,18,0.28)",
+              boxShadow: "none",
               maxHeight: isMobile ? "min(52dvh, 460px)" : "none",
               overflowY: isMobile ? "auto" : "visible",
             }}
@@ -1263,7 +1263,7 @@ export default function OutreachMapDashboard() {
                 <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(134,239,172,0.78)", marginBottom: 6 }}>
                   Meetup Marker
                 </p>
-                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: "-0.5px" }}>
+                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: 0 }}>
                   {selectedMeetup.title}
                 </h3>
               </div>
@@ -1272,7 +1272,7 @@ export default function OutreachMapDashboard() {
                 style={{
                   width: 30,
                   height: 30,
-                  borderRadius: 999,
+                  borderRadius: 2,
                   background: "rgba(255,255,255,0.08)",
                   color: "#effff3",
                   fontSize: 16,
@@ -1327,7 +1327,7 @@ export default function OutreachMapDashboard() {
                   width: "100%",
                   borderRadius: 15,
                   padding: "12px 14px",
-                  background: "linear-gradient(135deg, #4ade80 0%, #16a34a 100%)",
+                  background: "#D44A12",
                   color: "#04210e",
                   fontSize: 12.5,
                   fontWeight: 800,
@@ -1366,20 +1366,20 @@ export default function OutreachMapDashboard() {
               borderRadius: 22,
               padding: "16px 16px 14px",
               background: "rgba(26,22,11,0.92)",
-              border: "1px solid rgba(245,200,66,0.14)",
-              color: "#fff7de",
+              border: "1px solid rgba(212, 74, 18,0.14)",
+              color: "#F8F6F0",
               backdropFilter: "blur(18px)",
-              boxShadow: "0 22px 40px rgba(17,14,6,0.24)",
+              boxShadow: "none",
               maxHeight: isMobile ? "min(56dvh, 520px)" : "none",
               overflowY: isMobile ? "auto" : "visible",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 10 }}>
               <div>
-                <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(245,200,66,0.56)", marginBottom: 6 }}>
+                <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(212, 74, 18,0.56)", marginBottom: 6 }}>
                   Selected Hotspot
                 </p>
-                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: "-0.5px" }}>
+                <h3 style={{ fontSize: 23, lineHeight: 1.08, letterSpacing: 0 }}>
                   {selectedLocation.name}
                 </h3>
               </div>
@@ -1388,9 +1388,9 @@ export default function OutreachMapDashboard() {
                 style={{
                   width: 30,
                   height: 30,
-                  borderRadius: 999,
+                  borderRadius: 2,
                   background: "rgba(255,255,255,0.08)",
-                  color: "#fff7de",
+                  color: "#F8F6F0",
                   fontSize: 16,
                   lineHeight: 1,
                 }}
@@ -1404,16 +1404,16 @@ export default function OutreachMapDashboard() {
             </p>
 
             {selectedLocation.regionName ? (
-              <p style={{ fontSize: 12, color: "rgba(245,200,66,0.82)", marginBottom: 10 }}>
+              <p style={{ fontSize: 12, color: "rgba(212, 74, 18,0.82)", marginBottom: 10 }}>
                 {selectedLocation.regionName}
               </p>
             ) : null}
 
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-              <span style={{ padding: "6px 10px", borderRadius: 999, background: selectedLocation.covered ? "rgba(34,197,94,0.16)" : "rgba(245,158,11,0.16)", color: selectedLocation.covered ? "#86efac" : "#fcd34d", fontSize: 11.5, fontWeight: 700 }}>
+              <span style={{ padding: "6px 10px", borderRadius: 2, background: selectedLocation.covered ? "rgba(34,197,94,0.16)" : "rgba(245,158,11,0.16)", color: selectedLocation.covered ? "#86efac" : "#fcd34d", fontSize: 11.5, fontWeight: 700 }}>
                 {selectedLocation.covered ? "Covered" : "Needs coverage"}
               </span>
-              <span style={{ padding: "6px 10px", borderRadius: 999, background: priorityStyle[selectedLocation.derivedPriority].bg, color: "#fff7de", fontSize: 11.5, fontWeight: 700 }}>
+              <span style={{ padding: "6px 10px", borderRadius: 2, background: priorityStyle[selectedLocation.derivedPriority].bg, color: "#F8F6F0", fontSize: 11.5, fontWeight: 700 }}>
                 {selectedLocation.derivedPriority} priority
               </span>
             </div>
@@ -1431,10 +1431,10 @@ export default function OutreachMapDashboard() {
                   padding: "12px 14px",
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.10)",
-                  color: "#fff7de",
+                  color: "#F8F6F0",
                   fontSize: 12.5,
                   fontWeight: 800,
-                  boxShadow: "0 10px 22px rgba(15,23,42,0.18)",
+                  boxShadow: "none",
                 }}
                 >
                   Get directions
@@ -1451,10 +1451,10 @@ export default function OutreachMapDashboard() {
                   padding: "12px 14px",
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.10)",
-                  color: "#fff7de",
+                  color: "#F8F6F0",
                   fontSize: 12.5,
                   fontWeight: 800,
-                  boxShadow: "0 10px 22px rgba(15,23,42,0.18)",
+                  boxShadow: "none",
                 }}
               >
                 {selectedLocationRouteItem ? "Remove from route" : "Add to route"}
@@ -1473,14 +1473,14 @@ export default function OutreachMapDashboard() {
                   borderRadius: 15,
                   padding: "12px 14px",
                   background: selectedLocation.covered
-                    ? "linear-gradient(135deg, #1f8f47 0%, #166534 100%)"
-                    : "linear-gradient(135deg, #f5c842 0%, #f59e0b 100%)",
-                  color: selectedLocation.covered ? "#effff3" : "#1a1000",
+                    ? "#D44A12"
+                    : "#D44A12",
+                  color: selectedLocation.covered ? "#effff3" : "#0B0B0A",
                   fontSize: 12.5,
                   fontWeight: 800,
                   boxShadow: selectedLocation.covered
                     ? "0 10px 22px rgba(34,197,94,0.22)"
-                    : "0 10px 22px rgba(245,200,66,0.22)",
+                    : "0 10px 22px rgba(212, 74, 18,0.22)",
                 }}
               >
                 {selectedLocation.covered ? "Mark as uncovered" : "Mark hotspot as covered"}
@@ -1527,12 +1527,12 @@ export default function OutreachMapDashboard() {
             width: "auto",
             minHeight: isMobile ? 50 : "auto",
             minWidth: isMobile ? 154 : 0,
-            borderRadius: 999,
+            borderRadius: 2,
             padding: isMobile ? "12px 20px" : "13px 18px",
-            background: "linear-gradient(135deg, #1a1000 0%, #3a2700 100%)",
-            border: "1px solid rgba(245,200,66,0.24)",
-            color: "#fff7de",
-            boxShadow: "0 16px 34px rgba(26,16,0,0.28)",
+            background: "#0B0B0A",
+            border: "1px solid rgba(212, 74, 18,0.24)",
+            color: "#F8F6F0",
+            boxShadow: "none",
             fontSize: isMobile ? 12 : 12.5,
             fontWeight: 800,
             lineHeight: 1.1,
@@ -1587,22 +1587,22 @@ export default function OutreachMapDashboard() {
 }
 
 const toolButtonStyle: React.CSSProperties = {
-  borderRadius: 999,
+  borderRadius: 2,
   padding: "10px 14px",
   background: "rgba(255,252,244,0.95)",
-  border: "1px solid rgba(190,155,70,0.18)",
-  boxShadow: "0 8px 24px rgba(26,22,11,0.10)",
-  color: "#5f502d",
+  border: "1px solid rgba(11, 11, 10,0.18)",
+  boxShadow: "none",
+  color: "#1A1917",
   fontSize: 12,
   fontWeight: 800,
   backdropFilter: "blur(18px)",
 };
 
 const statusChipStyle: React.CSSProperties = {
-  borderRadius: 999,
+  borderRadius: 2,
   padding: "10px 14px",
   background: "rgba(255,252,244,0.94)",
-  boxShadow: "0 8px 24px rgba(26,22,11,0.10)",
+  boxShadow: "none",
   color: "#6f5e37",
   fontSize: 11.5,
   fontWeight: 700,

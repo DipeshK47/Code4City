@@ -6,7 +6,7 @@ This project uses Supabase as a hosted Postgres database through the backend
 ## 1. Create a new Supabase project
 
 1. Go to https://database.new.
-2. Create a new project named `Code4City`.
+2. Create a new project named `Volun-Tiers`.
 3. Pick the region closest to where the backend will run.
 4. Save the database password somewhere private. You need it for `DATABASE_URL`.
 5. Wait for the database to finish provisioning.

@@ -78,7 +78,7 @@ export default function MeetupDetailClient({
                   setMeetup((current) => (current ? { ...current, status: "cancelled" } : current));
                 }}
                 style={{
-                  borderRadius: 999,
+                  borderRadius: 2,
                   border: "1px solid rgba(239,68,68,0.2)",
                   background: "rgba(254,242,242,0.92)",
                   color: "#b91c1c",
@@ -93,7 +93,7 @@ export default function MeetupDetailClient({
           }
         >
           {loading ? (
-            <p style={{ margin: 0, fontSize: 13, color: "#8a7a50" }}>Loading meetup...</p>
+            <p style={{ margin: 0, fontSize: 13, color: "#8A8780" }}>Loading meetup...</p>
           ) : error ? (
             <p style={{ margin: 0, fontSize: 13, color: "#b91c1c" }}>{error}</p>
           ) : meetup ? (
@@ -119,7 +119,7 @@ export default function MeetupDetailClient({
                       <div style={{ fontSize: 18, fontWeight: 700, color: "#1f2b12" }}>
                         {meetup.linkedPost.title}
                       </div>
-                      <div style={{ fontSize: 13, color: "#42531d", lineHeight: 1.6 }}>
+                      <div style={{ fontSize: 13, color: "#8A8780", lineHeight: 1.6 }}>
                         {meetup.linkedPost.body}
                       </div>
                       <Link
@@ -127,7 +127,7 @@ export default function MeetupDetailClient({
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          color: "#166534",
+                          color: "#D44A12",
                           fontSize: 12.5,
                           fontWeight: 800,
                           textDecoration: "none",
@@ -155,16 +155,16 @@ export default function MeetupDetailClient({
                       <div
                         key={`${member.id}-${member.joinedAt}`}
                         style={{
-                          borderRadius: 16,
-                          background: "#fffdf7",
-                          border: "1px solid rgba(190,155,70,0.14)",
+                          borderRadius: 2,
+                          background: "#F8F6F0",
+                          border: "1px solid rgba(11, 11, 10,0.14)",
                           padding: "12px 14px",
                         }}
                       >
                         <div style={{ fontSize: 13, fontWeight: 700, color: "#1f2b12" }}>
                           {formatDisplayName(member)}
                         </div>
-                        <div style={{ fontSize: 11.5, color: "#8a7a50", marginTop: 4 }}>
+                        <div style={{ fontSize: 11.5, color: "#8A8780", marginTop: 4 }}>
                           {member.role === "creator" ? "Organizer" : "Member"}
                         </div>
                       </div>
@@ -178,9 +178,9 @@ export default function MeetupDetailClient({
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      borderRadius: 999,
+                      borderRadius: 2,
                       padding: "11px 16px",
-                      background: "linear-gradient(135deg, #f5c842 0%, #b9cf51 100%)",
+                      background: "#D44A12",
                       color: "#1c220e",
                       fontSize: 12.5,
                       fontWeight: 800,

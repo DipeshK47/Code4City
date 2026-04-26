@@ -73,7 +73,7 @@ const NAV: NavItem[] = [
   {
     href: "/leaderboard",
     label: "Leaderboard",
-    badge: "\u{1F3C6}",
+    badge: "TOP",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="18" y1="20" x2="18" y2="10" />
@@ -108,11 +108,9 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: "rgba(15, 12, 5, 0.80)",
-        backdropFilter: "blur(28px) saturate(180%)",
-        WebkitBackdropFilter: "blur(28px) saturate(180%)",
-        borderRight: "1px solid rgba(245, 200, 66, 0.14)",
-        boxShadow: "6px 0 40px rgba(0,0,0,0.22), inset -1px 0 0 rgba(245,200,66,0.07)",
+        background: "#0B0B0A",
+        borderRight: "1px solid rgba(212, 74, 18, 0.18)",
+        boxShadow: "none",
         position: isMobile ? "fixed" : "relative",
         top: 0,
         left: 0,
@@ -122,26 +120,23 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
         transition: "transform 0.25s ease",
       }}
     >
-      {/* Top ambient glow */}
       <div style={{
         position: "absolute",
-        top: -60,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: 200,
-        height: 200,
-        background: "radial-gradient(circle, rgba(245,200,66,0.18) 0%, transparent 70%)",
+        top: 0,
+        left: 18,
+        right: 18,
+        height: 1,
+        background: "rgba(248, 246, 240, 0.14)",
         pointerEvents: "none",
       }} />
 
-      {/* Bottom ambient glow */}
       <div style={{
         position: "absolute",
-        bottom: -40,
-        right: -40,
-        width: 160,
-        height: 160,
-        background: "radial-gradient(circle, rgba(245,200,66,0.07) 0%, transparent 70%)",
+        bottom: 0,
+        left: 18,
+        right: 18,
+        height: 1,
+        background: "rgba(212, 74, 18, 0.24)",
         pointerEvents: "none",
       }} />
 
@@ -152,30 +147,35 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
             <div style={{
               width: 38,
               height: 38,
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-              boxShadow: "0 3px 14px rgba(245,200,66,0.45)",
+              borderRadius: 0,
+              background: "transparent",
+              border: "1px solid #D44A12",
+              boxShadow: "none",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 19,
+              fontSize: 11,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 500,
+              letterSpacing: "0.14em",
+              color: "#D44A12",
               flexShrink: 0,
             }}>
-              🍋
+              VT
             </div>
             <div>
               <div style={{
-                fontFamily: "'Fraunces', Georgia, serif",
-                fontWeight: 600,
-                fontSize: 15.5,
-                color: "#ede5cc",
-                lineHeight: 1.1,
-                letterSpacing: "-0.3px",
+                fontFamily: "'Instrument Serif', serif",
+                fontWeight: 400,
+                fontSize: 22,
+                color: "#F8F6F0",
+                lineHeight: 0.95,
+                letterSpacing: "-0.035em",
               }}>
-                Lemontree
+                Volun-Tiers
               </div>
-              <div style={{ fontSize: 11, color: "rgba(237,229,204,0.45)", marginTop: 2 }}>
-                Volunteer Hub
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(248, 246, 240,0.48)", marginTop: 5, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+                Civic Relay
               </div>
             </div>
           </div>
@@ -187,10 +187,10 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
               style={{
                 width: 34,
                 height: 34,
-                borderRadius: 10,
-                border: "1px solid rgba(245,200,66,0.15)",
-                background: "rgba(245,200,66,0.08)",
-                color: "#ede5cc",
+                borderRadius: 0,
+                border: "1px solid rgba(212, 74, 18,0.18)",
+                background: "transparent",
+                color: "#D44A12",
                 cursor: "pointer",
                 fontSize: 14,
               }}
@@ -202,15 +202,16 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
       </div>
 
       {/* Divider */}
-      <div style={{ height: 1, background: "rgba(245,200,66,0.12)", margin: "0 16px 16px" }} />
+      <div style={{ height: 1, background: "rgba(248, 246, 240,0.14)", margin: "0 20px 18px" }} />
 
       {/* Section label */}
       <div style={{
         fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: "0.12em",
+        fontFamily: "'JetBrains Mono', monospace",
+        fontWeight: 400,
+        letterSpacing: "0.28em",
         textTransform: "uppercase",
-        color: "rgba(237,229,204,0.35)",
+        color: "rgba(248, 246, 240,0.38)",
         padding: "0 20px 10px",
         position: "relative",
         zIndex: 1,
@@ -246,27 +247,29 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
                   left: 0,
                   top: "50%",
                   transform: "translateY(-50%)",
-                  width: 3,
+                  width: 1,
                   height: "55%",
-                  borderRadius: "0 3px 3px 0",
-                  background: "#f5c842",
-                  boxShadow: "2px 0 10px rgba(245,200,66,0.7)",
+                  borderRadius: 0,
+                  background: "#D44A12",
+                  boxShadow: "none",
                 }} />
               )}
 
               <span style={{ display: "flex", flexShrink: 0 }}>{item.icon}</span>
               <span style={{ flex: 1 }}>{item.label}</span>
-              {item.badge ? <span style={{ fontSize: 13 }}>{item.badge}</span> : null}
+              {item.badge ? <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.08em" }}>{item.badge}</span> : null}
               {item.isNew && !isActive ? (
                 <span
                   style={{
                     fontSize: 9.5,
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontWeight: 500,
+                    letterSpacing: "0.12em",
                     padding: "2px 6px",
-                    borderRadius: 5,
-                    background: "rgba(245,200,66,0.2)",
-                    color: "#f5c842",
+                    borderRadius: 0,
+                    background: "transparent",
+                    border: "1px solid rgba(212, 74, 18, 0.28)",
+                    color: "#D44A12",
                   }}
                 >
                   NEW
@@ -279,7 +282,7 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
                     width: 6,
                     height: 6,
                     borderRadius: "50%",
-                    background: "#f5c842",
+                    background: "#D44A12",
                     flexShrink: 0,
                   }}
                 />
@@ -290,7 +293,7 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
       </nav>
 
       {/* Divider */}
-      <div style={{ height: 1, background: "rgba(245,200,66,0.12)", margin: "10px 16px 12px" }} />
+      <div style={{ height: 1, background: "rgba(248, 246, 240,0.14)", margin: "10px 20px 12px" }} />
 
       {/* ── User Footer ── */}
       <div style={{ padding: "0 10px 20px", position: "relative", zIndex: 1 }}>
@@ -301,8 +304,9 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
             alignItems: "center",
             gap: 10,
             padding: "10px 12px",
-            borderRadius: 11,
-            background: "rgba(255,255,255,0.04)",
+            borderRadius: 0,
+            background: "transparent",
+            border: "1px solid rgba(248, 246, 240, 0.10)",
             textDecoration: "none",
             color: "inherit",
             transition: "background 0.18s",
@@ -312,14 +316,16 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
             style={{
               width: 30,
               height: 30,
-              borderRadius: 9,
-              background: "linear-gradient(135deg, #f5c842, #e8a200)",
+              borderRadius: 0,
+              background: "transparent",
+              border: "1px solid rgba(212, 74, 18, 0.44)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 11,
-              fontWeight: 700,
-              color: "#1a1000",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 500,
+              color: "#D44A12",
               flexShrink: 0,
               overflow: "hidden",
             }}
@@ -342,9 +348,10 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
           <div style={{ flex: 1, minWidth: 0 }}>
             <div
               style={{
-                fontSize: 12.5,
-                fontWeight: 600,
-                color: "#ede5cc",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 11,
+                fontWeight: 400,
+                color: "#F8F6F0",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -352,7 +359,7 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
             >
               {user ? (displayName ?? user.username) : "Guest"}
             </div>
-            <div style={{ fontSize: 10.5, color: "rgba(237,229,204,0.38)", marginTop: 1 }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "rgba(248, 246, 240,0.42)", marginTop: 3, letterSpacing: "0.12em", textTransform: "uppercase" }}>
               {user?.isGuest ? "Guest" : user ? "Volunteer" : "Log in to get started"}
             </div>
           </div>
@@ -366,12 +373,14 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
               width: "100%",
               marginTop: 10,
               padding: "10px 12px",
-              borderRadius: 10,
-              border: "1px solid rgba(245,200,66,0.2)",
-              background: "rgba(245,200,66,0.1)",
-              color: "#f5c842",
+              borderRadius: 0,
+              border: "1px solid rgba(212, 74, 18,0.22)",
+              background: "transparent",
+              color: "#D44A12",
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 400,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
               textAlign: "center",
               cursor: "pointer",
             }}

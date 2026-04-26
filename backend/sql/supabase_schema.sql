@@ -1,4 +1,4 @@
--- Code4City Supabase schema
+-- Volun-Tiers Supabase schema
 -- Run this once in Supabase Dashboard > SQL Editor > New Query.
 -- The app connects through the backend with DATABASE_URL, so no Supabase JS
 -- client tables or public Row Level Security policies are required here.

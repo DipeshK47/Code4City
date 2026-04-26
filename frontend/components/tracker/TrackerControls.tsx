@@ -66,22 +66,22 @@ export default function TrackerControls({
 
       <div
         style={{
-          borderRadius: 24,
+          borderRadius: 2,
           padding: 18,
-          border: "1px solid rgba(190,155,70,0.14)",
+          border: "1px solid rgba(11, 11, 10,0.14)",
           background: isTracking
-            ? "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(253,248,236,0.96) 100%)"
+            ? "#F8F6F0"
             : "rgba(255,255,255,0.88)",
-          boxShadow: "0 10px 28px rgba(190,155,70,0.07)",
+          boxShadow: "none",
           display: "grid",
           gap: 12,
         }}
       >
         <div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#1a1600", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#0B0B0A", letterSpacing: "0.04em", textTransform: "uppercase" }}>
             Mark Stop
           </p>
-          <p style={{ fontSize: 12.5, color: "#8a7a50", marginTop: 4 }}>
+          <p style={{ fontSize: 12.5, color: "#8A8780", marginTop: 4 }}>
             Choose a stop type, add an optional label, then pin it to your latest position.
           </p>
         </div>
@@ -130,24 +130,24 @@ const fieldStyle: React.CSSProperties = {
   width: "100%",
   minHeight: 48,
   padding: "12px 14px",
-  borderRadius: 16,
-  border: "1px solid rgba(190,155,70,0.2)",
-  background: "#ffffff",
+  borderRadius: 2,
+  border: "1px solid rgba(11, 11, 10,0.2)",
+  background: "#F8F6F0",
   fontSize: 14,
-  color: "#1a1600",
+  color: "#0B0B0A",
 };
 
 function primaryButton(disabled: boolean): React.CSSProperties {
   return {
     minHeight: 56,
     padding: "14px 18px",
-    borderRadius: 999,
+    borderRadius: 2,
     border: "none",
-    background: disabled ? "rgba(245,200,66,0.32)" : "#f5c842",
-    color: "#1a1000",
+    background: disabled ? "rgba(212, 74, 18,0.32)" : "#D44A12",
+    color: "#0B0B0A",
     fontWeight: 700,
     fontSize: 14,
-    boxShadow: disabled ? "none" : "0 10px 22px rgba(245,200,66,0.24)",
+    boxShadow: "none",
     opacity: disabled ? 0.75 : 1,
   };
 }
@@ -156,10 +156,10 @@ function secondaryButton(disabled: boolean): React.CSSProperties {
   return {
     minHeight: 56,
     padding: "14px 18px",
-    borderRadius: 999,
-    border: "1px solid rgba(190,155,70,0.14)",
+    borderRadius: 2,
+    border: "1px solid rgba(11, 11, 10,0.14)",
     background: disabled ? "rgba(26,18,0,0.08)" : "#f5f3ee",
-    color: disabled ? "#a19678" : "#7a6a40",
+    color: disabled ? "#a19678" : "#8A8780",
     fontWeight: 700,
     fontSize: 14,
     opacity: disabled ? 0.6 : 1,
@@ -171,7 +171,7 @@ function tertiaryButton(disabled: boolean): React.CSSProperties {
     minWidth: 112,
     minHeight: 48,
     padding: "12px 18px",
-    borderRadius: 16,
+    borderRadius: 2,
     border: "none",
     background: disabled ? "rgba(223,233,225,0.75)" : "#e8f1ea",
     color: disabled ? "#8f9a92" : "#697567",
@@ -185,7 +185,7 @@ function mapsButton(disabled: boolean): React.CSSProperties {
   return {
     minHeight: 50,
     padding: "12px 16px",
-    borderRadius: 16,
+    borderRadius: 2,
     border: "1px solid rgba(66,133,244,0.18)",
     background: disabled ? "rgba(232,239,252,0.72)" : "#eef4ff",
     color: disabled ? "#8ea1c7" : "#2958b8",
@@ -199,14 +199,14 @@ function stopChip(selected: boolean, disabled: boolean): React.CSSProperties {
   return {
     minHeight: 40,
     padding: "9px 14px",
-    borderRadius: 999,
-    border: selected ? "1px solid rgba(245,200,66,0.38)" : "1px solid rgba(190,155,70,0.18)",
+    borderRadius: 2,
+    border: selected ? "1px solid rgba(212, 74, 18,0.38)" : "1px solid rgba(11, 11, 10,0.18)",
     background: disabled
       ? "rgba(245,243,238,0.72)"
       : selected
-        ? "rgba(245,200,66,0.16)"
-        : "#ffffff",
-    color: disabled ? "#b0a487" : selected ? "#8f6d10" : "#5a4a20",
+        ? "rgba(212, 74, 18,0.16)"
+        : "#F8F6F0",
+    color: disabled ? "#b0a487" : selected ? "#8f6d10" : "#1A1917",
     fontSize: 13,
     fontWeight: 600,
   };

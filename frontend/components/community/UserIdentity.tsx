@@ -26,7 +26,7 @@ export default function UserIdentity({
           width: size,
           height: size,
           borderRadius: Math.round(size * 0.35),
-          background: "linear-gradient(135deg, #f5c842 0%, #b9cf51 100%)",
+          background: "#D44A12",
           color: "#233012",
           fontSize: size * 0.38,
           fontWeight: 800,
@@ -65,7 +65,7 @@ export default function UserIdentity({
           {displayName}
         </div>
         {subtitle ? (
-          <div style={{ fontSize: 11.5, color: "#8a7a50", marginTop: 2 }}>
+          <div style={{ fontSize: 11.5, color: "#8A8780", marginTop: 2 }}>
             {subtitle}
           </div>
         ) : null}

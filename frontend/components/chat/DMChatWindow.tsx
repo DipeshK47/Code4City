@@ -101,17 +101,17 @@ export default function DMChatWindow({
           height="36"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="rgba(190,155,70,0.35)"
+          stroke="rgba(11, 11, 10,0.35)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
-        <div style={{ marginTop: 12, fontSize: 14, fontWeight: 600, color: "#5f502d" }}>
+        <div style={{ marginTop: 12, fontSize: 14, fontWeight: 600, color: "#1A1917" }}>
           No conversation open
         </div>
-        <div style={{ marginTop: 4, fontSize: 12.5, color: "#9a8a60", maxWidth: 260, lineHeight: 1.5 }}>
+        <div style={{ marginTop: 4, fontSize: 12.5, color: "#8A8780", maxWidth: 260, lineHeight: 1.5 }}>
           Pick a thread from the left, or start a new one from a post or meetup.
         </div>
       </div>
@@ -122,8 +122,8 @@ export default function DMChatWindow({
     <div
       style={{
         borderRadius: 22,
-        border: "1px solid rgba(190,155,70,0.18)",
-        background: "#fffef9",
+        border: "1px solid rgba(11, 11, 10,0.18)",
+        background: "#F8F6F0",
         overflow: "hidden",
         minHeight: 560,
         display: "grid",
@@ -133,8 +133,8 @@ export default function DMChatWindow({
       <div
         style={{
           padding: 16,
-          borderBottom: "1px solid rgba(190,155,70,0.16)",
-          background: "#ffffff",
+          borderBottom: "1px solid rgba(11, 11, 10,0.16)",
+          background: "#F8F6F0",
         }}
       >
         {thread ? (
@@ -143,7 +143,7 @@ export default function DMChatWindow({
             subtitle={`Chatting with ${formatDisplayName(thread.otherUser)}`}
           />
         ) : (
-          <p style={{ margin: 0, fontSize: 13, color: "#8a7a50" }}>
+          <p style={{ margin: 0, fontSize: 13, color: "#8A8780" }}>
             Loading thread...
           </p>
         )}
@@ -157,11 +157,11 @@ export default function DMChatWindow({
           gap: 4,
           alignContent: "start",
           background:
-            "linear-gradient(180deg, rgba(255,254,249,1) 0%, rgba(255,252,240,1) 100%)",
+            "#F8F6F0",
         }}
       >
         {isLoading ? (
-          <p style={{ margin: 0, fontSize: 12.5, color: "#8a7a50" }}>Loading messages...</p>
+          <p style={{ margin: 0, fontSize: 12.5, color: "#8A8780" }}>Loading messages...</p>
         ) : messages.length > 0 ? (
           messages.map((message, index) => {
             const isMine = Number(message.senderUserId) === Number(currentUserId);
@@ -185,7 +185,7 @@ export default function DMChatWindow({
                     style={{
                       fontSize: 11,
                       fontWeight: 700,
-                      color: "#8a7a50",
+                      color: "#8A8780",
                       marginBottom: 4,
                       textAlign: isMine ? "right" : "left",
                       padding: "0 4px",
@@ -202,11 +202,11 @@ export default function DMChatWindow({
                         ? "14px 14px 4px 14px"
                         : "14px 14px 14px 4px",
                     padding: "10px 13px",
-                    background: isMine ? "rgba(245,200,66,0.14)" : "#ffffff",
+                    background: isMine ? "rgba(212, 74, 18,0.14)" : "#F8F6F0",
                     border: isMine
-                      ? "1px solid rgba(245,200,66,0.22)"
-                      : "1px solid rgba(190,155,70,0.14)",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.03)",
+                      ? "1px solid rgba(212, 74, 18,0.22)"
+                      : "1px solid rgba(11, 11, 10,0.14)",
+                    boxShadow: "none",
                   }}
                 >
                   <div style={{ fontSize: 13, color: "#1f1a0b", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
@@ -217,7 +217,7 @@ export default function DMChatWindow({
                   <div
                     style={{
                       fontSize: 10.5,
-                      color: "#9a8a60",
+                      color: "#8A8780",
                       marginTop: 3,
                       textAlign: isMine ? "right" : "left",
                       padding: "0 4px",
@@ -231,8 +231,8 @@ export default function DMChatWindow({
           })
         ) : (
           <div style={{ textAlign: "center", padding: "40px 20px" }}>
-            <div style={{ fontSize: 28, marginBottom: 8 }}>👋</div>
-            <div style={{ fontSize: 13, color: "#8a7a50" }}>
+            <div style={{ width: 44, height: 36, borderRadius: 2, margin: "0 auto 8px", background: "rgba(212, 74, 18,0.12)", color: "#D44A12", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, letterSpacing: "0.08em" }}>DM</div>
+            <div style={{ fontSize: 13, color: "#8A8780" }}>
               No messages yet. Say hello!
             </div>
           </div>
@@ -242,12 +242,12 @@ export default function DMChatWindow({
 
       <div
         style={{
-          borderTop: "1px solid rgba(190,155,70,0.16)",
+          borderTop: "1px solid rgba(11, 11, 10,0.16)",
           padding: 14,
           display: "flex",
           gap: 10,
           alignItems: "flex-end",
-          background: "#ffffff",
+          background: "#F8F6F0",
         }}
       >
         <textarea
@@ -258,8 +258,8 @@ export default function DMChatWindow({
           placeholder="Type a message..."
           style={{
             flex: 1,
-            borderRadius: 14,
-            border: "1px solid rgba(190,155,70,0.22)",
+            borderRadius: 2,
+            border: "1px solid rgba(11, 11, 10,0.22)",
             background: "#faf9f6",
             padding: "10px 14px",
             fontSize: 13,
@@ -294,7 +294,7 @@ export default function DMChatWindow({
 const placeholderStyle: React.CSSProperties = {
   minHeight: 560,
   borderRadius: 22,
-  border: "1px dashed rgba(190,155,70,0.20)",
+  border: "1px dashed rgba(11, 11, 10,0.20)",
   background: "rgba(255,253,245,0.72)",
   display: "flex",
   flexDirection: "column",

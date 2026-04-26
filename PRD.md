@@ -2,23 +2,23 @@
 
 ## Product
 
-Lemontree Volunteer Hub
+Volun-Tiers
 
 ## Product summary
 
-Lemontree Volunteer Hub is a volunteer operations platform for flyer-based outreach around food access. The product helps volunteers learn the outreach process, identify high-impact locations, print materials, and record work completed in the field.
+Volun-Tiers is a volunteer operations platform for resource-card-based outreach around food access. The product helps volunteers learn the outreach process, identify high-impact locations, print materials, and record work completed in the field.
 
 ## Problem
 
-Food resources may exist in a community, but awareness is fragmented. Lemontree’s outreach model depends on volunteers distributing flyers in the right places, with the right information, and with enough operational support to make the work repeatable. Today that workflow is partially manual and hard to coordinate.
+Food resources may exist in a community, but awareness is fragmented. Volun-Tiers' outreach model depends on volunteers sharing outreach cards in the right places, with the right information, and with enough operational support to make the work repeatable. Today that workflow is partially manual and hard to coordinate.
 
 ## Goal
 
-Deliver a demo-ready MVP that proves Lemontree can:
+Deliver a demo-ready MVP that proves Volun-Tiers can:
 
 - onboard new volunteers quickly,
 - guide them to high-need outreach zones,
-- help them print and distribute flyers,
+- help them print and share outreach cards,
 - track field activity in a simple, visible way.
 
 ## Primary users
@@ -34,13 +34,13 @@ Deliver a demo-ready MVP that proves Lemontree can:
 
 ### Community member discovering resources
 
-- Indirect beneficiary of more effective flyer distribution.
+- Indirect beneficiary of more effective resource-card outreach.
 
 ## Core use cases
 
 1. A new volunteer visits the site, reads the guide, creates an account, and accepts terms.
 2. A returning volunteer opens the map and finds recommended locations in higher-need regions.
-3. A volunteer finds a nearby printer and gets flyers printed.
+3. A volunteer finds a nearby printer and gets resource cards printed.
 4. A volunteer starts a route session, walks a route, adds stop markers, and saves the session.
 5. An organizer reviews hotspot coverage and adjusts outreach priorities.
 
@@ -62,7 +62,7 @@ Deliver a demo-ready MVP that proves Lemontree can:
 - Full production auth hardening
 - Real organizer dashboards
 - Full analytics
-- Multilingual flyer generation workflow
+- Multilingual outreach kit generation workflow
 - Mobile app
 - Notification systems
 

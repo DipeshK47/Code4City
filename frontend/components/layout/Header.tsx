@@ -9,11 +9,11 @@ import { useAuth } from "@/context/AuthContext";
 const META: Record<string, { title: string; sub: string }> = {
   "/": {
     title: "Welcome back",
-    sub: "Here's what's happening in your community today.",
+    sub: "Today's volunteer missions, signals, and community updates.",
   },
   "/map": {
-    title: "Resource Map",
-    sub: "Explore flyering zones, hotspot layers, and volunteer meetups.",
+    title: "Mission Map",
+    sub: "Explore priority zones, coverage layers, and volunteer meetups.",
   },
   "/community": {
     title: "Community",
@@ -33,19 +33,19 @@ const META: Record<string, { title: string; sub: string }> = {
   },
   "/tracker": {
     title: "Route Tracker",
-    sub: "Track volunteer outreach sessions in real time.",
+    sub: "Track outreach sessions in real time.",
   },
   "/profile": {
     title: "Your Profile",
-    sub: "Track your volunteer contributions and impact.",
+    sub: "Track your contributions, proofs, and impact.",
   },
   "/leaderboard": {
     title: "Leaderboard",
-    sub: "Top volunteers making a difference this month.",
+    sub: "Top volunteers moving missions forward this month.",
   },
   "/printers": {
-    title: "Nearby Printers",
-    sub: "Find a printer close to you for your flyers.",
+    title: "Print Points",
+    sub: "Find a nearby place to print outreach cards.",
   },
   "/getstarted": {
     title: "Get Started",
@@ -57,7 +57,7 @@ const META: Record<string, { title: string; sub: string }> = {
   },
   "/guide": {
     title: "Volunteer Guide",
-    sub: "Everything you need to know to start flyering.",
+    sub: "Everything you need to know before your first mission.",
   },
 };
 
@@ -113,7 +113,7 @@ export default function Header({
     if (!query) return;
 
     window.dispatchEvent(
-      new CustomEvent("lemontree:map-search", {
+      new CustomEvent("voluntiers:map-search", {
         detail: query,
       }),
     );
@@ -129,11 +129,9 @@ export default function Header({
         padding: isMobile ? "0 16px" : "0 32px",
         minHeight: isMobile ? 72 : 64,
         flexShrink: 0,
-        background: "rgba(253,248,232,0.80)",
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        borderBottom: "1px solid rgba(190,155,70,0.16)",
-        boxShadow: "0 1px 0 rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03)",
+        background: "#F3F0E9",
+        borderBottom: "1px solid rgba(11, 11, 10, 0.16)",
+        boxShadow: "none",
         position: "sticky",
         top: 0,
         zIndex: 40,
@@ -148,9 +146,9 @@ export default function Header({
             style={{
               width: 40,
               height: 40,
-              borderRadius: 12,
-              background: "rgba(0,0,0,0.04)",
-              border: "1px solid rgba(190,155,70,0.18)",
+              borderRadius: 0,
+              background: "transparent",
+              border: "1px solid rgba(11, 11, 10,0.16)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -162,7 +160,7 @@ export default function Header({
               height="18"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#6a5a30"
+              stroke="#1A1917"
               strokeWidth="2"
               strokeLinecap="round"
             >
@@ -175,12 +173,12 @@ export default function Header({
         <div style={{ minWidth: 0 }}>
           <h1
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: isMobile ? 16 : 19,
-              fontWeight: 600,
-              color: "#1a1600",
-              lineHeight: 1.2,
-              letterSpacing: "-0.4px",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: isMobile ? 24 : 30,
+              fontWeight: 400,
+              color: "#0B0B0A",
+              lineHeight: 0.95,
+              letterSpacing: "-0.035em",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -192,9 +190,11 @@ export default function Header({
             <p
               style={{
                 fontSize: 12,
-                color: "#9a8a60",
-                marginTop: 1,
+                color: "#8A8780",
+                marginTop: 4,
                 whiteSpace: "nowrap",
+                fontFamily: "'JetBrains Mono', monospace",
+                letterSpacing: "0.08em",
               }}
             >
               {meta.sub}
@@ -215,9 +215,9 @@ export default function Header({
               alignItems: "center",
               gap: 8,
               padding: "5px 6px 5px 12px",
-              borderRadius: 12,
-              background: "rgba(0,0,0,0.045)",
-              border: "1px solid rgba(0,0,0,0.07)",
+              borderRadius: 0,
+              background: "rgba(11, 11, 10,0.045)",
+              border: "1px solid rgba(11, 11, 10,0.16)",
               width: 310,
             }}
           >
@@ -226,7 +226,7 @@ export default function Header({
               height="13"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#9a8a60"
+              stroke="#8A8780"
               strokeWidth="2.2"
               strokeLinecap="round"
             >
@@ -243,20 +243,23 @@ export default function Header({
                 border: "none",
                 outline: "none",
                 background: "transparent",
-                color: "#5f502d",
+                color: "#0B0B0A",
                 fontSize: 12.5,
               }}
             />
             <button
               type="submit"
               style={{
-                borderRadius: 10,
+                borderRadius: 0,
                 padding: "7px 12px",
-                background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
-                color: "#1a1000",
-                fontSize: 12,
-                fontWeight: 700,
-                boxShadow: "0 2px 10px rgba(245,200,66,0.25)",
+                background: "transparent",
+                color: "#D44A12",
+                border: "1px solid #D44A12",
+                fontSize: 11,
+                fontWeight: 400,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                boxShadow: "none",
               }}
             >
               Go
@@ -274,13 +277,15 @@ export default function Header({
             gap: 8,
             minHeight: 36,
             padding: isMobile ? "0 12px" : "0 14px",
-            borderRadius: 999,
-            background: "linear-gradient(135deg, #22C55E, #16A34A)",
-            color: "#ffffff",
-            border: "1px solid rgba(34,197,94,0.24)",
-            boxShadow: "var(--shadow-card)",
-            fontSize: 12,
-            fontWeight: 700,
+            borderRadius: 0,
+            background: "transparent",
+            color: "#D44A12",
+            border: "1px solid #D44A12",
+            boxShadow: "none",
+            fontSize: 11,
+            fontWeight: 400,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}
         >
@@ -289,8 +294,8 @@ export default function Header({
             style={{
               width: 18,
               height: 18,
-              borderRadius: 999,
-              background: "rgba(255,255,255,0.18)",
+              borderRadius: 0,
+              background: "rgba(212, 74, 18,0.08)",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -301,7 +306,7 @@ export default function Header({
               <path d="M12 21s-6.716-4.35-9.428-8.036C.75 10.49 1.3 6.972 4.11 5.27c2.117-1.283 4.755-.68 6.39 1.182 1.635-1.862 4.273-2.465 6.39-1.182 2.81 1.702 3.36 5.22 1.538 7.694C18.716 16.65 12 21 12 21Z" />
             </svg>
           </span>
-          Donate
+          Support
         </a>
 
         <Link
@@ -310,9 +315,9 @@ export default function Header({
           style={{
             width: 36,
             height: 36,
-            borderRadius: 10,
-            background: pathname === "/messages" ? "rgba(245,200,66,0.15)" : "rgba(0,0,0,0.04)",
-            border: pathname === "/messages" ? "1px solid rgba(245,200,66,0.25)" : "1px solid rgba(190,155,70,0.18)",
+            borderRadius: 0,
+            background: pathname === "/messages" ? "rgba(212, 74, 18,0.12)" : "rgba(11, 11, 10,0.045)",
+            border: pathname === "/messages" ? "1px solid rgba(212, 74, 18,0.26)" : "1px solid rgba(11, 11, 10,0.10)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -323,7 +328,7 @@ export default function Header({
             height="15"
             viewBox="0 0 24 24"
             fill="none"
-            stroke={pathname === "/messages" ? "#d97706" : "#6a5a30"}
+            stroke={pathname === "/messages" ? "#D44A12" : "#1A1917"}
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -337,15 +342,17 @@ export default function Header({
             style={{
               width: 36,
               height: 36,
-              borderRadius: 10,
-              background: "linear-gradient(135deg, #f5c842 0%, #e8a200 100%)",
+              borderRadius: 0,
+              background: "transparent",
+              border: "1px solid #D44A12",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 12,
-              fontWeight: 700,
-              color: "#1a1000",
-              boxShadow: "0 2px 10px rgba(245,200,66,0.35)",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 500,
+              color: "#D44A12",
+              boxShadow: "none",
               textDecoration: "none",
               overflow: "hidden",
             }}

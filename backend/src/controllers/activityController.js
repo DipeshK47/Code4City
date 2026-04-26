@@ -25,7 +25,7 @@ async function getRecentActivity(req, res) {
       return {
         username: row.username,
         session_id: row.session_id,
-        action: stopCount > 0 ? `Distributed ${stopCount} flyer${stopCount === 1 ? "" : "s"}` : "Completed a route session",
+        action: stopCount > 0 ? `Logged ${stopCount} outreach stop${stopCount === 1 ? "" : "s"}` : "Completed a route session",
         time: row.created_at,
         duration_seconds: row.duration_seconds,
         distance_meters: row.distance_meters,

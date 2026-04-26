@@ -53,9 +53,9 @@ export default function MeetupCard({
               alignItems: "center",
               gap: 8,
               padding: "5px 10px",
-              borderRadius: 999,
+              borderRadius: 2,
               background: "rgba(74,222,128,0.15)",
-              color: "#166534",
+              color: "#D44A12",
               fontSize: 11,
               fontWeight: 800,
               marginBottom: 10,
@@ -80,7 +80,7 @@ export default function MeetupCard({
         </div>
         <div
           style={{
-            borderRadius: 12,
+            borderRadius: 2,
             background: "rgba(255,255,255,0.78)",
             border: "1px solid rgba(0,0,0,0.06)",
             padding: "10px 12px",
@@ -119,7 +119,7 @@ export default function MeetupCard({
           <div
             key={item.label}
             style={{
-              borderRadius: 10,
+              borderRadius: 2,
               background: "rgba(255,255,255,0.72)",
               border: "1px solid var(--border-subtle)",
               padding: "12px 13px",
@@ -148,11 +148,11 @@ export default function MeetupCard({
           style={{
             ...primaryButtonStyle,
             opacity: token ? 1 : 0.55,
-            background: meetup.viewerJoined ? "#ffffff" : "linear-gradient(135deg, #22C55E, #16A34A)",
-            color: meetup.viewerJoined ? "var(--text-muted)" : "#ffffff",
+            background: meetup.viewerJoined ? "#F8F6F0" : "#D44A12",
+            color: meetup.viewerJoined ? "var(--text-muted)" : "#F8F6F0",
             border: meetup.viewerJoined
               ? "1px solid var(--border-subtle)"
-              : "1px solid rgba(245,200,66,0.24)",
+              : "1px solid rgba(212, 74, 18,0.24)",
             boxShadow: meetup.viewerJoined ? "none" : "var(--shadow-card)",
           }}
         >

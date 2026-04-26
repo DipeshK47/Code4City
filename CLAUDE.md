@@ -1,10 +1,10 @@
-# Lemontree Volunteer Hub
+# Volun-Tiers
 
 ## What This Is
 
-A volunteer operations platform for flyer-based food access outreach in NYC. Volunteers learn the process, find high-need neighborhoods, locate printers, walk routes distributing flyers, and track their impact. Think "Strava for food access volunteering" — with gamification, community features, and data-driven targeting.
+A volunteer operations platform for resource-card-based food access outreach in NYC. Volunteers learn the process, find high-need neighborhoods, locate printers, walk routes sharing outreach cards, and track their impact. Think "Strava for food access volunteering" — with gamification, community features, and data-driven targeting.
 
-**The core problem:** Free food resources exist but awareness is fragmented. Lemontree coordinates volunteers to distribute flyers in the right places, with the right info, repeatedly.
+**The core problem:** Free food resources exist but awareness is fragmented. Volun-Tiers coordinates volunteers to share outreach cards in the right places, with the right info, repeatedly.
 
 ## Stack
 
@@ -43,11 +43,11 @@ frontend/                          backend/
 1. **Sign up** → Onboarding with mission statement + terms acceptance
 2. **Learn** → Read the guide (`/guide`) or get-started flow (`/getstarted`)
 3. **Find zone** → Map shows food-insecure neighborhoods with hotspot locations scored by priority
-4. **Print flyers** → Printer finder locates nearby print shops with real pricing
-5. **Walk route** → Tracker records GPS path, stops (flyer drops), duration, distance
-6. **Save session** → Stats update: flyers distributed + hours volunteered
-7. **Climb leaderboard** → Ranking by weighted score `(flyers × 1.5) + hours`
-8. **Earn badges** → First Flyer, 100 Flyers, Streak (2+ consecutive days), Top 5, Top 1
+4. **Print outreach cards** → Printer finder locates nearby print shops with real pricing
+5. **Walk route** → Tracker records GPS path, stops (resource drops), duration, distance
+6. **Save session** → Stats update: resource cards logged + hours volunteered
+7. **Climb leaderboard** → Ranking by weighted score `(proofs x 1.5) + hours`
+8. **Earn badges** → First Proof, 100 Proofs, Streak (2+ consecutive days), Top 5, Top 1
 9. **Engage community** → Posts, meetups with group chat, direct messages
 
 ## Data Pipeline
@@ -65,7 +65,7 @@ frontend/                          backend/
 
 **Sessions** (Volunteer GPS → Supabase):
 - Route points, stops with labels, duration, Haversine distance
-- Increments `user_stats` (flyers + hours) and `user_daily_activity` (for streaks)
+- Increments `user_stats` (resource cards + hours) and `user_daily_activity` (for streaks)
 
 ## Backend API (all mounted, all working)
 
@@ -83,7 +83,7 @@ frontend/                          backend/
 | `POST /api/need-regions/import/nyc-open-data` | — | Import from NYC Open Data |
 | `GET /api/sessions` | JWT | User's route sessions |
 | `POST /api/sessions` | JWT | Save route session (updates stats) |
-| `GET /api/leaderboard` | — | Rankings (weighted: flyers×1.5 + hours) |
+| `GET /api/leaderboard` | — | Rankings (weighted: resource cards×1.5 + hours) |
 | `GET /api/badges` | JWT | Badge status + current stats |
 | `GET /api/activity/recent` | — | Last 5 completed sessions |
 | `GET/POST /api/community/posts` | Optional/JWT | Community feed |
@@ -118,16 +118,16 @@ frontend/                          backend/
 - `GET /api/place?id=...` — Place Details (coordinates by place_id)
 - `POST /api/chat` — Gemini AI chatbot
 
-## Citrus Chatbot (Gemini AI)
+## Relay Chatbot (Gemini AI)
 
-A floating 🍋 button on every page opens "Citrus", a Gemini-powered assistant (`gemini-3.1-flash-lite-preview`).
+A floating RL button on every page opens "Relay", a Gemini-powered assistant (`gemini-3.1-flash-lite-preview`).
 
 - **API route**: `POST /api/chat` (Next.js server-side, streams responses, keeps `GEMINI_API_KEY` out of browser)
-- **System prompt** gives it full Lemontree context: volunteer workflow, flyering tips (good locations, legal rules like "never put flyers in mailboxes — federal offense"), print shop pricing for all chains, and descriptions of every app feature
+- **System prompt** gives it full Volun-Tiers context: volunteer workflow, outreach tips (good locations, legal rules like "never put resource cards in mailboxes — federal offense"), print shop pricing for all chains, and descriptions of every app feature
 - **In-app linking**: Responses can include `[LINK:PAGE_NAME]` tags (GET_STARTED, GUIDE, PRINTERS, MAP, LEADERBOARD, PROFILE, FLYERS) that render as clickable buttons navigating the user to the right page
 - **Conversation history** maintained in-memory per session for context continuity
 - **Streaming**: Responses stream token-by-token with animated typing indicator
-- **Suggested prompts** on first open: "How do I get started?", "Where can I print flyers?", "How do I flyer?", "How does the map work?"
+- **Suggested prompts** on first open: "How do I get started?", "Where can I print outreach cards?", "How do missions work?", "How does the map work?"
 - **Component**: `frontend/components/chat/ChatbotWidget.tsx`, mounted globally in `AppShell.tsx`
 
 Note: The chatbot is separate from the DM and meetup chat features, which use the backend PostgreSQL database (dm_threads, dm_messages, meetup_messages tables).

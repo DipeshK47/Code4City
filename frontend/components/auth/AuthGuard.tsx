@@ -30,10 +30,10 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-          background: "radial-gradient(ellipse at 15% 0%, rgba(245,200,66,0.15) 0%, transparent 50%), #fdf8e8",
+          background: "#F3F0E9",
         }}
       >
-        <div style={{ fontSize: 18, color: "#9a8a60" }}>Loading…</div>
+        <div style={{ fontSize: 18, color: "#8A8780" }}>Loading…</div>
       </div>
     );
   }

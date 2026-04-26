@@ -19,7 +19,7 @@ export default function SessionSummary({
   if (!session) {
     return (
       <SectionCard title="Session Summary" subtitle="Complete a route to review it here.">
-        <p style={{ fontSize: 13, color: "#8a7a50", lineHeight: 1.6 }}>
+        <p style={{ fontSize: 13, color: "#8A8780", lineHeight: 1.6 }}>
           Start a session to begin recording GPS points, then stop it to see the route summary and save it to the backend.
         </p>
       </SectionCard>
@@ -36,10 +36,10 @@ export default function SessionSummary({
         <div
           style={{
             marginBottom: 16,
-            borderRadius: 18,
+            borderRadius: 2,
             overflow: "hidden",
-            border: "1px solid rgba(190,155,70,0.16)",
-            background: "#f7f3df",
+            border: "1px solid rgba(11, 11, 10,0.16)",
+            background: "#F8F6F0",
           }}
         >
           <Image
@@ -76,7 +76,7 @@ export default function SessionSummary({
           Stops Made
         </p>
         {session.stops.length === 0 ? (
-          <p style={{ fontSize: 13, color: "#8a7a50" }}>No stops were recorded for this session.</p>
+          <p style={{ fontSize: 13, color: "#8A8780" }}>No stops were recorded for this session.</p>
         ) : (
           <div style={{ display: "grid", gap: 8, maxHeight: 220, overflowY: "auto", paddingRight: 4 }}>
             {session.stops.map((stop) => (
@@ -84,15 +84,15 @@ export default function SessionSummary({
                 key={stop.id}
                 style={{
                   padding: "10px 12px",
-                  borderRadius: 12,
-                  background: "#fffaf0",
-                  border: "1px solid rgba(190,155,70,0.14)",
+                  borderRadius: 2,
+                  background: "#F8F6F0",
+                  border: "1px solid rgba(11, 11, 10,0.14)",
                 }}
               >
-                <p style={{ fontSize: 13, fontWeight: 600, color: "#1a1600" }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: "#0B0B0A" }}>
                   {[formatStopType(stop.type), stop.label].filter(Boolean).join(" | ")}
                 </p>
-                <p style={{ fontSize: 12, color: "#8a7a50", marginTop: 3 }}>
+                <p style={{ fontSize: 12, color: "#8A8780", marginTop: 3 }}>
                   {`${new Date(stop.timestamp).toLocaleTimeString()} | ${stop.lat.toFixed(5)}, ${stop.lng.toFixed(5)}`}
                 </p>
               </div>
@@ -101,7 +101,7 @@ export default function SessionSummary({
         )}
       </div>
 
-      <div style={{ marginTop: 18, fontSize: 12.5, color: saveState === "error" ? "#b91c1c" : "#8a7a50" }}>
+      <div style={{ marginTop: 18, fontSize: 12.5, color: saveState === "error" ? "#b91c1c" : "#8A8780" }}>
         {saveState === "saving" && "Saving session to backend..."}
         {saveState === "saved" && "Session saved to backend."}
         {saveState === "error" && (saveError ?? "Saving failed.")}
@@ -115,15 +115,15 @@ function SummaryItem({ label, value }: { label: string; value: string }) {
     <div
       style={{
         padding: "12px 14px",
-        borderRadius: 12,
-        background: "#fffdf5",
-        border: "1px solid rgba(190,155,70,0.14)",
+        borderRadius: 2,
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10,0.14)",
       }}
     >
       <p
         style={{
           fontSize: 11,
-          color: "#9a8a60",
+          color: "#8A8780",
           textTransform: "uppercase",
           letterSpacing: "0.08em",
           marginBottom: 6,
@@ -131,7 +131,7 @@ function SummaryItem({ label, value }: { label: string; value: string }) {
       >
         {label}
       </p>
-      <p style={{ fontSize: 14, fontWeight: 600, color: "#1a1600", lineHeight: 1.4 }}>{value}</p>
+      <p style={{ fontSize: 14, fontWeight: 600, color: "#0B0B0A", lineHeight: 1.4 }}>{value}</p>
     </div>
   );
 }

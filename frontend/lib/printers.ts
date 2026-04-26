@@ -19,13 +19,13 @@ export function getPrinterMiles(
 export function getPrinterEmoji(name: string): string {
   const normalizedName = name.toLowerCase();
 
-  if (normalizedName.includes("fedex") || normalizedName.includes("kinkos")) return "📮";
-  if (normalizedName.includes("ups")) return "📦";
-  if (normalizedName.includes("staples")) return "🖊️";
-  if (normalizedName.includes("library")) return "📚";
-  if (normalizedName.includes("office depot") || normalizedName.includes("officemax")) return "🗂️";
+  if (normalizedName.includes("fedex") || normalizedName.includes("kinkos")) return "FDX";
+  if (normalizedName.includes("ups")) return "UPS";
+  if (normalizedName.includes("staples")) return "STP";
+  if (normalizedName.includes("library")) return "LIB";
+  if (normalizedName.includes("office depot") || normalizedName.includes("officemax")) return "OFF";
 
-  return "🖨️";
+  return "PRT";
 }
 
 export const CHAIN_PRICES: { match: RegExp; bw: string; color: string }[] = [
@@ -41,8 +41,8 @@ export const PRICE_LEVEL_LABEL: Record<
 > = {
   PRICE_LEVEL_FREE: { label: "Free", color: "#15803d", bg: "#dcfce7" },
   PRICE_LEVEL_INEXPENSIVE: { label: "$", color: "#15803d", bg: "#dcfce7" },
-  PRICE_LEVEL_MODERATE: { label: "$$", color: "#92400e", bg: "rgba(245,200,66,0.18)" },
-  PRICE_LEVEL_EXPENSIVE: { label: "$$$", color: "#9a3412", bg: "#ffedd5" },
+  PRICE_LEVEL_MODERATE: { label: "$$", color: "#D44A12", bg: "rgba(212, 74, 18,0.18)" },
+  PRICE_LEVEL_EXPENSIVE: { label: "$$$", color: "#BE123C", bg: "#FFE4E6" },
   PRICE_LEVEL_VERY_EXPENSIVE: { label: "$$$$", color: "#7f1d1d", bg: "#fee2e2" },
 };
 
@@ -86,7 +86,7 @@ export async function fetchPrinters(lat: number, lng: number): Promise<Printer[]
       const tags: string[] = [];
 
       if (openNow === true) tags.push("Open Now");
-      if (place.rating) tags.push(`⭐ ${place.rating}`);
+      if (place.rating) tags.push(`Rating ${place.rating}`);
 
       return {
         id: place.id,

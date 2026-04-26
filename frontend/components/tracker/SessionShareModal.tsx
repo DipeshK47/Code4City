@@ -38,7 +38,7 @@ export default function SessionShareModal({
     }
 
     return [
-      "Volunteer route completed with Lemontree.",
+      "Volunteer route completed with Volun-Tiers.",
       `${formatDistance(session.totalDistanceMeters)} walked`,
       `${formatDuration(session.durationSeconds)} active time`,
       `${session.stops.length} stops logged`,
@@ -115,7 +115,7 @@ export default function SessionShareModal({
     const link = document.createElement("a");
     const timestamp = new Date(activeSession.endTime ?? activeSession.startTime).toISOString().slice(0, 10);
     link.href = activeSession.routeImageUrl;
-    link.download = `lemontree-route-${timestamp}.png`;
+    link.download = `voluntiers-route-${timestamp}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -147,18 +147,18 @@ export default function SessionShareModal({
           display: "flex",
           flexDirection: "column",
           gap: 0,
-          borderRadius: 20,
+          borderRadius: 2,
           overflow: "hidden",
-          background: "linear-gradient(180deg, #fffef9 0%, #fff8e8 100%)",
-          border: "1px solid rgba(190,155,70,0.16)",
-          boxShadow: "0 18px 40px rgba(46,27,0,0.22)",
+          background: "#F8F6F0",
+          border: "1px solid rgba(11, 11, 10,0.16)",
+          boxShadow: "none",
         }}
       >
         <div
           style={{
             padding: "12px 12px 8px",
-            background: "linear-gradient(180deg, #201300 0%, #2b1800 100%)",
-            color: "#fff8e8",
+            background: "#0B0B0A",
+            color: "#F8F6F0",
           }}
         >
           <div
@@ -177,7 +177,7 @@ export default function SessionShareModal({
                   fontWeight: 700,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: "rgba(245,200,66,0.72)",
+                  color: "rgba(212, 74, 18,0.72)",
                 }}
               >
                 Share Route
@@ -185,10 +185,10 @@ export default function SessionShareModal({
               <h3
                 style={{
                   margin: "4px 0 0",
-                  fontFamily: "'Fraunces', Georgia, serif",
+                  fontFamily: "'Instrument Serif', serif",
                 fontSize: 19,
                   lineHeight: 1.05,
-                  letterSpacing: "-0.04em",
+                  letterSpacing: 0,
                   color: "#f7e3ad",
                 }}
               >
@@ -201,10 +201,10 @@ export default function SessionShareModal({
               style={{
                 width: 34,
                 height: 34,
-                borderRadius: 9,
-                border: "1px solid rgba(245,200,66,0.16)",
+                borderRadius: 2,
+                border: "1px solid rgba(212, 74, 18,0.16)",
                 background: "rgba(255,255,255,0.06)",
-                color: "#fff8e8",
+                color: "#F8F6F0",
                 fontSize: 14,
                 cursor: "pointer",
               }}
@@ -228,10 +228,10 @@ export default function SessionShareModal({
           <div
             style={{
               padding: "8px 12px",
-              background: "rgba(245,200,66,0.2)",
-              borderBottom: "1px solid rgba(190,155,70,0.2)",
+              background: "rgba(212, 74, 18,0.2)",
+              borderBottom: "1px solid rgba(11, 11, 10,0.2)",
               fontSize: 11,
-              color: "#5a4a20",
+              color: "#1A1917",
               textAlign: "center",
             }}
           >
@@ -251,8 +251,8 @@ export default function SessionShareModal({
             style={{
               borderRadius: 15,
               overflow: "hidden",
-              border: "1px solid rgba(190,155,70,0.16)",
-              background: "#f7f3df",
+              border: "1px solid rgba(11, 11, 10,0.16)",
+              background: "#F8F6F0",
             }}
           >
             <SessionRoutePreview session={session} height={contained ? 280 : 304} />
@@ -264,8 +264,8 @@ export default function SessionShareModal({
                 position: "relative",
                 borderRadius: 15,
                 overflow: "hidden",
-                border: "1px solid rgba(190,155,70,0.16)",
-                background: "#f7f3df",
+                border: "1px solid rgba(11, 11, 10,0.16)",
+                background: "#F8F6F0",
                 minHeight: 130,
                 height: 150,
               }}
@@ -304,9 +304,9 @@ export default function SessionShareModal({
           <div
             style={{
               padding: "8px 10px",
-              borderRadius: 14,
-              background: "#fffdf5",
-              border: "1px solid rgba(190,155,70,0.14)",
+              borderRadius: 2,
+              background: "#F8F6F0",
+              border: "1px solid rgba(11, 11, 10,0.14)",
               display: "grid",
               gap: 5,
             }}
@@ -324,7 +324,7 @@ export default function SessionShareModal({
               Stops made
             </p>
             {session.stops.length === 0 ? (
-              <p style={{ margin: 0, fontSize: 13, color: "#8a7a50", lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: 13, color: "#8A8780", lineHeight: 1.5 }}>
                 No stops were recorded for this session.
               </p>
             ) : (
@@ -334,15 +334,15 @@ export default function SessionShareModal({
                     key={stop.id}
                     style={{
                       padding: "7px 9px",
-                      borderRadius: 10,
-                      background: "#fffaf0",
-                      border: "1px solid rgba(190,155,70,0.14)",
+                      borderRadius: 2,
+                      background: "#F8F6F0",
+                      border: "1px solid rgba(11, 11, 10,0.14)",
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#1a1600" }}>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0B0B0A" }}>
                       {[formatStopType(stop.type), stop.label].filter(Boolean).join(" | ")}
                     </p>
-                    <p style={{ margin: "3px 0 0", fontSize: 12, color: "#8a7a50" }}>
+                    <p style={{ margin: "3px 0 0", fontSize: 12, color: "#8A8780" }}>
                       {`${new Date(stop.timestamp).toLocaleTimeString()} | ${stop.lat.toFixed(5)}, ${stop.lng.toFixed(5)}`}
                     </p>
                   </div>
@@ -354,7 +354,7 @@ export default function SessionShareModal({
           <div
             style={{
               fontSize: 12.5,
-              color: saveState === "error" ? "#b91c1c" : "#8a7a50",
+              color: saveState === "error" ? "#b91c1c" : "#8A8780",
               minHeight: 18,
             }}
           >
@@ -388,12 +388,12 @@ export default function SessionShareModal({
               justifyContent: "space-between",
               width: "100%",
               padding: "9px 11px",
-              borderRadius: 12,
+              borderRadius: 2,
               cursor: "pointer",
-              border: "1px solid rgba(245,200,66,0.34)",
-              background: "linear-gradient(135deg, #f5c842 0%, #f0b21f 100%)",
-              color: "#1a1000",
-              boxShadow: "0 14px 28px rgba(245,200,66,0.22)",
+              border: "1px solid rgba(212, 74, 18,0.34)",
+              background: "#D44A12",
+              color: "#0B0B0A",
+              boxShadow: "none",
             }}
           >
             <span>
@@ -424,11 +424,11 @@ export default function SessionShareModal({
               justifyContent: "space-between",
               width: "100%",
               padding: "8px 11px",
-              borderRadius: 12,
+              borderRadius: 2,
               cursor: !session.routeImageUrl ? "not-allowed" : "pointer",
-              border: "1px solid rgba(190,155,70,0.16)",
-              background: !session.routeImageUrl ? "rgba(245,239,219,0.7)" : "#fffdf5",
-              color: !session.routeImageUrl ? "#b7aa7f" : "#1a1600",
+              border: "1px solid rgba(11, 11, 10,0.16)",
+              background: !session.routeImageUrl ? "rgba(245,239,219,0.7)" : "#F8F6F0",
+              color: !session.routeImageUrl ? "#b7aa7f" : "#0B0B0A",
             }}
           >
             <span
@@ -449,7 +449,7 @@ export default function SessionShareModal({
           <div
             style={{
               fontSize: 11.5,
-              color: shareState === "error" ? "#b91c1c" : "#8a7a50",
+              color: shareState === "error" ? "#b91c1c" : "#8A8780",
               minHeight: 16,
             }}
           >
@@ -472,23 +472,23 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
     <div
       style={{
         padding: "10px 12px",
-        borderRadius: 12,
-        background: "#fffdf5",
-        border: "1px solid rgba(190,155,70,0.14)",
+        borderRadius: 2,
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10,0.14)",
       }}
     >
       <p
         style={{
           margin: 0,
           fontSize: 10.5,
-          color: "#9a8a60",
+          color: "#8A8780",
           textTransform: "uppercase",
           letterSpacing: "0.08em",
         }}
       >
         {label}
       </p>
-      <p style={{ margin: "4px 0 0", fontSize: 13, fontWeight: 600, color: "#1a1600", lineHeight: 1.3 }}>
+      <p style={{ margin: "4px 0 0", fontSize: 13, fontWeight: 600, color: "#0B0B0A", lineHeight: 1.3 }}>
         {value}
       </p>
     </div>
@@ -515,10 +515,10 @@ function IconAction({
         placeItems: "center",
         gap: 6,
         padding: "8px 6px 8px",
-        borderRadius: 14,
-        border: "1px solid rgba(190,155,70,0.16)",
-        background: "#fffdf5",
-        color: "#1a1600",
+        borderRadius: 2,
+        border: "1px solid rgba(11, 11, 10,0.16)",
+        background: "#F8F6F0",
+        color: "#0B0B0A",
         cursor: "pointer",
       }}
     >
@@ -526,11 +526,11 @@ function IconAction({
         style={{
           width: 34,
           height: 34,
-          borderRadius: 12,
+          borderRadius: 2,
           display: "grid",
           placeItems: "center",
-          background: "linear-gradient(135deg, #fff5cf 0%, #fffdf5 100%)",
-          border: "1px solid rgba(245,200,66,0.16)",
+          background: "#F8F6F0",
+          border: "1px solid rgba(212, 74, 18,0.16)",
         }}
       >
         {icon}
@@ -571,7 +571,7 @@ function InstagramGlyph() {
         borderRadius: 7,
         display: "grid",
         placeItems: "center",
-        background: "linear-gradient(135deg, #f9ce34 0%, #ee2a7b 52%, #6228d7 100%)",
+        background: "#D44A12",
       }}
     >
       <svg
@@ -579,7 +579,7 @@ function InstagramGlyph() {
         height="13"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#ffffff"
+        stroke="#F8F6F0"
         strokeWidth="1.9"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -587,7 +587,7 @@ function InstagramGlyph() {
       >
         <rect x="3" y="3" width="18" height="18" rx="5" />
         <circle cx="12" cy="12" r="4" />
-        <circle cx="17.5" cy="6.5" r="1" fill="#ffffff" stroke="none" />
+        <circle cx="17.5" cy="6.5" r="1" fill="#F8F6F0" stroke="none" />
       </svg>
     </span>
   );
@@ -641,7 +641,7 @@ async function getShareFiles(session: VolunteerSession) {
   try {
     const response = await fetch(session.routeImageUrl);
     const blob = await response.blob();
-    return [new File([blob], "lemontree-route.png", { type: blob.type || "image/png" })];
+    return [new File([blob], "voluntiers-route.png", { type: blob.type || "image/png" })];
   } catch {
     return [];
   }

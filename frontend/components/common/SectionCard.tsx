@@ -19,16 +19,16 @@ export default function SectionCard({
 }: SectionCardProps) {
   const base: React.CSSProperties = dark
     ? {
-        background: "linear-gradient(135deg, #1a1200 0%, #2c1e00 100%)",
-        border: "1px solid rgba(245,200,66,0.15)",
-        borderRadius: 16,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.18)",
+        background: "#0B0B0A",
+        border: "1px solid rgba(212, 74, 18, 0.18)",
+        borderRadius: 2,
+        boxShadow: "none",
       }
     : {
-        background: "#ffffff",
-        border: "1px solid rgba(190,155,70,0.18)",
-        borderRadius: 16,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+        background: "#F8F6F0",
+        border: "1px solid rgba(11, 11, 10, 0.16)",
+        borderRadius: 2,
+        boxShadow: "none",
       };
 
   return (
@@ -47,19 +47,19 @@ export default function SectionCard({
             {title && (
               <h3
                 style={{
-                  fontFamily: "'Fraunces', Georgia, serif",
-                  fontSize: 17,
-                  fontWeight: 700,
-                  color: dark ? "#f5c842" : "#1a1600",
-                  letterSpacing: "-0.3px",
-                  lineHeight: 1.2,
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: 30,
+                  fontWeight: 400,
+                  color: dark ? "#D44A12" : "#0B0B0A",
+                  letterSpacing: "-0.035em",
+                  lineHeight: 1,
                 }}
               >
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p style={{ fontSize: 12, color: dark ? "rgba(245,200,66,0.45)" : "#9a8a60", marginTop: 3 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: dark ? "rgba(248, 246, 240,0.58)" : "#8A8780", marginTop: 8, letterSpacing: "0.12em", textTransform: "uppercase" }}>
                 {subtitle}
               </p>
             )}

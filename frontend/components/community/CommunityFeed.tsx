@@ -24,12 +24,12 @@ export default function CommunityFeed({
     return (
       <div
         style={{
-          borderRadius: 20,
-          border: "1px dashed rgba(190,155,70,0.26)",
+          borderRadius: 2,
+          border: "1px dashed rgba(11, 11, 10,0.26)",
           padding: "28px 24px",
           textAlign: "center",
           background: "rgba(255,255,255,0.72)",
-          color: "#8a7a50",
+          color: "#8A8780",
         }}
       >
         No community posts yet. Start with a route update, meetup plan, or volunteer question.

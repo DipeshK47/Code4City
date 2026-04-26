@@ -159,7 +159,7 @@ export default function CommunityPageClient() {
                   <div
                     key={item}
                     style={{
-                      borderRadius: 10,
+                      borderRadius: 2,
                       background: "#FCFCFA",
                       border: "1px solid var(--border-subtle)",
                       padding: "12px 13px",
@@ -195,7 +195,7 @@ export default function CommunityPageClient() {
                       alignItems: "center",
                       gap: 8,
                       padding: "5px 10px",
-                      borderRadius: 999,
+                      borderRadius: 2,
                       background: "var(--accent-amber-muted)",
                       color: "#7a5200",
                       fontSize: 11,
@@ -205,7 +205,7 @@ export default function CommunityPageClient() {
                       marginBottom: 14,
                     }}
                   >
-                    Lemontree Community
+                    Volun-Tiers Community
                   </div>
                   <h1>
                     Coordinate volunteers, routes, and meetups in one feed.
@@ -363,9 +363,9 @@ export default function CommunityPageClient() {
                         </div>
                         <div
                           style={{
-                            borderRadius: 999,
+                            borderRadius: 2,
                             background: "var(--accent-green-muted)",
-                            color: "#166534",
+                            color: "#D44A12",
                             padding: "6px 9px",
                             height: "fit-content",
                             fontSize: 11,
@@ -432,12 +432,12 @@ function IconActionButton({
   const accentStyle: Record<typeof accent, React.CSSProperties> = {
     green: {
       background: "var(--gradient-btn-primary)",
-      color: "#ffffff",
-      borderColor: "rgba(245,200,66,0.24)",
+      color: "#F8F6F0",
+      borderColor: "rgba(212, 74, 18,0.24)",
     },
     amber: {
-      background: "linear-gradient(135deg, #F59E0B, #D97706)",
-      color: "#ffffff",
+      background: "#D44A12",
+      color: "#F8F6F0",
       borderColor: "rgba(245,158,11,0.2)",
     },
     ghost: {
@@ -487,10 +487,10 @@ function LoadingFeed() {
             gap: 12,
           }}
         >
-          <div className="anim-shimmer" style={{ width: 180, height: 14, borderRadius: 999 }} />
-          <div className="anim-shimmer" style={{ width: "68%", height: 22, borderRadius: 999 }} />
-          <div className="anim-shimmer" style={{ width: "100%", height: 12, borderRadius: 999 }} />
-          <div className="anim-shimmer" style={{ width: "84%", height: 12, borderRadius: 999 }} />
+          <div className="anim-shimmer" style={{ width: 180, height: 14, borderRadius: 2 }} />
+          <div className="anim-shimmer" style={{ width: "68%", height: 22, borderRadius: 2 }} />
+          <div className="anim-shimmer" style={{ width: "100%", height: 12, borderRadius: 2 }} />
+          <div className="anim-shimmer" style={{ width: "84%", height: 12, borderRadius: 2 }} />
         </div>
       ))}
     </div>

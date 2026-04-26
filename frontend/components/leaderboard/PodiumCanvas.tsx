@@ -310,7 +310,7 @@ export default function PodiumCanvas({ podiumData }: { podiumData: PodiumEntry[]
     };
   }, [podiumData]);
 
-  return <div ref={mountRef} style={{ width: "100%", height: "100%", minHeight: 360, borderRadius: 16 }} />;
+  return <div ref={mountRef} style={{ width: "100%", height: "100%", minHeight: 360, borderRadius: 2 }} />;
 }
 
 async function applyPhotoBadge(THREE: any, url: string) {
@@ -393,7 +393,7 @@ function createInitialSprite(THREE: any, initials: string) {
   context.beginPath();
   context.arc(64, 64, 56, 0, Math.PI * 2);
   context.fill();
-  context.fillStyle = "#1a1000";
+  context.fillStyle = "#0B0B0A";
   context.font = "700 42px sans-serif";
   context.textAlign = "center";
   context.textBaseline = "middle";
@@ -414,7 +414,7 @@ function createMedalMesh(THREE: any, label: string, color: number) {
   }
 
   const gradient = context.createRadialGradient(96, 86, 18, 96, 96, 90);
-  gradient.addColorStop(0, "#fff9db");
+  gradient.addColorStop(0, "#F8F6F0");
   gradient.addColorStop(0.45, `#${color.toString(16).padStart(6, "0")}`);
   gradient.addColorStop(1, "#5b3a03");
 
