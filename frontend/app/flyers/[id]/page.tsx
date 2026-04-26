@@ -1,4 +1,4 @@
-import { SERVICE_TYPE_COLORS, type ServiceType } from "@/lib/service-resources";
+import { SERVICE_TYPE_COLORS, SERVICE_TYPE_LABELS, type ServiceType } from "@/lib/service-resources";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ||
@@ -61,6 +61,14 @@ async function fetchFlyer(id: string): Promise<Flyer | null> {
   }
 }
 
+function categoryAccent(cat: string): string {
+  return SERVICE_TYPE_COLORS[cat as ServiceType] || "#D44A12";
+}
+
+function categoryLabel(cat: string, fallback: string): string {
+  return SERVICE_TYPE_LABELS[cat as ServiceType] || fallback || cat;
+}
+
 export default async function FlyerPage({
   params,
 }: {
@@ -72,17 +80,21 @@ export default async function FlyerPage({
   if (!flyer) {
     return (
       <main style={errorPageStyle}>
-        <h1>Flyer not found</h1>
-        <p>This flyer may have been deleted or the link is incorrect.</p>
+        <div style={errorCardStyle}>
+          <div style={errorBadgeStyle}>404</div>
+          <h1 style={errorHeadingStyle}>Flyer not found</h1>
+          <p style={errorBodyStyle}>
+            This flyer may have been deleted or the link is incorrect.
+          </p>
+        </div>
       </main>
     );
   }
 
-  const accent =
-    SERVICE_TYPE_COLORS[flyer.dominantCategory as ServiceType] || "#D44A12";
-  const qrTarget = flyer.qrSlug
-    ? `${APP_BASE_URL}/qr/${flyer.qrSlug}`
-    : flyer.qrTargetUrl || `${APP_BASE_URL}/resources/${flyer.dropLat},${flyer.dropLng}`;
+  const accent = categoryAccent(flyer.dominantCategory);
+  // Use the flyer-specific scan redirect: tracks who pasted the flyer (via flyer→userId)
+  // and redirects the scanner directly to Google Maps with resource locations.
+  const qrTarget = `${API_BASE_URL}/f/${flyer.id}`;
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
 
   const labels = flyer.translatedLabels || null;
@@ -433,4 +445,42 @@ const errorPageStyle: React.CSSProperties = {
   padding: 48,
   textAlign: "center",
   fontFamily: "DM Sans, system-ui, sans-serif",
+};
+
+const errorCardStyle: React.CSSProperties = {
+  display: "inline-block",
+  maxWidth: 400,
+  padding: "40px 32px",
+  background: "#FFFFFF",
+  border: "1px solid #E5E1DA",
+  borderRadius: 4,
+  textAlign: "center",
+};
+
+const errorBadgeStyle: React.CSSProperties = {
+  display: "inline-block",
+  background: "#D44A12",
+  color: "#FFFFFF",
+  fontFamily: "DM Sans, system-ui, sans-serif",
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.16em",
+  textTransform: "uppercase",
+  padding: "3px 10px",
+  marginBottom: 16,
+};
+
+const errorHeadingStyle: React.CSSProperties = {
+  margin: "0 0 10px",
+  fontFamily: "'Fraunces', serif",
+  fontSize: 26,
+  fontWeight: 400,
+  color: "#0f172a",
+};
+
+const errorBodyStyle: React.CSSProperties = {
+  margin: 0,
+  fontFamily: "DM Sans, system-ui, sans-serif",
+  fontSize: 14,
+  color: "#64748b",
 };

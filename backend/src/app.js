@@ -50,7 +50,8 @@ app.use("/api/route-planner", routePlannerRoutes);
 
 app.use("/api/qr", qrRoutes);
 
-const { handleScanAndRedirect } = require("./controllers/qrController");
+const { handleScanAndRedirect, handleFlyerScan } = require("./controllers/qrController");
 app.get("/qr/:slug", handleScanAndRedirect);
+app.get("/f/:id", handleFlyerScan);
 
 module.exports = app;

@@ -49,7 +49,7 @@ test.describe("UrbanReach outreach events", () => {
     const eventId = created.data.id;
 
     await page.addInitScript(() => {
-      window.localStorage.setItem("lemontree_guest", "1");
+      window.localStorage.setItem("voluntiers_guest", "1");
     });
 
     await page.goto(`/events/${eventId}`);
@@ -73,7 +73,7 @@ test.describe("UrbanReach outreach events", () => {
     page,
   }) => {
     await page.addInitScript(() => {
-      window.localStorage.setItem("lemontree_guest", "1");
+      window.localStorage.setItem("voluntiers_guest", "1");
     });
 
     await page.goto("/events");

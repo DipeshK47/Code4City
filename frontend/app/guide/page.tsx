@@ -20,7 +20,7 @@ const sections: Section[] = [
     body: "Volun-Tiers helps volunteers cover priority zones with clear outreach, useful resource cards, and measurable follow-through. The goal is simple: make local support easier to find, one mission at a time.",
     media: "image",
     mediaNote: "Photo - volunteers coordinating before an outreach route.",
-    imageSrc: "/guide-mission.jpg",
+    imageSrc: "/guide-mission.png",
   },
   {
     emoji: "02",
@@ -28,7 +28,7 @@ const sections: Section[] = [
     body: <>Head to the <a href="/getstarted" style={{ color: "#D44A12", fontWeight: 700, textDecoration: "none" }}>Get Started</a> page or visit <a href="https://www.foodhelpline.org/share" target="_blank" rel="noreferrer" style={{ color: "#D44A12", fontWeight: 700, textDecoration: "none" }}>foodhelpline.org/share</a> to generate a local outreach kit. Print 50 to 100 cards at a nearby copy shop, FedEx, Staples, or your local library.</>,
     media: "image",
     mediaNote: "Photo - printing outreach cards at a copy shop.",
-    imageSrc: "https://images.unsplash.com/photo-1562564055-71e051d33c19?w=960&h=540&fit=crop",
+    imageSrc: "/guide-kit.png",
   },
   {
     emoji: "03",
@@ -36,7 +36,7 @@ const sections: Section[] = [
     body: "Think of places where neighbors naturally pause: laundromats, cafes, church lobbies, community boards, barbershops, libraries, and clinics. Use the Map to find priority areas near you. Always ask before leaving materials inside a business.",
     media: "image",
     mediaNote: "Photo - community board with resource cards pinned up.",
-    imageSrc: "https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=960&h=540&fit=crop",
+    imageSrc: "/guide-locations.png",
   },
   {
     emoji: "04",
@@ -44,7 +44,7 @@ const sections: Section[] = [
     body: "Keep it short and kind: \"Hi, I'm volunteering with Volun-Tiers. This card points people to nearby support.\" You do not need to explain everything. The resource card carries the details.",
     media: "image",
     mediaNote: "Photo - volunteers talking to community members.",
-    imageSrc: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=960&h=540&fit=crop",
+    imageSrc: "/guide-talking.png",
   },
   {
     emoji: "05",
@@ -52,7 +52,7 @@ const sections: Section[] = [
     body: "Public outreach is allowed in many shared spaces, but private property needs permission. Never put materials in mailboxes. When in doubt, ask first and move on respectfully.",
     media: "image",
     mediaNote: "Photo - public sidewalk and private-property boundary.",
-    imageSrc: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=960&h=540&fit=crop",
+    imageSrc: "/guide-hospitals.png",
   },
   {
     emoji: "06",
@@ -60,7 +60,7 @@ const sections: Section[] = [
     body: "Stick to daylight hours and busy streets. Bring a friend if you can. If a conversation turns uncomfortable, do not engage. Move on, log the route, and keep the mission steady.",
     media: "image",
     mediaNote: "Photo - two volunteers walking together on a well-lit street.",
-    imageSrc: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=960&h=540&fit=crop",
+    imageSrc: "/guide-safety.png",
   },
 ];
 

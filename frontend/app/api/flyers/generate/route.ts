@@ -162,7 +162,7 @@ async function generateCopy({
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite-preview",
+      model: "gemini-2.5-flash-lite",
     });
 
     const resourceList = dominant.resources

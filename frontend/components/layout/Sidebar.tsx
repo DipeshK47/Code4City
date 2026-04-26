@@ -136,20 +136,19 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
               width: 38,
               height: 38,
               borderRadius: 0,
-              background: "transparent",
+              background: "#F8F6F0",
               border: "1px solid #D44A12",
-              boxShadow: "none",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 11,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 500,
-              letterSpacing: "0.14em",
-              color: "#D44A12",
               flexShrink: 0,
+              overflow: "hidden",
             }}>
-              VT
+              <img
+                src="/logo.png"
+                alt="Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6 }}
+              />
             </div>
             <div>
               <div style={{
