@@ -102,15 +102,22 @@ async function saveFlyer({
   resources,
   qrSlug,
   qrTargetUrl,
+  secondaryLanguage,
+  secondaryLanguageName,
+  headlineTranslated,
+  blurbTranslated,
+  translatedLabels,
 }) {
   const id = crypto.randomBytes(8).toString("hex");
 
   await query(
     `INSERT INTO generated_flyers (
        id, user_id, drop_name, drop_lat, drop_lng, region_code, region_name,
-       dominant_category, headline, blurb, resources_json, qr_slug, qr_target_url
+       dominant_category, headline, blurb, resources_json, qr_slug, qr_target_url,
+       secondary_language, secondary_language_name, headline_translated, blurb_translated,
+       translated_labels
      ) VALUES (
-       $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12, $13
+       $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12, $13, $14, $15, $16, $17, $18::jsonb
      )`,
     [
       id,
@@ -126,6 +133,11 @@ async function saveFlyer({
       JSON.stringify(resources || []),
       qrSlug || null,
       qrTargetUrl || null,
+      secondaryLanguage || null,
+      secondaryLanguageName || null,
+      headlineTranslated || null,
+      blurbTranslated || null,
+      translatedLabels ? JSON.stringify(translatedLabels) : null,
     ],
   );
 
@@ -233,6 +245,14 @@ function normalizeFlyerRow(row) {
         : row.resources_json,
     qrSlug: row.qr_slug,
     qrTargetUrl: row.qr_target_url,
+    secondaryLanguage: row.secondary_language,
+    secondaryLanguageName: row.secondary_language_name,
+    headlineTranslated: row.headline_translated,
+    blurbTranslated: row.blurb_translated,
+    translatedLabels:
+      typeof row.translated_labels === "string"
+        ? JSON.parse(row.translated_labels)
+        : row.translated_labels,
     createdAt: row.created_at,
   };
 }

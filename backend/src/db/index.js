@@ -320,6 +320,12 @@ async function initDb() {
 
       CREATE INDEX IF NOT EXISTS idx_generated_flyers_user_id ON generated_flyers (user_id);
       CREATE INDEX IF NOT EXISTS idx_generated_flyers_created_at ON generated_flyers (created_at DESC);
+
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS secondary_language TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS secondary_language_name TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS headline_translated TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS blurb_translated TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS translated_labels JSONB;
     `);
 
     if (fs.existsSync(communitySchemaPath)) {

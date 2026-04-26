@@ -19,6 +19,16 @@ type FlyerResource = {
   distance: number;
 };
 
+type TranslatedLabels = {
+  category?: string;
+  freeLowCost?: string;
+  closestToYou?: string;
+  scanForMore?: string;
+  scanForMoreBlurb?: string;
+  postedAt?: string;
+  milesShort?: string;
+};
+
 type Flyer = {
   id: string;
   dropName: string;
@@ -32,6 +42,11 @@ type Flyer = {
   resources: FlyerResource[];
   qrSlug: string | null;
   qrTargetUrl: string | null;
+  secondaryLanguage: string | null;
+  secondaryLanguageName: string | null;
+  headlineTranslated: string | null;
+  blurbTranslated: string | null;
+  translatedLabels: TranslatedLabels | null;
   createdAt: string;
 };
 
@@ -70,6 +85,9 @@ export default async function FlyerPage({
     : flyer.qrTargetUrl || `${APP_BASE_URL}/resources/${flyer.dropLat},${flyer.dropLng}`;
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrTarget)}`;
 
+  const labels = flyer.translatedLabels || null;
+  const lang = flyer.secondaryLanguage || undefined;
+
   return (
     <main style={pageStyle}>
       <div style={{ ...flyerStyle, borderColor: accent }}>
@@ -92,31 +110,84 @@ export default async function FlyerPage({
             }}
           >
             {flyer.dominantCategoryLabel} · Free & low-cost
+            {labels?.category && labels?.freeLowCost ? (
+              <>
+                {" / "}
+                <span lang={lang}>
+                  {labels.category} · {labels.freeLowCost}
+                </span>
+              </>
+            ) : null}
           </p>
           <h1
             style={{
               margin: "6px 0 0",
               fontFamily: "Fraunces, Georgia, serif",
-              fontSize: 32,
+              fontSize: 30,
               fontWeight: 600,
               lineHeight: 1.15,
             }}
           >
             {flyer.headline}
           </h1>
+          {flyer.headlineTranslated ? (
+            <h2
+              lang={flyer.secondaryLanguage || undefined}
+              style={{
+                margin: "8px 0 0",
+                fontFamily: "Fraunces, Georgia, serif",
+                fontSize: 22,
+                fontWeight: 500,
+                lineHeight: 1.2,
+                opacity: 0.92,
+                fontStyle: "italic",
+              }}
+            >
+              {flyer.headlineTranslated}
+            </h2>
+          ) : null}
         </header>
 
-        <section style={{ padding: "24px 28px 12px" }}>
+        <section style={{ padding: "20px 28px 8px" }}>
           <p
             style={{
               margin: 0,
-              fontSize: 17,
+              fontSize: 16,
               lineHeight: 1.45,
               color: "#1A1917",
             }}
           >
             {flyer.blurb}
           </p>
+          {flyer.blurbTranslated ? (
+            <p
+              lang={flyer.secondaryLanguage || undefined}
+              style={{
+                margin: "10px 0 0",
+                fontSize: 15,
+                lineHeight: 1.45,
+                color: "#3A3833",
+                paddingTop: 10,
+                borderTop: `1px dashed ${accent}55`,
+              }}
+            >
+              {flyer.blurbTranslated}
+            </p>
+          ) : null}
+          {flyer.secondaryLanguageName ? (
+            <p
+              style={{
+                margin: "8px 0 0",
+                fontSize: 10.5,
+                color: "#8A8780",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                fontWeight: 700,
+              }}
+            >
+              English / {flyer.secondaryLanguageName}
+            </p>
+          ) : null}
         </section>
 
         <section style={{ padding: "8px 28px 16px" }}>
@@ -131,6 +202,12 @@ export default async function FlyerPage({
             }}
           >
             Closest to you
+            {labels?.closestToYou ? (
+              <>
+                {" / "}
+                <span lang={lang}>{labels.closestToYou}</span>
+              </>
+            ) : null}
           </p>
 
           {flyer.resources.map((resource, index) => (
@@ -198,7 +275,7 @@ export default async function FlyerPage({
                   alignSelf: "flex-start",
                 }}
               >
-                {resource.distance.toFixed(1)} mi
+                {resource.distance.toFixed(1)} {labels?.milesShort && labels.milesShort !== "mi" ? `mi / ${labels.milesShort}` : "mi"}
               </div>
             </article>
           ))}
@@ -234,21 +311,49 @@ export default async function FlyerPage({
               }}
             >
               Scan for more
+              {labels?.scanForMore ? (
+                <>
+                  {" / "}
+                  <span lang={lang}>{labels.scanForMore}</span>
+                </>
+              ) : null}
             </p>
             <p
               style={{
                 margin: "4px 0 0",
                 fontFamily: "Fraunces, Georgia, serif",
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: 600,
                 lineHeight: 1.25,
               }}
             >
               See every nearby resource — food, shelter, healthcare and more.
             </p>
+            {labels?.scanForMoreBlurb ? (
+              <p
+                lang={lang}
+                style={{
+                  margin: "4px 0 0",
+                  fontFamily: "Fraunces, Georgia, serif",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  lineHeight: 1.25,
+                  fontStyle: "italic",
+                  color: "#3A3833",
+                }}
+              >
+                {labels.scanForMoreBlurb}
+              </p>
+            ) : null}
             <p style={{ margin: "8px 0 0", fontSize: 10.5, color: "#8A8780" }}>
               Volun-Tiers · Posted at {flyer.dropName}
               {flyer.regionName ? ` · ${flyer.regionName}` : ""}
+              {labels?.postedAt && labels.postedAt.toLowerCase() !== "posted at" ? (
+                <>
+                  {" · "}
+                  <span lang={lang}>{labels.postedAt} {flyer.dropName}</span>
+                </>
+              ) : null}
             </p>
           </div>
         </footer>

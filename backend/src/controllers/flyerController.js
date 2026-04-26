@@ -33,6 +33,11 @@ async function createFlyer(req, res) {
       resources,
       qrSlug,
       qrTargetUrl,
+      secondaryLanguage,
+      secondaryLanguageName,
+      headlineTranslated,
+      blurbTranslated,
+      translatedLabels,
     } = req.body || {};
 
     if (!dropName || !Number.isFinite(lat) || !Number.isFinite(lng)) {
@@ -61,6 +66,11 @@ async function createFlyer(req, res) {
       resources,
       qrSlug,
       qrTargetUrl,
+      secondaryLanguage,
+      secondaryLanguageName,
+      headlineTranslated,
+      blurbTranslated,
+      translatedLabels,
     });
 
     res.status(200).json({ success: true, data: flyer });
