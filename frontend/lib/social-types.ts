@@ -64,6 +64,22 @@ export type CommunityComment = {
   replies: CommunityComment[];
 };
 
+export type CoordinatorAssignmentStop = {
+  id: string;
+  name: string;
+  category: string;
+  address?: string | null;
+  lat: number;
+  lng: number;
+  regionCode?: string | null;
+  regionName?: string | null;
+  regionNeedScore?: number | null;
+  covered?: boolean;
+  lastProofAt?: string | null;
+  direction?: string;
+  distanceMiles?: number;
+};
+
 export type CoordinatorAssignment = {
   userId: string;
   username: string;
@@ -71,6 +87,7 @@ export type CoordinatorAssignment = {
   focusCategory: string;
   roleTitle: string;
   task: string;
+  assignedStops?: CoordinatorAssignmentStop[];
 };
 
 export type MeetupMessage = {

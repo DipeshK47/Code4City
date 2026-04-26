@@ -85,7 +85,149 @@ async function generateAssignmentPlan(meetupId) {
 
   const aiPlan = await callGeminiForPlan(ctx);
   const plan = aiPlan || fallbackPlan(ctx);
+  await attachAssignedStops(plan, ctx);
   return plan;
+}
+
+const STOPS_PER_MEMBER = 5;
+
+function haversineMiles(lat1, lng1, lat2, lng2) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const R = 3958.8;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function bearingToDirection(originLat, originLng, lat, lng) {
+  const dLng = (lng - originLng) * Math.cos((originLat * Math.PI) / 180);
+  const dLat = lat - originLat;
+  const angle = Math.atan2(dLng, dLat) * (180 / Math.PI);
+  const compass = (angle + 360) % 360;
+  if (compass < 22.5 || compass >= 337.5) return "N";
+  if (compass < 67.5) return "NE";
+  if (compass < 112.5) return "E";
+  if (compass < 157.5) return "SE";
+  if (compass < 202.5) return "S";
+  if (compass < 247.5) return "SW";
+  if (compass < 292.5) return "W";
+  return "NW";
+}
+
+async function fetchNearbyHotspotsForMeetup(meetupLat, meetupLng, radiusMiles) {
+  const latPad = radiusMiles / 69;
+  const lngPad = radiusMiles / (69 * Math.cos((meetupLat * Math.PI) / 180));
+  const result = await query(
+    `SELECT id, name, category, address, lat, lng,
+            region_code, region_name, region_need_score,
+            score, covered, last_proof_at
+     FROM hotspot_locations
+     WHERE lat BETWEEN $1 AND $2
+       AND lng BETWEEN $3 AND $4
+     ORDER BY score DESC
+     LIMIT 400`,
+    [meetupLat - latPad, meetupLat + latPad, meetupLng - lngPad, meetupLng + lngPad],
+  );
+  return result.rows.map((row) => {
+    const lat = Number(row.lat);
+    const lng = Number(row.lng);
+    return {
+      id: String(row.id),
+      name: row.name,
+      category: row.category,
+      address: row.address,
+      lat,
+      lng,
+      regionCode: row.region_code || null,
+      regionName: row.region_name || null,
+      regionNeedScore:
+        row.region_need_score === null ? null : Number(row.region_need_score),
+      score: Number(row.score || 0),
+      covered: Boolean(row.covered),
+      lastProofAt:
+        row.last_proof_at instanceof Date
+          ? row.last_proof_at.toISOString()
+          : row.last_proof_at,
+      direction: bearingToDirection(meetupLat, meetupLng, lat, lng),
+      distanceMiles: haversineMiles(meetupLat, meetupLng, lat, lng),
+    };
+  });
+}
+
+async function attachAssignedStops(plan, ctx) {
+  if (!plan || !Array.isArray(plan.assignments) || plan.assignments.length === 0) return;
+
+  let nearby = await fetchNearbyHotspotsForMeetup(
+    ctx.meetup.lat,
+    ctx.meetup.lng,
+    1.6,
+  );
+  if (nearby.length < plan.assignments.length * STOPS_PER_MEMBER) {
+    nearby = await fetchNearbyHotspotsForMeetup(ctx.meetup.lat, ctx.meetup.lng, 2.6);
+  }
+
+  const usedIds = new Set();
+
+  for (const assignment of plan.assignments) {
+    const dir = (assignment.direction || "").toUpperCase();
+    const inDirection = nearby
+      .filter((s) => s.direction === dir && !usedIds.has(s.id))
+      .sort((a, b) => {
+        if (a.covered !== b.covered) return a.covered ? 1 : -1;
+        if (b.score !== a.score) return b.score - a.score;
+        return a.distanceMiles - b.distanceMiles;
+      });
+
+    let picks = inDirection.slice(0, STOPS_PER_MEMBER);
+
+    if (picks.length < STOPS_PER_MEMBER) {
+      const adjacency = {
+        N: ["NW", "NE"],
+        NE: ["N", "E"],
+        E: ["NE", "SE"],
+        SE: ["E", "S"],
+        S: ["SE", "SW"],
+        SW: ["S", "W"],
+        W: ["SW", "NW"],
+        NW: ["W", "N"],
+      };
+      const adjacent = (adjacency[dir] || []).flatMap((d) =>
+        nearby
+          .filter((s) => s.direction === d && !usedIds.has(s.id))
+          .filter((s) => !picks.some((p) => p.id === s.id)),
+      );
+      adjacent.sort((a, b) => a.distanceMiles - b.distanceMiles);
+      picks = picks.concat(adjacent.slice(0, STOPS_PER_MEMBER - picks.length));
+    }
+
+    if (picks.length < STOPS_PER_MEMBER) {
+      const anyDirection = nearby
+        .filter((s) => !usedIds.has(s.id) && !picks.some((p) => p.id === s.id))
+        .sort((a, b) => a.distanceMiles - b.distanceMiles);
+      picks = picks.concat(anyDirection.slice(0, STOPS_PER_MEMBER - picks.length));
+    }
+
+    for (const s of picks) usedIds.add(s.id);
+
+    assignment.assignedStops = picks.map((s) => ({
+      id: s.id,
+      name: s.name,
+      category: s.category,
+      address: s.address,
+      lat: s.lat,
+      lng: s.lng,
+      regionCode: s.regionCode,
+      regionName: s.regionName,
+      regionNeedScore: s.regionNeedScore,
+      covered: s.covered,
+      lastProofAt: s.lastProofAt,
+      direction: s.direction,
+      distanceMiles: Number(s.distanceMiles.toFixed(2)),
+    }));
+  }
 }
 
 async function callGeminiForPlan(ctx) {
@@ -136,7 +278,7 @@ Build a coverage plan that splits the area around the meetup point into ${ctx.me
 - a brief role title (≤4 words, e.g., "North leg captain")
 - a one-sentence task description (≤25 words)
 
-Also write a friendly group-chat opener (2-3 sentences) introducing yourself as the coordinator and announcing the plan.
+Also write a friendly group-chat opener (2-3 sentences) introducing yourself as Neighbour-Hood, the AI coordinator, and announcing the plan.
 
 Output STRICT JSON only, no prose, no fences:
 {
@@ -219,7 +361,7 @@ function fallbackPlan(ctx) {
   }));
 
   return {
-    opener: `Hi everyone — I'm Citrus, your meetup coordinator. Here's a starting plan based on who's joined: ${ctx.members.length} volunteers split into ${ctx.members.length} mini-zones around the meeting point. Adjust freely once you're on the ground.`,
+    opener: `Hi everyone — I'm Neighbour-Hood, your meetup coordinator. Here's a starting plan based on who's joined: ${ctx.members.length} volunteers split into ${ctx.members.length} mini-zones around the meeting point. Adjust freely once you're on the ground.`,
     assignments,
     generatedBy: "fallback",
   };

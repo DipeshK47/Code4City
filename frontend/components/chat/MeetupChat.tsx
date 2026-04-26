@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   getMeetupMessages,
   sendMeetupMessage,
@@ -47,6 +48,7 @@ export default function MeetupChat({
   meetupLng?: number;
   meetupName?: string;
 }) {
+  const router = useRouter();
   const [messages, setMessages] = useState<MeetupMessage[]>([]);
   const [messageText, setMessageText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -121,6 +123,20 @@ export default function MeetupChat({
     }
   }
 
+  function viewAssignmentRoute(assignment: CoordinatorAssignment) {
+    if (!assignment.assignedStops || assignment.assignedStops.length === 0) return;
+    const stopIds = assignment.assignedStops.map((s) => s.id).join(",");
+    const params = new URLSearchParams({ meetupStops: stopIds });
+    if (typeof meetupLat === "number" && typeof meetupLng === "number") {
+      params.set("meetupLat", String(meetupLat));
+      params.set("meetupLng", String(meetupLng));
+    }
+    if (meetupName) {
+      params.set("meetupName", meetupName);
+    }
+    router.push(`/map?${params.toString()}`);
+  }
+
   async function generateFlyerForAssignment(assignment: CoordinatorAssignment) {
     if (!meetupLat || !meetupLng) return;
     const dropName = `${meetupName || "Meetup"} (${assignment.direction})`;
@@ -182,6 +198,7 @@ export default function MeetupChat({
                 key={message.id}
                 message={message}
                 onGenerateFlyer={generateFlyerForAssignment}
+                onViewRoute={viewAssignmentRoute}
                 currentUserId={currentUserId ?? null}
               />
             ) : (
@@ -288,10 +305,12 @@ function ChatBubble({ message, isMine }: { message: MeetupMessage; isMine: boole
 function CoordinatorBubble({
   message,
   onGenerateFlyer,
+  onViewRoute,
   currentUserId,
 }: {
   message: MeetupMessage;
   onGenerateFlyer: (assignment: CoordinatorAssignment) => void;
+  onViewRoute: (assignment: CoordinatorAssignment) => void;
   currentUserId: number | null;
 }) {
   const lines = message.messageText.split("\n");
@@ -337,7 +356,7 @@ function CoordinatorBubble({
         >
           AI
         </span>
-        Coordinator · Citrus
+        Coordinator · Neighbour-Hood
       </div>
       <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#1A1917" }}>{opener}</p>
 
@@ -410,24 +429,57 @@ function CoordinatorBubble({
                   >
                     Focus: {SERVICE_LABELS[assignment.focusCategory] || assignment.focusCategory}
                   </div>
+                  {assignment.assignedStops && assignment.assignedStops.length > 0 ? (
+                    <div style={{ marginTop: 8, fontSize: 11, color: "#3A3833", lineHeight: 1.5 }}>
+                      <span style={{ fontWeight: 700, color: "#1A1917" }}>
+                        {assignment.assignedStops.length} stops:
+                      </span>{" "}
+                      {assignment.assignedStops
+                        .slice(0, 4)
+                        .map((s) => s.name)
+                        .join(" · ")}
+                      {assignment.assignedStops.length > 4
+                        ? ` · +${assignment.assignedStops.length - 4} more`
+                        : ""}
+                    </div>
+                  ) : null}
                   {isMine ? (
-                    <button
-                      type="button"
-                      onClick={() => onGenerateFlyer(assignment)}
-                      style={{
-                        marginTop: 8,
-                        padding: "6px 10px",
-                        borderRadius: 2,
-                        border: `1px solid ${color}`,
-                        background: color,
-                        color: "#FFFFFF",
-                        fontSize: 11,
-                        fontWeight: 700,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Generate my flyer →
-                    </button>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+                      {assignment.assignedStops && assignment.assignedStops.length > 0 ? (
+                        <button
+                          type="button"
+                          onClick={() => onViewRoute(assignment)}
+                          style={{
+                            padding: "6px 10px",
+                            borderRadius: 2,
+                            border: `1px solid ${color}`,
+                            background: color,
+                            color: "#FFFFFF",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            cursor: "pointer",
+                          }}
+                        >
+                          View my route on map →
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        onClick={() => onGenerateFlyer(assignment)}
+                        style={{
+                          padding: "6px 10px",
+                          borderRadius: 2,
+                          border: `1px solid ${color}`,
+                          background: "#FFFFFF",
+                          color,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Generate my flyer →
+                      </button>
+                    </div>
                   ) : null}
                 </div>
               </div>

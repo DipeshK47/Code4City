@@ -14,7 +14,7 @@ import {
 import { submitHotspotCoverageProof } from "@/lib/hotspot-proof-api";
 import { useAuth } from "@/context/AuthContext";
 import type { SavedRouteItem } from "@/types/route-items";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getMeetups, joinMeetup } from "@/lib/meetup-api";
 import { formatDateTimeRange } from "@/lib/social-format";
 import type { MeetupSummary } from "@/lib/social-types";
@@ -206,6 +206,7 @@ const HOTSPOT_FETCH_LIMIT = 8000;
 
 export default function OutreachMapDashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { token, isGuest } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [locations, setLocations] = useState<MapLocation[]>([]);
@@ -228,6 +229,9 @@ export default function OutreachMapDashboard() {
   const [plannerLoading, setPlannerLoading] = useState(false);
   const [plannerResult, setPlannerResult] = useState<PlannerResult | null>(null);
   const [plannerError, setPlannerError] = useState<string | null>(null);
+  const [meetupAssignedStopIds, setMeetupAssignedStopIds] = useState<string[] | null>(null);
+  const [meetupAssignmentLabel, setMeetupAssignmentLabel] = useState<string | null>(null);
+  const meetupAssignmentTriggeredRef = useRef(false);
   const PLANNER_CONSTRAINTS: PlannerConstraints = {};
   const [viewport, setViewport] = useState<MapViewportState>({
     zoom: 12,
@@ -407,6 +411,43 @@ export default function OutreachMapDashboard() {
   useEffect(() => {
     runRouteItemsWipe();
   }, [isGuest, token]);
+
+  useEffect(() => {
+    if (!searchParams) return;
+    const stops = searchParams.get("meetupStops");
+    if (!stops) return;
+    const ids = stops
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+    if (ids.length === 0) return;
+    setMeetupAssignedStopIds(ids);
+
+    const meetupName = searchParams.get("meetupName");
+    if (meetupName) setMeetupAssignmentLabel(meetupName);
+
+    const lat = Number(searchParams.get("meetupLat"));
+    const lng = Number(searchParams.get("meetupLng"));
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      setPriorityOrigin({
+        lat,
+        lng,
+        label: meetupName || "Meetup origin",
+      });
+      setFocusRequest({ key: Date.now(), lat, lng, zoom: 14 });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!meetupAssignedStopIds || meetupAssignmentTriggeredRef.current) return;
+    if (locations.length === 0) return;
+    const known = new Set(locations.map((l) => String(l.id)));
+    const matched = meetupAssignedStopIds.filter((id) => known.has(id));
+    if (matched.length === 0) return;
+    meetupAssignmentTriggeredRef.current = true;
+    setPlannerOpen(true);
+    void handlePlanRoute();
+  }, [meetupAssignedStopIds, locations]);
 
   useEffect(() => {
     if (!selectedLocationId) {
@@ -866,6 +907,26 @@ export default function OutreachMapDashboard() {
   function buildPlannerCandidates(): PlannerCandidateStop[] {
     const hotspotById = new Map(rankedLocations.map((loc) => [String(loc.id), loc]));
 
+    if (meetupAssignedStopIds && meetupAssignedStopIds.length > 0) {
+      const fromAssignment = meetupAssignedStopIds
+        .map((id) => hotspotById.get(id))
+        .filter((loc): loc is RankedLocation => Boolean(loc))
+        .map((loc) => ({
+          id: `hotspot:${loc.id}`,
+          hotspotId: Number(loc.id),
+          name: loc.name,
+          category: loc.category,
+          lat: loc.lat,
+          lng: loc.lng,
+          covered: loc.covered,
+          regionCode: loc.regionCode,
+          regionName: loc.regionName,
+          regionNeedScore: loc.regionNeedScore,
+          lastProofAt: loc.lastProofAt,
+        }));
+      if (fromAssignment.length > 0) return fromAssignment;
+    }
+
     const fromRouteItems = routeItems
       .filter((item) => item.itemType === "hotspot" && item.hotspotId)
       .map((item) => {
@@ -972,6 +1033,9 @@ export default function OutreachMapDashboard() {
 
     setPlannerResult(null);
     setPlannerOpen(false);
+    setMeetupAssignedStopIds(null);
+    setMeetupAssignmentLabel(null);
+    meetupAssignmentTriggeredRef.current = false;
 
     if (token && !isGuest && routeItems.length > 0) {
       void clearRouteItems(token)

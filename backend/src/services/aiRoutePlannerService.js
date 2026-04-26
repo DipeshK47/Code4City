@@ -12,7 +12,7 @@ const {
 } = require("./routePlannerService");
 
 const MODEL_NAME =
-  process.env.AI_ROUTE_MODEL || "gemini-2.5-flash";
+  process.env.AI_ROUTE_MODEL || "gemini-2.5-flash-lite";
 const MAX_CANDIDATES = 30;
 const AI_TIMEOUT_MS = Number(process.env.AI_ROUTE_TIMEOUT_MS) || 25000;
 
@@ -72,7 +72,13 @@ async function planWithAi({
   }
 
   try {
-    const model = client.getGenerativeModel({ model: MODEL_NAME });
+    const model = client.getGenerativeModel({
+      model: MODEL_NAME,
+      generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.4,
+      },
+    });
     const summarized = limited.map((s) => summarizeStop(s, origin, timeWindow));
 
     const prompt = `You are a routing assistant for a community-outreach volunteer in NYC.
