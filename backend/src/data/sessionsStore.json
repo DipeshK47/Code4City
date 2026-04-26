@@ -1,0 +1,52 @@
+[
+  {
+    "id": "8ea11d4f-1cdb-4db2-8516-4084775f6226",
+    "startTime": "2026-03-15T04:09:18.718Z",
+    "endTime": "2026-03-15T04:09:28.472Z",
+    "status": "completed",
+    "routePoints": [
+      {
+        "lat": 40.64535630127301,
+        "lng": -73.99590618811845,
+        "timestamp": "2026-03-15T04:09:22.013Z",
+        "accuracy": 80
+      }
+    ],
+    "stops": [
+      {
+        "id": "a3456b50-1d48-4234-b00c-f795296180e8",
+        "lat": 40.64535630127301,
+        "lng": -73.99590618811845,
+        "timestamp": "2026-03-15T04:09:25.019Z",
+        "type": "printer"
+      }
+    ],
+    "totalDistanceMeters": 0,
+    "durationSeconds": 10
+  },
+  {
+    "id": "6ca158be-c912-4865-ba32-c39466626e59",
+    "startTime": "2026-03-15T00:15:23.944Z",
+    "endTime": "2026-03-15T00:15:30.164Z",
+    "status": "completed",
+    "routePoints": [
+      {
+        "lat": 40.64532836206932,
+        "lng": -73.99593669470175,
+        "timestamp": "2026-03-15T00:15:26.674Z",
+        "accuracy": 75
+      }
+    ],
+    "stops": [
+      {
+        "id": "89347816-d8cd-4cec-882d-f379bc41954c",
+        "lat": 40.64532836206932,
+        "lng": -73.99593669470175,
+        "timestamp": "2026-03-15T00:15:28.479Z",
+        "type": "printer"
+      }
+    ],
+    "totalDistanceMeters": 0,
+    "durationSeconds": 6
+  }
+]
