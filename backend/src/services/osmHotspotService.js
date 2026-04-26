@@ -331,6 +331,11 @@ function normalizeRow(row) {
     lng: Number(row.lng),
     importedAt:
       row.imported_at instanceof Date ? row.imported_at.toISOString() : row.imported_at,
+    lastProofAt:
+      row.last_proof_at instanceof Date
+        ? row.last_proof_at.toISOString()
+        : row.last_proof_at || null,
+    coverageCount: Number(row.coverage_count || 0),
   };
 }
 

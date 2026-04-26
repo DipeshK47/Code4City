@@ -238,12 +238,10 @@ export default function OutreachMapCanvas({
   meetups,
   highlightedRegions,
   recommendedLocationIds,
-  routeItemDedupeKeys,
   selectedLocation,
   selectedMeetup,
   focusRequest,
   onSelect,
-  onTogglePrinterRoute,
   onSelectMeetup,
   onMapClick,
   onViewportChange,
@@ -253,12 +251,10 @@ export default function OutreachMapCanvas({
   meetups: MeetupSummary[];
   highlightedRegions: MapNeedRegion[];
   recommendedLocationIds: string[];
-  routeItemDedupeKeys: Set<string>;
   selectedLocation: MapLocation | null;
   selectedMeetup: MeetupSummary | null;
   focusRequest: MapFocusRequest | null;
   onSelect: (id: string) => void;
-  onTogglePrinterRoute: (printer: MapPrinter) => void;
   onSelectMeetup: (id: number) => void;
   onMapClick: () => void;
   onViewportChange: (viewport: MapViewportState) => void;
@@ -352,11 +348,7 @@ export default function OutreachMapCanvas({
         recommendedLocationIds={recommendedLocationIds}
         onSelect={onSelect}
       />
-      <PrinterMarkers
-        printers={printers}
-        routeItemDedupeKeys={routeItemDedupeKeys}
-        onTogglePrinterRoute={onTogglePrinterRoute}
-      />
+      <PrinterMarkers printers={printers} />
       <MeetupMarkers
         meetups={meetups}
         selectedMeetup={selectedMeetup}
@@ -511,12 +503,8 @@ function LocationMarkers({
 
 function PrinterMarkers({
   printers,
-  routeItemDedupeKeys,
-  onTogglePrinterRoute,
 }: {
   printers: MapPrinter[];
-  routeItemDedupeKeys: Set<string>;
-  onTogglePrinterRoute: (printer: MapPrinter) => void;
 }) {
   if (printers.length === 0) {
     return null;
@@ -527,7 +515,6 @@ function PrinterMarkers({
       {printers.map((printer) => {
         const chain = CHAIN_PRICES.find((candidate) => candidate.match.test(printer.name));
         const level = printer.priceLevel ? PRICE_LEVEL_LABEL[printer.priceLevel] : null;
-        const inRoute = routeItemDedupeKeys.has(`printer:${printer.id}`);
 
         return (
           <Marker
@@ -595,22 +582,6 @@ function PrinterMarkers({
                   </div>
                 ) : null}
                 <div style={{ marginTop: 10 }}>
-                  <button
-                    type="button"
-                    onClick={() => onTogglePrinterRoute(printer)}
-                    style={{
-                      marginRight: 10,
-                      border: "none",
-                      background: "transparent",
-                      color: "#0f172a",
-                      fontSize: 12.5,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      padding: 0,
-                    }}
-                  >
-                    {inRoute ? "Remove from route" : "Add to route"}
-                  </button>
                   <a
                     href={`https://www.google.com/maps/place/?q=place_id:${printer.id}`}
                     target="_blank"

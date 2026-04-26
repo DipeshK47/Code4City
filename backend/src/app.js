@@ -18,6 +18,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const serviceResourceRoutes = require("./routes/serviceResourceRoutes");
 const flyerRoutes = require("./routes/flyerRoutes");
 const eventSuggestionRoutes = require("./routes/eventSuggestionRoutes");
+const routePlannerRoutes = require("./routes/routePlannerRoutes");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/service-resources", serviceResourceRoutes);
 app.use("/api/flyers", flyerRoutes);
 app.use("/api/event-suggestions", eventSuggestionRoutes);
+app.use("/api/route-planner", routePlannerRoutes);
 
 app.use("/api/qr", qrRoutes);
 

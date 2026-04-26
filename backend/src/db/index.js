@@ -15,6 +15,10 @@ const outreachEventsSchemaPath = path.resolve(
   __dirname,
   "../../sql/outreach_events.sql",
 );
+const aiRoutePlanningSchemaPath = path.resolve(
+  __dirname,
+  "../../sql/ai_route_planning.sql",
+);
 
 function getConnectionString() {
   return process.env.DATABASE_URL;
@@ -364,6 +368,10 @@ async function initDb() {
 
     if (fs.existsSync(outreachEventsSchemaPath)) {
       await client.query(fs.readFileSync(outreachEventsSchemaPath, "utf8"));
+    }
+
+    if (fs.existsSync(aiRoutePlanningSchemaPath)) {
+      await client.query(fs.readFileSync(aiRoutePlanningSchemaPath, "utf8"));
     }
   } finally {
     client.release();
