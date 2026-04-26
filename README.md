@@ -72,6 +72,8 @@ Default URL: `http://localhost:5001`
 
 ## Environment notes
 
+For a fresh Supabase project, follow [SUPABASE_SETUP.md](SUPABASE_SETUP.md).
+
 ### Backend
 
 See [`backend/.env.example`](/d:/sharvin1/Hackathons/Track-A---Team-2/backend/.env.example).
