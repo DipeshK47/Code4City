@@ -14,6 +14,7 @@ const meetupRoutes = require("./routes/meetupRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const hotspotProofRoutes = require("./routes/hotspotProofRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/meetups", meetupRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api", hotspotProofRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/events", eventRoutes);
 
 app.use("/api/qr", qrRoutes);
 

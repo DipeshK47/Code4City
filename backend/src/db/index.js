@@ -11,6 +11,10 @@ const hotspotCoverageSchemaPath = path.resolve(
   __dirname,
   "../../sql/hotspot_coverage_proofs.sql",
 );
+const outreachEventsSchemaPath = path.resolve(
+  __dirname,
+  "../../sql/outreach_events.sql",
+);
 
 function getConnectionString() {
   return process.env.DATABASE_URL;
@@ -264,6 +268,10 @@ async function initDb() {
 
     if (fs.existsSync(hotspotCoverageSchemaPath)) {
       await client.query(fs.readFileSync(hotspotCoverageSchemaPath, "utf8"));
+    }
+
+    if (fs.existsSync(outreachEventsSchemaPath)) {
+      await client.query(fs.readFileSync(outreachEventsSchemaPath, "utf8"));
     }
   } finally {
     client.release();

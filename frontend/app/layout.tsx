@@ -5,6 +5,7 @@ import "./globals.css";
 import AppShell from "@/components/layout/AppShell";
 import { AuthProvider } from "@/context/AuthContext";
 import AuthGuard from "@/components/auth/AuthGuard";
+import GoogleMapsProvider from "@/components/map/GoogleMapsProvider";
 
 export const metadata: Metadata = {
   title: "Volun-Tiers",
@@ -20,9 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <AuthGuard>
-            <AppShell>{children}</AppShell>
-          </AuthGuard>
+          <GoogleMapsProvider>
+            <AuthGuard>
+              <AppShell>{children}</AppShell>
+            </AuthGuard>
+          </GoogleMapsProvider>
         </AuthProvider>
       </body>
     </html>

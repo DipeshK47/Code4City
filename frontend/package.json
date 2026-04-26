@@ -6,11 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@google/genai": "^1.45.0",
     "@google/generative-ai": "^0.24.1",
+    "@vis.gl/react-google-maps": "^1.8.3",
     "jspdf": "^4.2.0",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.20.0",
@@ -20,7 +24,9 @@
     "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4",
+    "@types/google.maps": "^3.64.0",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^20",
     "@types/react": "^19",
