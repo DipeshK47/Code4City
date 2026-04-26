@@ -172,20 +172,20 @@ export default function OnboardingPage() {
               height: 58,
               borderRadius: 0,
               border: "1px solid #D44A12",
-              background: "transparent",
-              color: "#D44A12",
+              background: "#F8F6F0",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 13,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 500,
-              letterSpacing: "0.14em",
+              flexShrink: 0,
+              overflow: "hidden",
               marginBottom: 12,
-              lineHeight: 1,
             }}
           >
-            VT
+            <img 
+              src="/logo.png" 
+              alt="Logo" 
+              style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6 }} 
+            />
           </div>
           <h2
             style={{
@@ -417,20 +417,20 @@ export default function OnboardingPage() {
             height: 62,
             borderRadius: 0,
             border: "1px solid #D44A12",
-            background: "transparent",
-            color: "#D44A12",
+            background: "#F8F6F0",
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 14,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontWeight: 500,
-            letterSpacing: "0.14em",
+            flexShrink: 0,
+            overflow: "hidden",
             marginBottom: 14,
-            lineHeight: 1,
           }}
         >
-          VT
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            style={{ width: "100%", height: "100%", objectFit: "contain", padding: 8 }} 
+          />
         </div>
         <h2
           style={{

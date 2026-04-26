@@ -15,6 +15,10 @@ const outreachEventsSchemaPath = path.resolve(
   __dirname,
   "../../sql/outreach_events.sql",
 );
+const aiRoutePlanningSchemaPath = path.resolve(
+  __dirname,
+  "../../sql/ai_route_planning.sql",
+);
 
 function getConnectionString() {
   return process.env.DATABASE_URL;
@@ -98,6 +102,12 @@ async function initDb() {
         source_year TEXT,
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+
+      ALTER TABLE need_regions ADD COLUMN IF NOT EXISTS health_access_score DOUBLE PRECISION;
+      ALTER TABLE need_regions ADD COLUMN IF NOT EXISTS housing_instability_score DOUBLE PRECISION;
+      ALTER TABLE need_regions ADD COLUMN IF NOT EXISTS substance_use_score DOUBLE PRECISION;
+      ALTER TABLE need_regions ADD COLUMN IF NOT EXISTS composite_need_score DOUBLE PRECISION;
+      ALTER TABLE need_regions ALTER COLUMN food_need_score DROP NOT NULL;
 
       CREATE TABLE IF NOT EXISTS hotspot_locations (
         id BIGSERIAL PRIMARY KEY,
@@ -260,10 +270,96 @@ async function initDb() {
       CREATE INDEX IF NOT EXISTS idx_hotspot_locations_score ON hotspot_locations (score DESC);
       CREATE INDEX IF NOT EXISTS idx_hotspot_locations_region_code ON hotspot_locations (region_code);
       CREATE INDEX IF NOT EXISTS idx_need_regions_score ON need_regions (food_need_score DESC);
+
+      CREATE TABLE IF NOT EXISTS service_resources (
+        id BIGSERIAL PRIMARY KEY,
+        source_key TEXT NOT NULL UNIQUE,
+        source_dataset TEXT NOT NULL,
+        service_type TEXT NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT,
+        address TEXT,
+        borough TEXT,
+        zip TEXT,
+        lat DOUBLE PRECISION NOT NULL,
+        lng DOUBLE PRECISION NOT NULL,
+        phone TEXT,
+        hours TEXT,
+        website TEXT,
+        eligibility TEXT,
+        region_code TEXT REFERENCES need_regions(region_code) ON DELETE SET NULL,
+        region_name TEXT,
+        region_need_score DOUBLE PRECISION,
+        tags_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+        imported_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_service_resources_type ON service_resources (service_type);
+      CREATE INDEX IF NOT EXISTS idx_service_resources_lat_lng ON service_resources (lat, lng);
+      CREATE INDEX IF NOT EXISTS idx_service_resources_region_code ON service_resources (region_code);
+
+      DROP TRIGGER IF EXISTS trg_service_resources_updated_at ON service_resources;
+      CREATE TRIGGER trg_service_resources_updated_at
+      BEFORE UPDATE ON service_resources
+      FOR EACH ROW
+      EXECUTE FUNCTION set_updated_at_timestamp();
+
+      CREATE TABLE IF NOT EXISTS generated_flyers (
+        id TEXT PRIMARY KEY,
+        user_id INT REFERENCES users(id) ON DELETE SET NULL,
+        drop_name TEXT NOT NULL,
+        drop_lat DOUBLE PRECISION NOT NULL,
+        drop_lng DOUBLE PRECISION NOT NULL,
+        region_code TEXT,
+        region_name TEXT,
+        dominant_category TEXT NOT NULL,
+        headline TEXT NOT NULL,
+        blurb TEXT NOT NULL,
+        resources_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+        qr_slug TEXT,
+        qr_target_url TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_generated_flyers_user_id ON generated_flyers (user_id);
+      CREATE INDEX IF NOT EXISTS idx_generated_flyers_created_at ON generated_flyers (created_at DESC);
+
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS secondary_language TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS secondary_language_name TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS headline_translated TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS blurb_translated TEXT;
+      ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS translated_labels JSONB;
+
+      CREATE TABLE IF NOT EXISTS suggested_events (
+        id BIGSERIAL PRIMARY KEY,
+        region_code TEXT,
+        region_name TEXT,
+        borough_name TEXT,
+        day_of_week INTEGER NOT NULL,
+        suggested_date DATE,
+        center_lat DOUBLE PRECISION,
+        center_lng DOUBLE PRECISION,
+        unique_user_count INTEGER NOT NULL DEFAULT 0,
+        sample_user_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+        rationale TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
+        meetup_id BIGINT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_suggested_events_status ON suggested_events (status);
+      CREATE INDEX IF NOT EXISTS idx_suggested_events_region ON suggested_events (region_code, day_of_week);
     `);
 
     if (fs.existsSync(communitySchemaPath)) {
       await client.query(fs.readFileSync(communitySchemaPath, "utf8"));
+      await client.query(`
+        ALTER TABLE meetup_messages ADD COLUMN IF NOT EXISTS is_coordinator BOOLEAN NOT NULL DEFAULT FALSE;
+        ALTER TABLE meetup_messages ADD COLUMN IF NOT EXISTS assignments_json JSONB;
+        ALTER TABLE meetup_messages ALTER COLUMN user_id DROP NOT NULL;
+      `);
     }
 
     if (fs.existsSync(hotspotCoverageSchemaPath)) {
@@ -272,6 +368,10 @@ async function initDb() {
 
     if (fs.existsSync(outreachEventsSchemaPath)) {
       await client.query(fs.readFileSync(outreachEventsSchemaPath, "utf8"));
+    }
+
+    if (fs.existsSync(aiRoutePlanningSchemaPath)) {
+      await client.query(fs.readFileSync(aiRoutePlanningSchemaPath, "utf8"));
     }
   } finally {
     client.release();

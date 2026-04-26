@@ -7,10 +7,10 @@ import RecentActivity from "@/components/home/RecentActivity";
 import { getLeaderboard } from "@/lib/leaderboard-api";
 
 const QUICK = [
-  { href: "/map",         emoji: "MAP", label: "Map",             desc: "Find priority zones near you" },
-  { href: "/guide",       emoji: "KIT", label: "Guide",           desc: "Run a clean outreach mission" },
-  { href: "/leaderboard", emoji: "TOP", label: "Leaderboard",     desc: "See this month's top volunteers" },
-  { href: "/community",   emoji: "COM", label: "Community",       desc: "Posts, meetups, and coordination" },
+  { href: "/map",                          emoji: "MAP", label: "Map",         desc: "Find priority zones and resources near you" },
+  { href: "/guide",                        emoji: "KIT", label: "Guide",       desc: "Run a clean outreach mission" },
+  { href: "/resources/40.7128,-74.0060",   emoji: "RES", label: "Resources",   desc: "Food, shelter, healthcare, and recovery near you" },
+  { href: "/community",                    emoji: "COM", label: "Community",   desc: "Posts, meetups, and coordination" },
 ];
 
 const card: React.CSSProperties = {

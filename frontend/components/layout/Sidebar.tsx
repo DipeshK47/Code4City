@@ -49,21 +49,6 @@ const NAV: NavItem[] = [
     ),
   },
   {
-    href: "/events",
-    label: "Events",
-    isNew: true,
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-        <path d="M8 14h4" />
-        <path d="M8 18h8" />
-      </svg>
-    ),
-  },
-  {
     href: "/community",
     label: "Community",
     icon: (
@@ -82,18 +67,6 @@ const NAV: NavItem[] = [
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
-      </svg>
-    ),
-  },
-  {
-    href: "/leaderboard",
-    label: "Leaderboard",
-    badge: "TOP",
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10" />
-        <line x1="12" y1="20" x2="12" y2="4" />
-        <line x1="6" y1="20" x2="6" y2="14" />
       </svg>
     ),
   },
@@ -163,20 +136,19 @@ export default function Sidebar({ isMobile, isOpen, onClose }: SidebarProps) {
               width: 38,
               height: 38,
               borderRadius: 0,
-              background: "transparent",
+              background: "#F8F6F0",
               border: "1px solid #D44A12",
-              boxShadow: "none",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 11,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 500,
-              letterSpacing: "0.14em",
-              color: "#D44A12",
               flexShrink: 0,
+              overflow: "hidden",
             }}>
-              VT
+              <img
+                src="/logo.png"
+                alt="Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6 }}
+              />
             </div>
             <div>
               <div style={{

@@ -497,6 +497,14 @@ async function joinMeetup(meetupId, userId) {
     );
 
     await client.query("COMMIT");
+
+    try {
+      const { maybeAutoCoordinate } = require("./coordinatorService");
+      void maybeAutoCoordinate(safeMeetupId);
+    } catch {
+      // coordinator is best-effort; never block join
+    }
+
     return getMeetupByIdInternal({ query }, safeMeetupId, userId);
   } catch (error) {
     await client.query("ROLLBACK");
@@ -540,9 +548,11 @@ async function listMeetupMessages(meetupId, userId, limit) {
         messages.message_text,
         messages.created_at,
         messages.updated_at,
+        messages.is_coordinator,
+        messages.assignments_json,
         ${userJson("senders", "sender_photos")} AS sender
       FROM meetup_messages messages
-      JOIN users senders ON senders.id = messages.user_id
+      LEFT JOIN users senders ON senders.id = messages.user_id
       LEFT JOIN profile_photos sender_photos ON sender_photos.user_id = senders.id
       WHERE messages.meetup_id = $1
       ORDER BY messages.created_at ASC
@@ -559,6 +569,12 @@ async function listMeetupMessages(meetupId, userId, limit) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     sender: row.sender,
+    isCoordinator: Boolean(row.is_coordinator),
+    assignments: row.assignments_json
+      ? (typeof row.assignments_json === "string"
+          ? JSON.parse(row.assignments_json)
+          : row.assignments_json)
+      : null,
   }));
 }
 

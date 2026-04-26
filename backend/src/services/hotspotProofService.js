@@ -85,6 +85,8 @@ async function submitCoverageProof({ hotspotId, userId, photoUrl, notes }) {
             WHEN COALESCE($3, '') = '' THEN notes
             ELSE $3
           END,
+          last_proof_at = NOW(),
+          coverage_count = COALESCE(coverage_count, 0) + 1,
           updated_at = NOW()
         WHERE id = $4
       `,
@@ -188,6 +190,8 @@ async function submitProfileCoverageProof({ userId, photoUrl, notes, lat, lng })
             WHEN COALESCE($3, '') = '' THEN notes
             ELSE $3
           END,
+          last_proof_at = NOW(),
+          coverage_count = COALESCE(coverage_count, 0) + 1,
           updated_at = NOW()
         WHERE id = $4
       `,

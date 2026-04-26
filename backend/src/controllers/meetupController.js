@@ -1,4 +1,5 @@
 const meetupService = require("../services/meetupService");
+const coordinatorService = require("../services/coordinatorService");
 const { getOptionalUserFromRequest } = require("../utils/optionalAuth");
 
 function getViewerUserId(req) {
@@ -157,6 +158,26 @@ async function createMeetupMessage(req, res) {
   }
 }
 
+async function triggerCoordinator(req, res) {
+  try {
+    const meetupId = Number.parseInt(String(req.params.id), 10);
+    if (!Number.isInteger(meetupId) || meetupId <= 0) {
+      return res.status(400).json({ success: false, message: "Invalid meetup id" });
+    }
+    const plan = await coordinatorService.generateAssignmentPlan(meetupId);
+    if (!plan) {
+      return res.status(400).json({
+        success: false,
+        message: `Need at least ${coordinatorService.COORDINATOR_THRESHOLD} members joined.`,
+      });
+    }
+    const posted = await coordinatorService.postCoordinatorPlan(meetupId, plan);
+    return res.json({ success: true, data: { plan, message: posted } });
+  } catch (error) {
+    return handleError(res, error, "Failed to generate coordinator plan.");
+  }
+}
+
 module.exports = {
   createMeetup,
   createMeetupMessage,
@@ -167,4 +188,5 @@ module.exports = {
   listMeetupMessages,
   listMeetups,
   updateMeetup,
+  triggerCoordinator,
 };

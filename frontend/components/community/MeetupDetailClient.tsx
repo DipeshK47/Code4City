@@ -144,6 +144,9 @@ export default function MeetupDetailClient({
                     token={token}
                     currentUserId={user?.id}
                     enabled={Boolean(token) && !isGuest && meetup.viewerJoined}
+                    meetupLat={meetup.lat}
+                    meetupLng={meetup.lng}
+                    meetupName={meetup.title}
                   />
                 </SectionCard>
               </div>

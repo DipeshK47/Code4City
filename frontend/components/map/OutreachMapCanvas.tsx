@@ -8,6 +8,7 @@ import {
   Marker,
   Popup,
   TileLayer,
+  Tooltip,
   useMap,
   useMapEvents,
   ZoomControl,
@@ -23,6 +24,9 @@ import type {
 } from "./OutreachMapDashboard";
 import { latLngBounds } from "leaflet";
 import type { MeetupSummary } from "@/lib/social-types";
+import { SERVICE_TYPE_COLORS, type ServiceType } from "@/lib/service-resources";
+
+const REGION_FALLBACK_COLOR = "#9CA3AF";
 
 const mapCenter: LatLngExpression = [40.7395, -73.9363];
 const INDIVIDUAL_MARKER_ZOOM = 15;
@@ -234,12 +238,10 @@ export default function OutreachMapCanvas({
   meetups,
   highlightedRegions,
   recommendedLocationIds,
-  routeItemDedupeKeys,
   selectedLocation,
   selectedMeetup,
   focusRequest,
   onSelect,
-  onTogglePrinterRoute,
   onSelectMeetup,
   onMapClick,
   onViewportChange,
@@ -249,12 +251,10 @@ export default function OutreachMapCanvas({
   meetups: MeetupSummary[];
   highlightedRegions: MapNeedRegion[];
   recommendedLocationIds: string[];
-  routeItemDedupeKeys: Set<string>;
   selectedLocation: MapLocation | null;
   selectedMeetup: MeetupSummary | null;
   focusRequest: MapFocusRequest | null;
   onSelect: (id: string) => void;
-  onTogglePrinterRoute: (printer: MapPrinter) => void;
   onSelectMeetup: (id: number) => void;
   onMapClick: () => void;
   onViewportChange: (viewport: MapViewportState) => void;
@@ -280,22 +280,67 @@ export default function OutreachMapCanvas({
         onMapClick={onMapClick}
       />
 
-      {highlightedRegions.map((region) => (
-        <GeoJSON
-          key={region.regionCode}
-          data={region.geometry}
-          style={{
-            color: "#c2410c",
-            weight: 1.5,
-            opacity: 0.7,
-            fillColor: "#D64B14",
-            fillOpacity: 0.12,
-          }}
-          eventHandlers={{
-            click: () => onMapClick(),
-          }}
-        />
-      ))}
+      {highlightedRegions.map((region) => {
+        const gap = region.dominantGap;
+        const color = gap
+          ? SERVICE_TYPE_COLORS[gap.category as ServiceType] || REGION_FALLBACK_COLOR
+          : REGION_FALLBACK_COLOR;
+        const intensity = gap ? Math.min(0.42, 0.22 + gap.avgDistanceMiles * 0.06) : 0.14;
+        return (
+          <GeoJSON
+            key={region.regionCode}
+            data={region.geometry}
+            style={{
+              color,
+              weight: 1.4,
+              opacity: 0.85,
+              fillColor: color,
+              fillOpacity: intensity,
+            }}
+            eventHandlers={{
+              click: () => onMapClick(),
+            }}
+          >
+            <Tooltip sticky direction="top" opacity={0.96}>
+              <div style={{ minWidth: 180, fontFamily: "DM Sans, system-ui, sans-serif" }}>
+                <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>
+                  {region.regionName}
+                </div>
+                {region.boroughName ? (
+                  <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 6 }}>
+                    {region.boroughName}
+                  </div>
+                ) : null}
+                {gap ? (
+                  <>
+                    <div
+                      style={{
+                        fontSize: 10.5,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.12em",
+                        fontWeight: 700,
+                        color,
+                      }}
+                    >
+                      Biggest unmet need
+                    </div>
+                    <div style={{ fontSize: 13, fontWeight: 700, marginTop: 2 }}>
+                      {gap.label}
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#374151", marginTop: 2 }}>
+                      Closest 4 avg {gap.avgDistanceMiles} mi away
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ fontSize: 11.5, color: "#6B7280" }}>
+                    All categories well-served here.
+                  </div>
+                )}
+              </div>
+            </Tooltip>
+          </GeoJSON>
+        );
+      })}
 
       <LocationMarkers
         locations={locations}
@@ -303,11 +348,7 @@ export default function OutreachMapCanvas({
         recommendedLocationIds={recommendedLocationIds}
         onSelect={onSelect}
       />
-      <PrinterMarkers
-        printers={printers}
-        routeItemDedupeKeys={routeItemDedupeKeys}
-        onTogglePrinterRoute={onTogglePrinterRoute}
-      />
+      <PrinterMarkers printers={printers} />
       <MeetupMarkers
         meetups={meetups}
         selectedMeetup={selectedMeetup}
@@ -462,12 +503,8 @@ function LocationMarkers({
 
 function PrinterMarkers({
   printers,
-  routeItemDedupeKeys,
-  onTogglePrinterRoute,
 }: {
   printers: MapPrinter[];
-  routeItemDedupeKeys: Set<string>;
-  onTogglePrinterRoute: (printer: MapPrinter) => void;
 }) {
   if (printers.length === 0) {
     return null;
@@ -478,7 +515,6 @@ function PrinterMarkers({
       {printers.map((printer) => {
         const chain = CHAIN_PRICES.find((candidate) => candidate.match.test(printer.name));
         const level = printer.priceLevel ? PRICE_LEVEL_LABEL[printer.priceLevel] : null;
-        const inRoute = routeItemDedupeKeys.has(`printer:${printer.id}`);
 
         return (
           <Marker
@@ -546,22 +582,6 @@ function PrinterMarkers({
                   </div>
                 ) : null}
                 <div style={{ marginTop: 10 }}>
-                  <button
-                    type="button"
-                    onClick={() => onTogglePrinterRoute(printer)}
-                    style={{
-                      marginRight: 10,
-                      border: "none",
-                      background: "transparent",
-                      color: "#0f172a",
-                      fontSize: 12.5,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      padding: 0,
-                    }}
-                  >
-                    {inRoute ? "Remove from route" : "Add to route"}
-                  </button>
                   <a
                     href={`https://www.google.com/maps/place/?q=place_id:${printer.id}`}
                     target="_blank"

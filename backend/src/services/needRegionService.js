@@ -5,6 +5,13 @@ const FOOD_NEED_DATASET_URL =
 const NTA_BOUNDARY_DATASET_URL =
   "https://data.cityofnewyork.us/resource/9nt8-h7nd.json?%24limit=1000";
 
+const COMPOSITE_WEIGHTS = {
+  food: 0.4,
+  health: 0.2,
+  housing: 0.2,
+  substance: 0.2,
+};
+
 const UPSERT_REGION_SQL = `
   INSERT INTO need_regions (
     region_code,
@@ -18,9 +25,13 @@ const UPSERT_REGION_SQL = `
     food_need_score,
     weighted_rank,
     source_year,
+    health_access_score,
+    housing_instability_score,
+    substance_use_score,
+    composite_need_score,
     updated_at
   ) VALUES (
-    $1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12::timestamptz
+    $1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16::timestamptz
   )
   ON CONFLICT(region_code) DO UPDATE SET
     region_name = EXCLUDED.region_name,
@@ -33,14 +44,37 @@ const UPSERT_REGION_SQL = `
     food_need_score = EXCLUDED.food_need_score,
     weighted_rank = EXCLUDED.weighted_rank,
     source_year = EXCLUDED.source_year,
+    health_access_score = EXCLUDED.health_access_score,
+    housing_instability_score = EXCLUDED.housing_instability_score,
+    substance_use_score = EXCLUDED.substance_use_score,
+    composite_need_score = EXCLUDED.composite_need_score,
     updated_at = EXCLUDED.updated_at
 `;
+
+function computeCompositeNeedScore({
+  foodNeedScore,
+  healthAccessScore,
+  housingInstabilityScore,
+  substanceUseScore,
+}) {
+  const food = Number.isFinite(foodNeedScore) ? foodNeedScore : 0;
+  const health = Number.isFinite(healthAccessScore) ? healthAccessScore : food;
+  const housing = Number.isFinite(housingInstabilityScore) ? housingInstabilityScore : food;
+  const substance = Number.isFinite(substanceUseScore) ? substanceUseScore : food;
+
+  return (
+    food * COMPOSITE_WEIGHTS.food +
+    health * COMPOSITE_WEIGHTS.health +
+    housing * COMPOSITE_WEIGHTS.housing +
+    substance * COMPOSITE_WEIGHTS.substance
+  );
+}
 
 async function getStoredNeedRegions() {
   const result = await query(`
     SELECT *
     FROM need_regions
-    ORDER BY food_insecure_percentage DESC NULLS LAST, food_need_score DESC, region_name ASC
+    ORDER BY food_insecure_percentage DESC NULLS LAST, food_need_score DESC NULLS LAST, region_name ASC
   `);
 
   return result.rows.map(normalizeRegionRow);
@@ -74,24 +108,35 @@ async function importNeedRegionsFromNycOpenData() {
 
   const joinedRegions = boundaryRows
     .map((row) => {
-      const scoreRow = scoreByRegion.get(row.nta2020);
-      if (!scoreRow || !row.the_geom) return null;
+      if (!row.the_geom || !row.nta2020) return null;
 
       const centroid = calculateGeometryCentroid(row.the_geom);
       if (!centroid) return null;
 
+      const scoreRow = scoreByRegion.get(row.nta2020);
+      const foodNeedScore = scoreRow?.foodNeedScore ?? null;
+
+      const compositeNeedScore =
+        foodNeedScore !== null
+          ? computeCompositeNeedScore({ foodNeedScore })
+          : null;
+
       return {
-        regionCode: scoreRow.regionCode,
-        regionName: scoreRow.regionName || row.ntaname,
+        regionCode: row.nta2020,
+        regionName: scoreRow?.regionName || row.ntaname || row.nta2020,
         boroughName: row.boroname || "",
         regionType: row.cdtaname || row.ntatype || "",
         geometryJson: JSON.stringify(row.the_geom),
         centroidLat: centroid.lat,
         centroidLng: centroid.lng,
-        foodInsecurePercentage: scoreRow.foodInsecurePercentage,
-        foodNeedScore: scoreRow.foodNeedScore,
-        weightedRank: scoreRow.weightedRank,
-        sourceYear: scoreRow.sourceYear,
+        foodInsecurePercentage: scoreRow?.foodInsecurePercentage ?? null,
+        foodNeedScore,
+        weightedRank: scoreRow?.weightedRank ?? null,
+        sourceYear: scoreRow?.sourceYear ?? null,
+        healthAccessScore: null,
+        housingInstabilityScore: null,
+        substanceUseScore: null,
+        compositeNeedScore,
         updatedAt: new Date().toISOString(),
       };
     })
@@ -115,6 +160,10 @@ async function importNeedRegionsFromNycOpenData() {
         region.foodNeedScore,
         region.weightedRank,
         region.sourceYear,
+        region.healthAccessScore,
+        region.housingInstabilityScore,
+        region.substanceUseScore,
+        region.compositeNeedScore,
         region.updatedAt,
       ]);
     }
@@ -164,7 +213,7 @@ async function annotateStoredHotspotsWithNeedRegions() {
         [
           assignment?.regionCode || null,
           assignment?.regionName || null,
-          assignment?.foodNeedScore ?? null,
+          assignment?.compositeNeedScore ?? assignment?.foodNeedScore ?? null,
           row.id,
         ],
       );
@@ -222,6 +271,26 @@ async function fetchJson(url) {
 }
 
 function normalizeRegionRow(row) {
+  const foodNeedScore =
+    row.food_need_score === null ? null : Number(row.food_need_score);
+  const healthAccessScore =
+    row.health_access_score === null ? null : Number(row.health_access_score);
+  const housingInstabilityScore =
+    row.housing_instability_score === null ? null : Number(row.housing_instability_score);
+  const substanceUseScore =
+    row.substance_use_score === null ? null : Number(row.substance_use_score);
+  const compositeNeedScore =
+    row.composite_need_score !== null
+      ? Number(row.composite_need_score)
+      : foodNeedScore !== null
+        ? computeCompositeNeedScore({
+            foodNeedScore,
+            healthAccessScore,
+            housingInstabilityScore,
+            substanceUseScore,
+          })
+        : null;
+
   return {
     id: String(row.id),
     regionCode: row.region_code,
@@ -236,9 +305,13 @@ function normalizeRegionRow(row) {
     centroidLng: Number(row.centroid_lng),
     foodInsecurePercentage:
       row.food_insecure_percentage === null ? null : Number(row.food_insecure_percentage),
-    foodNeedScore: Number(row.food_need_score),
+    foodNeedScore,
     weightedRank: row.weighted_rank === null ? null : Number(row.weighted_rank),
     sourceYear: row.source_year,
+    healthAccessScore,
+    housingInstabilityScore,
+    substanceUseScore,
+    compositeNeedScore,
   };
 }
 

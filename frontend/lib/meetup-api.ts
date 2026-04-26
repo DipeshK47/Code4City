@@ -95,3 +95,11 @@ export async function sendMeetupMessage(
     body: { messageText },
   });
 }
+
+export async function triggerMeetupCoordinator(token: string, meetupId: number) {
+  return apiFetch<ItemResponse<unknown>>(`/api/meetups/${meetupId}/coordinator`, {
+    token,
+    method: "POST",
+    body: {},
+  });
+}

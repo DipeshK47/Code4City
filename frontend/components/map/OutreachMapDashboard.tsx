@@ -8,16 +8,22 @@ import {
 } from "@/lib/printers";
 import {
   addRouteItem,
+  clearRouteItems,
   deleteRouteItem,
-  getRouteItems,
 } from "@/lib/route-items";
 import { submitHotspotCoverageProof } from "@/lib/hotspot-proof-api";
 import { useAuth } from "@/context/AuthContext";
-import type { SavedRouteItem, SavedRouteItemsResponse } from "@/types/route-items";
-import { useRouter } from "next/navigation";
+import type { SavedRouteItem } from "@/types/route-items";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getMeetups, joinMeetup } from "@/lib/meetup-api";
 import { formatDateTimeRange } from "@/lib/social-format";
 import type { MeetupSummary } from "@/lib/social-types";
+import {
+  planRoute,
+  type PlannerCandidateStop,
+  type PlannerConstraints,
+  type PlannerResult,
+} from "@/lib/route-planner-api";
 import CoverageProofModal from "./CoverageProofModal";
 
 const API_BASE_URL =
@@ -53,6 +59,15 @@ export type MapLocation = {
   lat: number;
   lng: number;
   importedAt: string;
+  lastProofAt: string | null;
+  coverageCount: number;
+};
+
+export type RegionGap = {
+  category: string;
+  label: string;
+  avgDistanceMiles: number;
+  nearbyCount: number;
 };
 
 export type MapNeedRegion = {
@@ -71,6 +86,8 @@ export type MapNeedRegion = {
   foodNeedScore: number;
   weightedRank: number | null;
   sourceYear: string;
+  dominantGap: RegionGap | null;
+  categoryGaps: RegionGap[];
 };
 
 export type MapBounds = {
@@ -169,10 +186,6 @@ type NeedRegionImportResponse = {
 const OutreachMapCanvas = dynamic(() => import("./OutreachMapCanvas"), {
   ssr: false,
 });
-const TrackerSessionExperience = dynamic(
-  () => import("@/components/tracker/TrackerSessionExperience"),
-  { ssr: false },
-);
 
 const hubs: MapHub[] = [
   { id: "hub-manhattan", name: "Manhattan Volunteer Base", lat: 40.7831, lng: -73.9712 },
@@ -193,6 +206,7 @@ const HOTSPOT_FETCH_LIMIT = 8000;
 
 export default function OutreachMapDashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { token, isGuest } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [locations, setLocations] = useState<MapLocation[]>([]);
@@ -210,6 +224,15 @@ export default function OutreachMapDashboard() {
     printers: true,
     meetups: true,
   });
+  const [isGeneratingFlyer, setIsGeneratingFlyer] = useState(false);
+  const [plannerOpen, setPlannerOpen] = useState(false);
+  const [plannerLoading, setPlannerLoading] = useState(false);
+  const [plannerResult, setPlannerResult] = useState<PlannerResult | null>(null);
+  const [plannerError, setPlannerError] = useState<string | null>(null);
+  const [meetupAssignedStopIds, setMeetupAssignedStopIds] = useState<string[] | null>(null);
+  const [meetupAssignmentLabel, setMeetupAssignmentLabel] = useState<string | null>(null);
+  const meetupAssignmentTriggeredRef = useRef(false);
+  const PLANNER_CONSTRAINTS: PlannerConstraints = {};
   const [viewport, setViewport] = useState<MapViewportState>({
     zoom: 12,
     bounds: null,
@@ -221,7 +244,6 @@ export default function OutreachMapDashboard() {
   const [isLoadingRouteItems, setIsLoadingRouteItems] = useState(false);
   const [isCoverageProofModalOpen, setIsCoverageProofModalOpen] = useState(false);
   const [isSubmittingCoverageProof, setIsSubmittingCoverageProof] = useState(false);
-  const [isTrackerMode, setIsTrackerMode] = useState(false);
   const [showTools, setShowTools] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [printerErrorMessage, setPrinterErrorMessage] = useState<string | null>(null);
@@ -333,10 +355,6 @@ export default function OutreachMapDashboard() {
     () => new Map(routeItems.map((item) => [item.dedupeKey, item])),
     [routeItems],
   );
-  const routeItemDedupeKeys = useMemo(
-    () => new Set(routeItems.map((item) => item.dedupeKey)),
-    [routeItems],
-  );
   const selectedLocationRouteItem = selectedLocation
     ? routeItemByDedupeKey.get(getHotspotRouteDedupeKey(selectedLocation))
     : null;
@@ -354,8 +372,20 @@ export default function OutreachMapDashboard() {
   const runLocationSearch = useEffectEvent((query: string) => {
     void searchForLocation(query);
   });
-  const runRouteItemsLoad = useEffectEvent(() => {
-    void loadRouteItems();
+  const runRouteItemsWipe = useEffectEvent(() => {
+    if (!token || isGuest) {
+      setRouteItems([]);
+      return;
+    }
+    setIsLoadingRouteItems(true);
+    void clearRouteItems(token)
+      .then(() => setRouteItems([]))
+      .catch((error) => {
+        setErrorMessage(
+          error instanceof Error ? error.message : "Failed to clear saved route.",
+        );
+      })
+      .finally(() => setIsLoadingRouteItems(false));
   });
 
   useEffect(() => {
@@ -379,13 +409,45 @@ export default function OutreachMapDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!token || isGuest) {
-      setRouteItems([]);
-      return;
-    }
-
-    runRouteItemsLoad();
+    runRouteItemsWipe();
   }, [isGuest, token]);
+
+  useEffect(() => {
+    if (!searchParams) return;
+    const stops = searchParams.get("meetupStops");
+    if (!stops) return;
+    const ids = stops
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+    if (ids.length === 0) return;
+    setMeetupAssignedStopIds(ids);
+
+    const meetupName = searchParams.get("meetupName");
+    if (meetupName) setMeetupAssignmentLabel(meetupName);
+
+    const lat = Number(searchParams.get("meetupLat"));
+    const lng = Number(searchParams.get("meetupLng"));
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      setPriorityOrigin({
+        lat,
+        lng,
+        label: meetupName || "Meetup origin",
+      });
+      setFocusRequest({ key: Date.now(), lat, lng, zoom: 14 });
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!meetupAssignedStopIds || meetupAssignmentTriggeredRef.current) return;
+    if (locations.length === 0) return;
+    const known = new Set(locations.map((l) => String(l.id)));
+    const matched = meetupAssignedStopIds.filter((id) => known.has(id));
+    if (matched.length === 0) return;
+    meetupAssignmentTriggeredRef.current = true;
+    setPlannerOpen(true);
+    void handlePlanRoute();
+  }, [meetupAssignedStopIds, locations]);
 
   useEffect(() => {
     if (!selectedLocationId) {
@@ -560,26 +622,6 @@ export default function OutreachMapDashboard() {
       );
     } finally {
       setIsLoadingPrinters(false);
-    }
-  }
-
-  async function loadRouteItems() {
-    if (!token || isGuest) {
-      setRouteItems([]);
-      return;
-    }
-
-    setIsLoadingRouteItems(true);
-
-    try {
-      const payload = (await getRouteItems(token)) as SavedRouteItemsResponse;
-      setRouteItems(payload.data || []);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Failed to load saved route items",
-      );
-    } finally {
-      setIsLoadingRouteItems(false);
     }
   }
 
@@ -814,48 +856,6 @@ export default function OutreachMapDashboard() {
     }
   }
 
-  async function handleTogglePrinterRoute(printer: MapPrinter) {
-    if (!token || isGuest) {
-      setErrorMessage("Sign in to save route items.");
-      return;
-    }
-
-    const existing = routeItemByDedupeKey.get(getPrinterRouteDedupeKey(printer));
-
-    try {
-      if (existing) {
-        await deleteRouteItem(token, existing.id);
-        setRouteItems((current) => current.filter((item) => item.id !== existing.id));
-        setSyncMessage(`${printer.name} removed from route.`);
-        return;
-      }
-
-      const savedItem = await addRouteItem(token, {
-        itemType: "printer",
-        sourceId: printer.id,
-        name: printer.name,
-        address: printer.address,
-        category: "Printer",
-        lat: printer.lat,
-        lng: printer.lng,
-        metadata: {
-          distance: printer.distance,
-          hours: printer.hours,
-          tags: printer.tags,
-          priceLevel: printer.priceLevel ?? null,
-        },
-      });
-
-      setRouteItems((current) => upsertRouteItemInList(current, savedItem));
-      setSyncMessage(`${printer.name} added to route.`);
-      setErrorMessage(null);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Failed to update route item",
-      );
-    }
-  }
-
   async function handleRemoveSelectedRouteItem() {
     if (!token || !selectedLocationRouteItem) {
       return;
@@ -904,20 +904,195 @@ export default function OutreachMapDashboard() {
     window.open(`https://www.google.com/maps/search/?${params.toString()}`, "_blank", "noopener,noreferrer");
   }
 
+  function buildPlannerCandidates(): PlannerCandidateStop[] {
+    const hotspotById = new Map(rankedLocations.map((loc) => [String(loc.id), loc]));
+
+    if (meetupAssignedStopIds && meetupAssignedStopIds.length > 0) {
+      const fromAssignment = meetupAssignedStopIds
+        .map((id) => hotspotById.get(id))
+        .filter((loc): loc is RankedLocation => Boolean(loc))
+        .map((loc) => ({
+          id: `hotspot:${loc.id}`,
+          hotspotId: Number(loc.id),
+          name: loc.name,
+          category: loc.category,
+          lat: loc.lat,
+          lng: loc.lng,
+          covered: loc.covered,
+          regionCode: loc.regionCode,
+          regionName: loc.regionName,
+          regionNeedScore: loc.regionNeedScore,
+          lastProofAt: loc.lastProofAt,
+        }));
+      if (fromAssignment.length > 0) return fromAssignment;
+    }
+
+    const fromRouteItems = routeItems
+      .filter((item) => item.itemType === "hotspot" && item.hotspotId)
+      .map((item) => {
+        const ranked = hotspotById.get(String(item.hotspotId));
+        if (!ranked) {
+          return {
+            id: `hotspot:${item.hotspotId}`,
+            hotspotId: Number(item.hotspotId),
+            name: item.name,
+            category: item.category || "",
+            lat: item.lat,
+            lng: item.lng,
+            covered: false,
+            regionCode: item.regionCode ?? null,
+            regionName: null,
+            regionNeedScore: null,
+            lastProofAt: null,
+          } as PlannerCandidateStop;
+        }
+        return {
+          id: `hotspot:${ranked.id}`,
+          hotspotId: Number(ranked.id),
+          name: ranked.name,
+          category: ranked.category,
+          lat: ranked.lat,
+          lng: ranked.lng,
+          covered: ranked.covered,
+          regionCode: ranked.regionCode,
+          regionName: ranked.regionName,
+          regionNeedScore: ranked.regionNeedScore,
+          lastProofAt: ranked.lastProofAt,
+        } as PlannerCandidateStop;
+      });
+
+    if (fromRouteItems.length >= 1) return fromRouteItems;
+
+    return visibleLocations.slice(0, 10).map((loc) => ({
+      id: `hotspot:${loc.id}`,
+      hotspotId: Number(loc.id),
+      name: loc.name,
+      category: loc.category,
+      lat: loc.lat,
+      lng: loc.lng,
+      covered: loc.covered,
+      regionCode: loc.regionCode,
+      regionName: loc.regionName,
+      regionNeedScore: loc.regionNeedScore,
+      lastProofAt: loc.lastProofAt,
+    }));
+  }
+
+  async function handlePlanRoute() {
+    setPlannerLoading(true);
+    setPlannerError(null);
+    setPlannerResult(null);
+    try {
+      const origin = priorityOrigin || viewport.center;
+      if (!origin) {
+        throw new Error("No location available — pan the map or grant location access.");
+      }
+      const candidates = buildPlannerCandidates();
+      if (candidates.length === 0) {
+        throw new Error("Add some hotspots to your route first or zoom into an area.");
+      }
+      const result = await planRoute({
+        userLat: origin.lat,
+        userLng: origin.lng,
+        constraints: { ...PLANNER_CONSTRAINTS, maxStops: candidates.length },
+        candidateStops: candidates,
+      });
+      setPlannerResult(result);
+    } catch (error) {
+      setPlannerError(error instanceof Error ? error.message : "Failed to plan route.");
+    } finally {
+      setPlannerLoading(false);
+    }
+  }
+
+  function handleOpenPlannedRouteInGoogleMaps() {
+    if (!plannerResult || plannerResult.orderedStops.length === 0) return;
+    const origin = priorityOrigin || viewport.center;
+    const stops = plannerResult.orderedStops;
+    const destination = stops[stops.length - 1];
+    const waypoints = stops.slice(0, -1);
+    const params = new URLSearchParams({
+      api: "1",
+      travelmode: "walking",
+      destination: `${destination.lat},${destination.lng}`,
+    });
+    if (origin) {
+      params.set("origin", `${origin.lat},${origin.lng}`);
+    }
+    if (waypoints.length > 0) {
+      params.set(
+        "waypoints",
+        waypoints.map((w) => `${w.lat},${w.lng}`).join("|"),
+      );
+    }
+    window.open(
+      `https://www.google.com/maps/dir/?${params.toString()}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+
+    setPlannerResult(null);
+    setPlannerOpen(false);
+    setMeetupAssignedStopIds(null);
+    setMeetupAssignmentLabel(null);
+    meetupAssignmentTriggeredRef.current = false;
+
+    if (token && !isGuest && routeItems.length > 0) {
+      void clearRouteItems(token)
+        .then(() => {
+          setRouteItems([]);
+          setSyncMessage("Route handed off to Google Maps. Saved stops cleared.");
+        })
+        .catch((error) => {
+          setErrorMessage(
+            error instanceof Error ? error.message : "Failed to clear saved route.",
+          );
+        });
+    } else {
+      setRouteItems([]);
+    }
+  }
+
+  function handleTogglePlanner() {
+    if (plannerOpen) {
+      setPlannerOpen(false);
+      return;
+    }
+    setPlannerOpen(true);
+    void handlePlanRoute();
+  }
+
+  async function generateFlyerForLocation(location: MapLocation) {
+    setIsGeneratingFlyer(true);
+    setSyncMessage("Building flyer for this spot…");
+    try {
+      const response = await fetch(`/api/flyers/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dropName: location.name,
+          lat: location.lat,
+          lng: location.lng,
+          authToken: token,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message || "Failed to generate flyer");
+      }
+      setSyncMessage(null);
+      window.open(`/flyers/${payload.data.id}`, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to generate flyer",
+      );
+    } finally {
+      setIsGeneratingFlyer(false);
+    }
+  }
+
   const mobileFloatingBottom = "max(88px, calc(env(safe-area-inset-bottom) + 18px))";
   const mobileDetailPanelBottom = `calc(${mobileFloatingBottom} + 64px)`;
-
-  if (isTrackerMode) {
-    return (
-      <TrackerSessionExperience
-        token={token}
-        isGuest={isGuest}
-        plannedItems={routeItems}
-        onExit={() => setIsTrackerMode(false)}
-        onPlannedItemsCleared={() => setRouteItems([])}
-      />
-    );
-  }
 
   return (
     <div
@@ -934,9 +1109,8 @@ export default function OutreachMapDashboard() {
         locations={visibleLocations}
         meetups={visibleMeetups}
         printers={layers.printers ? printers : []}
-        highlightedRegions={layers.regions ? highlightedRegions : []}
+        highlightedRegions={layers.regions ? needRegions : []}
         recommendedLocationIds={recommendedLocationIds}
-        routeItemDedupeKeys={routeItemDedupeKeys}
         selectedLocation={selectedLocation}
         selectedMeetup={selectedMeetup}
         focusRequest={focusRequest}
@@ -948,7 +1122,6 @@ export default function OutreachMapDashboard() {
           setSelectedMeetupId(meetupId);
           setSelectedLocationId(null);
         }}
-        onTogglePrinterRoute={handleTogglePrinterRoute}
         onMapClick={() => {
           setSelectedLocationId(null);
           setSelectedMeetupId(null);
@@ -1001,7 +1174,7 @@ export default function OutreachMapDashboard() {
                   ["uncovered", "Uncovered"],
                   ["covered", "Covered"],
                   ["printers", "Printers"],
-                  ["regions", "High-need regions"],
+                  ["regions", "Need-gap overlay"],
                   ["meetups", "Meetups"],
                 ].map(([key, label]) => {
                   const layerKey = key as keyof LayerVisibility;
@@ -1032,9 +1205,10 @@ export default function OutreachMapDashboard() {
                 })}
               </div>
               <p style={{ fontSize: 11.5, color: "#8A8780", marginTop: 6 }}>
-                Default view shows recommended hotspots, uncovered spots, printers, and high-need regions first.
+                Each neighborhood is color-coded by its biggest unmet need (food, shelter, healthcare, etc.). Hover a region for the gap detail.
               </p>
             </div>
+
 
             <p style={{ marginTop: 10, fontSize: 11.5, color: "#8A8780", lineHeight: 1.45 }}>
               Use the search bar in the page header to jump to any address,
@@ -1436,9 +1610,9 @@ export default function OutreachMapDashboard() {
                   fontWeight: 800,
                   boxShadow: "none",
                 }}
-                >
-                  Get directions
-                </button>
+              >
+                Get directions
+              </button>
               <button
                 onClick={() =>
                   selectedLocationRouteItem
@@ -1491,6 +1665,28 @@ export default function OutreachMapDashboard() {
                   Sign in with a full account to upload a proof photo and verify coverage.
                 </p>
               ) : null}
+
+              <button
+                onClick={() => void generateFlyerForLocation(selectedLocation)}
+                disabled={isGeneratingFlyer}
+                style={{
+                  width: "100%",
+                  borderRadius: 15,
+                  padding: "12px 14px",
+                  background: isGeneratingFlyer ? "rgba(255,255,255,0.08)" : "#0B0B0A",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "#F8F6F0",
+                  fontSize: 12.5,
+                  fontWeight: 800,
+                  cursor: isGeneratingFlyer ? "wait" : "pointer",
+                  opacity: isGeneratingFlyer ? 0.7 : 1,
+                }}
+              >
+                {isGeneratingFlyer ? "Building flyer…" : "Generate flyer for this spot"}
+              </button>
+              <p style={{ margin: "4px 2px 0", fontSize: 11, color: "rgba(255,247,222,0.55)", lineHeight: 1.4 }}>
+                AI picks the most-needed cause for this area and the 4 closest matching resources.
+              </p>
             </div>
 
           </div>
@@ -1512,36 +1708,200 @@ export default function OutreachMapDashboard() {
           bottom: isMobile ? mobileFloatingBottom : 18,
           transform: "translateX(-50%)",
           zIndex: 500,
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         <button
           type="button"
-          onClick={() => setIsTrackerMode(true)}
-          disabled={isLoadingRouteItems}
+          onClick={handleTogglePlanner}
           style={{
             display: "flex",
-            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
-            gap: 0,
-            width: "auto",
-            minHeight: isMobile ? 50 : "auto",
-            minWidth: isMobile ? 154 : 0,
+            gap: 6,
             borderRadius: 2,
-            padding: isMobile ? "12px 20px" : "13px 18px",
-            background: "#0B0B0A",
-            border: "1px solid rgba(212, 74, 18,0.24)",
-            color: "#F8F6F0",
-            boxShadow: "none",
+            padding: isMobile ? "12px 18px" : "13px 18px",
+            background: plannerOpen ? "#FFFFFF" : "#D44A12",
+            color: plannerOpen ? "#D44A12" : "#FFFFFF",
+            border: `1px solid ${plannerOpen ? "#D44A12" : "rgba(212, 74, 18,0.24)"}`,
             fontSize: isMobile ? 12 : 12.5,
             fontWeight: 800,
             lineHeight: 1.1,
-            opacity: isLoadingRouteItems ? 0.7 : 1,
+            cursor: "pointer",
+            minHeight: isMobile ? 50 : "auto",
           }}
         >
-          {isLoadingRouteItems ? "Loading route..." : "Route Tracker"}
+          <span
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.18em",
+              padding: "2px 5px",
+              background: plannerOpen ? "#D44A12" : "#FFFFFF",
+              color: plannerOpen ? "#FFFFFF" : "#D44A12",
+              borderRadius: 2,
+              fontWeight: 800,
+            }}
+          >
+            AI
+          </span>
+          {plannerOpen ? "Close planner" : "Plan my route"}
         </button>
       </div>
+
+      {plannerOpen ? (
+        <div
+          style={{
+            position: "absolute",
+            left: 18,
+            bottom: isMobile ? `calc(${mobileFloatingBottom} + 76px)` : 88,
+            zIndex: 600,
+            width: isMobile ? "calc(100vw - 36px)" : 360,
+            maxHeight: "calc(100vh - 180px)",
+            overflowY: "auto",
+            background: "rgba(255,252,244,0.98)",
+            borderRadius: 4,
+            border: "1.5px solid #D44A12",
+            padding: 16,
+            boxShadow: "0 18px 48px rgba(11,11,10,0.18)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+            <h3 style={{ margin: 0, fontFamily: "Fraunces, Georgia, serif", fontSize: 18, color: "#1A1917" }}>
+              <span style={{ fontSize: 10, color: "#D44A12", letterSpacing: "0.18em", fontWeight: 800, marginRight: 8 }}>AI</span>
+              Plan my route
+            </h3>
+            <button
+              type="button"
+              onClick={() => setPlannerOpen(false)}
+              style={{ background: "transparent", border: "none", color: "#8A8780", cursor: "pointer", fontSize: 18, lineHeight: 1 }}
+            >
+              ×
+            </button>
+          </div>
+
+          {plannerLoading && !plannerResult && (
+            <p style={{ margin: 0, fontSize: 12, color: "#3A3833", lineHeight: 1.45 }}>
+              Planning the best ordering…
+            </p>
+          )}
+
+          {plannerError && (
+            <p style={{ margin: "4px 0 0", fontSize: 11.5, color: "#b91c1c", lineHeight: 1.45 }}>
+              {plannerError}
+            </p>
+          )}
+
+          {plannerResult && (
+            <div style={{ display: "grid", gap: 8 }}>
+              <div
+                style={{
+                  padding: "10px 12px",
+                  borderRadius: 4,
+                  background:
+                    plannerResult.strategy === "ai_hybrid" && !plannerResult.fallbackUsed
+                      ? "rgba(212, 74, 18, 0.08)"
+                      : "#F8F6F0",
+                  border: `1px solid ${
+                    plannerResult.strategy === "ai_hybrid" && !plannerResult.fallbackUsed
+                      ? "rgba(212, 74, 18, 0.4)"
+                      : "rgba(11,11,10,0.18)"
+                  }`,
+                }}
+              >
+                <div style={{ fontSize: 10.5, fontWeight: 800, color: "#D44A12", letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                  {plannerResult.strategy === "ai_hybrid" && !plannerResult.fallbackUsed
+                    ? "AI plan"
+                    : "Rule-based plan"}
+                  {plannerResult.fallbackUsed ? " · fallback" : ""}
+                </div>
+                <div style={{ fontSize: 12, color: "#1A1917", marginTop: 4, lineHeight: 1.45 }}>
+                  {plannerResult.explanations.join(" ")}
+                </div>
+                <div style={{ fontSize: 11, color: "#8A8780", marginTop: 4 }}>
+                  {plannerResult.orderedStops.length} stops · ~
+                  {plannerResult.estimatedDurationMinutes} min · ~
+                  {(plannerResult.estimatedDistanceMeters / 1609.344).toFixed(2)} mi
+                </div>
+                {plannerResult.fallbackReason && (
+                  <div style={{ fontSize: 10.5, color: "#b91c1c", marginTop: 4 }}>
+                    Fallback: {plannerResult.fallbackReason}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: "grid", gap: 6 }}>
+                {plannerResult.orderedStops.map((stop) => (
+                  <div
+                    key={stop.id}
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      padding: "8px 10px",
+                      borderRadius: 4,
+                      background: "#FFFFFF",
+                      border: "1px solid rgba(11,11,10,0.12)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 999,
+                        background: "#D44A12",
+                        color: "#FFFFFF",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 800,
+                        fontSize: 11,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {stop.sequence}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1A1917" }}>
+                        {stop.name}
+                      </div>
+                      <div style={{ fontSize: 10.5, color: "#8A8780", marginTop: 2 }}>
+                        {stop.category}
+                        {stop.regionName ? ` · ${stop.regionName}` : ""}
+                        {stop.covered ? " · covered" : ""}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#3A3833", marginTop: 4, lineHeight: 1.4 }}>
+                        {stop.reason}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                disabled={plannerResult.orderedStops.length === 0}
+                onClick={handleOpenPlannedRouteInGoogleMaps}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 2,
+                  background: "#1A73E8",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(26,115,232,0.4)",
+                  fontSize: 12.5,
+                  fontWeight: 800,
+                  cursor: plannerResult.orderedStops.length === 0 ? "not-allowed" : "pointer",
+                  opacity: plannerResult.orderedStops.length === 0 ? 0.55 : 1,
+                  marginTop: 4,
+                }}
+              >
+                Open route in Google Maps
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null}
 
       {(isLoading || errorMessage || isLoadingPrinters || printerErrorMessage || isLoadingRouteItems) && (
         <div
@@ -1610,10 +1970,6 @@ const statusChipStyle: React.CSSProperties = {
 
 function getHotspotRouteDedupeKey(location: Pick<MapLocation, "id">) {
   return `hotspot:${location.id}`;
-}
-
-function getPrinterRouteDedupeKey(printer: Pick<MapPrinter, "id">) {
-  return `printer:${printer.id}`;
 }
 
 function upsertRouteItemInList(current: SavedRouteItem[], next: SavedRouteItem) {

@@ -170,6 +170,29 @@ export default function Header({
             </svg>
           </button>
         ) : null}
+        <div style={{
+          width: 38,
+          height: 38,
+          borderRadius: 0,
+          background: "#F8F6F0",
+          border: "1px solid #D44A12",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          overflow: "hidden",
+        }}>
+          <img
+            src="/logo.png"
+            alt="Logo"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              padding: 3,
+            }}
+          />
+        </div>
         <div style={{ minWidth: 0 }}>
           <h1
             style={{
@@ -266,48 +289,6 @@ export default function Header({
             </button>
           </form>
         ) : null}
-
-        <a
-          href="https://www.foodhelpline.org/donate"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            minHeight: 36,
-            padding: isMobile ? "0 12px" : "0 14px",
-            borderRadius: 0,
-            background: "transparent",
-            color: "#D44A12",
-            border: "1px solid #D44A12",
-            boxShadow: "none",
-            fontSize: 11,
-            fontWeight: 400,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <span
-            aria-hidden="true"
-            style={{
-              width: 18,
-              height: 18,
-              borderRadius: 0,
-              background: "rgba(212, 74, 18,0.08)",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 21s-6.716-4.35-9.428-8.036C.75 10.49 1.3 6.972 4.11 5.27c2.117-1.283 4.755-.68 6.39 1.182 1.635-1.862 4.273-2.465 6.39-1.182 2.81 1.702 3.36 5.22 1.538 7.694C18.716 16.65 12 21 12 21Z" />
-            </svg>
-          </span>
-          Support
-        </a>
 
         <Link
           href="/messages"
