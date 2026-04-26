@@ -1,0 +1,388 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+@import "tailwindcss/preflight";
+@tailwind utilities;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-base: #FAFAF7;
+  --bg-card: #FFFFFF;
+  --border-subtle: rgba(0, 0, 0, 0.07);
+  --accent-green: #4ADE80;
+  --accent-green-muted: #D1FAE5;
+  --accent-amber: #f5c842;
+  --accent-amber-muted: rgba(245,200,66,0.15);
+  --text-primary: #111111;
+  --text-muted: #6B7280;
+  --sidebar-bg: rgba(15, 12, 5, 0.80);
+  --sidebar-text: #ede5cc;
+  --sidebar-accent: #f5c842;
+  --gradient-hero: linear-gradient(135deg, #FFFDF5 0%, #FAFAF7 60%, #FEF9EE 100%);
+  --gradient-btn-primary: linear-gradient(135deg, #f5c842 0%, #e8a200 100%);
+  --gradient-meetup-card: linear-gradient(145deg, #F0FDF4, #DCFCE7);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-hover: 0 4px 20px rgba(0,0,0,0.10);
+  --radius-card: 12px;
+  --radius-btn: 8px;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e8ddb8;
+  border-radius: 99px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-8px) rotate(3deg); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,200,66,0.6); }
+  50%       { opacity: 0.8; box-shadow: 0 0 0 4px rgba(245,200,66,0); }
+}
+
+@keyframes meetupPulse {
+  0% { transform: scale(0.92); opacity: 0.72; }
+  70% { transform: scale(1.28); opacity: 0; }
+  100% { transform: scale(1.28); opacity: 0; }
+}
+
+@keyframes meetupSpark {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-2px) scale(1.1); opacity: 1; }
+}
+
+@keyframes numPop {
+  0%   { opacity: 0; transform: scale(0.85) translateY(6px); }
+  65%  { opacity: 1; transform: scale(1.04) translateY(-1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes fabEntrance {
+  0%   { opacity: 0; transform: scale(0.5) translateY(20px); }
+  60%  { opacity: 1; transform: scale(1.08) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fabIdle {
+  0%, 100% { box-shadow: 0 4px 18px rgba(245,200,66,0.45); }
+  50%      { box-shadow: 0 4px 24px rgba(245,200,66,0.65), 0 0 0 6px rgba(245,200,66,0.08); }
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-float {
+  animation: floatAnim 4s ease-in-out infinite;
+}
+.anim-num-pop {
+  animation: numPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+.anim-shimmer {
+  background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.06) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.anim-fab-entrance {
+  animation: fabEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both, fabIdle 3s ease-in-out 2s infinite;
+}
+
+.meetup-marker-ring {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 3px solid #22c55e;
+  background: rgba(255,255,255,0.88);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.18), 0 0 22px rgba(34,197,94,0.36);
+}
+
+.meetup-marker-ring::before,
+.meetup-marker-ring::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+}
+
+.meetup-marker-ring::before {
+  border: 2px solid rgba(74,222,128,0.45);
+  animation: meetupPulse 2.6s ease-out infinite;
+}
+
+.meetup-marker-ring::after {
+  width: 6px;
+  height: 6px;
+  inset: 2px auto auto 14px;
+  background: #86efac;
+  box-shadow: 0 0 10px rgba(134,239,172,0.95);
+  animation: meetupSpark 1.8s ease-in-out infinite;
+}
+
+.d1 { animation-delay: 0.05s; }
+.d2 { animation-delay: 0.12s; }
+.d3 { animation-delay: 0.19s; }
+.d4 { animation-delay: 0.26s; }
+.d5 { animation-delay: 0.33s; }
+.d6 { animation-delay: 0.40s; }
+.d7 { animation-delay: 0.47s; }
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: var(--shadow-card);
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-btn .tooltip {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1A1A1A;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.action-btn:hover .tooltip {
+  opacity: 1;
+}
+
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.meetup-embed {
+  background: var(--gradient-meetup-card);
+  border: 1px solid #BBF7D0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(237,229,204,0.7);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.15s ease;
+  letter-spacing: -0.1px;
+}
+
+.nav-item:hover {
+  background: rgba(245,200,66,0.08);
+  color: #ede5cc;
+}
+
+.nav-item.active {
+  background: rgba(245,200,66,0.16);
+  color: #f5c842;
+  font-weight: 600;
+}
+
+.community-hero {
+  background: var(--gradient-hero);
+  border-radius: 16px;
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-subtle);
+}
+
+.community-hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #111;
+  margin-bottom: 16px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.stats-row .stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+}
+
+.meetups-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.meetups-panel h3 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.meetup-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.15s ease;
+}
+
+.meetup-row:hover {
+  background: rgba(0,0,0,0.015);
+}
+
+.meetup-row:last-child {
+  border-bottom: none;
+}
+
+.btn-leave {
+  background: linear-gradient(135deg, #22C55E, #16A34A);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-leave:hover {
+  opacity: 0.85;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: #f5c842;
+  color: #d97706;
+}
+
+.community-soft-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.community-soft-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
