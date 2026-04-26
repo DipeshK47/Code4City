@@ -8,6 +8,7 @@ const {
   leaveMeetup,
   listMeetupMessages,
   listMeetups,
+  triggerCoordinator,
   updateMeetup,
 } = require("../controllers/meetupController");
 const { requireAuth } = require("../middleware/requireAuth");
@@ -23,5 +24,6 @@ router.post("/:id/join", requireAuth, joinMeetup);
 router.post("/:id/leave", requireAuth, leaveMeetup);
 router.get("/:id/messages", requireAuth, listMeetupMessages);
 router.post("/:id/messages", requireAuth, createMeetupMessage);
+router.post("/:id/coordinator", requireAuth, triggerCoordinator);
 
 module.exports = router;

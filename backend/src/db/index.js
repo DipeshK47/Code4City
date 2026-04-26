@@ -326,10 +326,36 @@ async function initDb() {
       ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS headline_translated TEXT;
       ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS blurb_translated TEXT;
       ALTER TABLE generated_flyers ADD COLUMN IF NOT EXISTS translated_labels JSONB;
+
+      CREATE TABLE IF NOT EXISTS suggested_events (
+        id BIGSERIAL PRIMARY KEY,
+        region_code TEXT,
+        region_name TEXT,
+        borough_name TEXT,
+        day_of_week INTEGER NOT NULL,
+        suggested_date DATE,
+        center_lat DOUBLE PRECISION,
+        center_lng DOUBLE PRECISION,
+        unique_user_count INTEGER NOT NULL DEFAULT 0,
+        sample_user_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+        rationale TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
+        meetup_id BIGINT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_suggested_events_status ON suggested_events (status);
+      CREATE INDEX IF NOT EXISTS idx_suggested_events_region ON suggested_events (region_code, day_of_week);
     `);
 
     if (fs.existsSync(communitySchemaPath)) {
       await client.query(fs.readFileSync(communitySchemaPath, "utf8"));
+      await client.query(`
+        ALTER TABLE meetup_messages ADD COLUMN IF NOT EXISTS is_coordinator BOOLEAN NOT NULL DEFAULT FALSE;
+        ALTER TABLE meetup_messages ADD COLUMN IF NOT EXISTS assignments_json JSONB;
+        ALTER TABLE meetup_messages ALTER COLUMN user_id DROP NOT NULL;
+      `);
     }
 
     if (fs.existsSync(hotspotCoverageSchemaPath)) {

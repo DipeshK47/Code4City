@@ -9,6 +9,13 @@ import { getCommunityPosts } from "@/lib/community-api";
 import { getMeetups, joinMeetup, leaveMeetup } from "@/lib/meetup-api";
 import { formatDateTimeRange } from "@/lib/social-format";
 import type { CommunityPost, MeetupSummary } from "@/lib/social-types";
+import {
+  approveSuggestion,
+  dismissSuggestion,
+  fetchSuggestions,
+  regenerateSuggestions,
+  type EventSuggestion,
+} from "@/lib/event-suggestions-api";
 import CommunityFeed from "./CommunityFeed";
 
 const GUIDE_ITEMS = [
@@ -23,6 +30,8 @@ export default function CommunityPageClient() {
   const [viewportWidth, setViewportWidth] = useState(1440);
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [meetups, setMeetups] = useState<MeetupSummary[]>([]);
+  const [suggestions, setSuggestions] = useState<EventSuggestion[]>([]);
+  const [suggestionBusy, setSuggestionBusy] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,15 +55,17 @@ export default function CommunityPageClient() {
     async function loadData() {
       try {
         setLoading(true);
-        const [postsResponse, meetupsResponse] = await Promise.all([
+        const [postsResponse, meetupsResponse, suggestionsList] = await Promise.all([
           getCommunityPosts(token),
           getMeetups(token, false),
+          fetchSuggestions().catch(() => [] as EventSuggestion[]),
         ]);
 
         if (cancelled) return;
 
         setPosts(postsResponse.data);
         setMeetups(meetupsResponse.data);
+        setSuggestions(suggestionsList);
         setError(null);
       } catch (loadError) {
         if (!cancelled) {
@@ -67,6 +78,16 @@ export default function CommunityPageClient() {
       }
     }
 
+    async function refreshSuggestions() {
+      try {
+        const list = await fetchSuggestions();
+        if (!cancelled) setSuggestions(list);
+      } catch {
+        // ignore
+      }
+    }
+    void refreshSuggestions();
+
     void loadData();
 
     return () => {
@@ -78,6 +99,45 @@ export default function CommunityPageClient() {
     () => posts.filter((post) => Boolean(post.meetup)).length,
     [posts],
   );
+
+  async function handleApproveSuggestion(suggestion: EventSuggestion) {
+    if (!token) return;
+    setSuggestionBusy(suggestion.id);
+    try {
+      const result = await approveSuggestion(token, suggestion.id);
+      setSuggestions((current) => current.filter((s) => s.id !== suggestion.id));
+      router.push(`/community/meetups/${result.meetupId}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not turn suggestion into meetup");
+    } finally {
+      setSuggestionBusy(null);
+    }
+  }
+
+  async function handleDismissSuggestion(suggestion: EventSuggestion) {
+    setSuggestionBusy(suggestion.id);
+    try {
+      await dismissSuggestion(suggestion.id);
+      setSuggestions((current) => current.filter((s) => s.id !== suggestion.id));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not dismiss suggestion");
+    } finally {
+      setSuggestionBusy(null);
+    }
+  }
+
+  async function handleRegenerateSuggestions() {
+    setSuggestionBusy("__regen");
+    try {
+      await regenerateSuggestions();
+      const list = await fetchSuggestions();
+      setSuggestions(list);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not regenerate");
+    } finally {
+      setSuggestionBusy(null);
+    }
+  }
 
   function updatePost(updatedPost: CommunityPost) {
     setPosts((current) =>
@@ -408,6 +468,94 @@ export default function CommunityPageClient() {
                   }}
                 >
                   No meetups yet. Create one from the action buttons above.
+                </div>
+              )}
+            </div>
+
+            <div className="meetups-panel" style={{ marginTop: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                <h3 style={{ margin: 0 }}>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.16em",
+                      fontWeight: 800,
+                      color: "#D44A12",
+                      marginRight: 8,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    AI
+                  </span>
+                  Suggested Events
+                </h3>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  disabled={suggestionBusy === "__regen"}
+                  onClick={() => void handleRegenerateSuggestions()}
+                  style={{ fontSize: 11 }}
+                >
+                  {suggestionBusy === "__regen" ? "Scanning…" : "Refresh"}
+                </button>
+              </div>
+              <p style={{ fontSize: 11.5, color: "var(--text-muted)", margin: "0 0 10px", lineHeight: 1.5 }}>
+                AI-spotted patterns from solo volunteer activity. One click turns a pattern into a real meetup.
+              </p>
+              {suggestions.length > 0 ? (
+                <div style={{ display: "grid", gap: 10 }}>
+                  {suggestions.slice(0, 4).map((s) => (
+                    <div key={s.id} className="meetup-row" style={{ background: "rgba(212, 74, 18, 0.04)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 13.5, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.35 }}>
+                            {s.dayName} group outreach in {s.regionName}
+                          </div>
+                          <div style={{ fontSize: 11.5, color: "var(--text-muted)", marginTop: 4, lineHeight: 1.5 }}>
+                            {s.rationale}
+                          </div>
+                        </div>
+                        <div
+                          style={{
+                            borderRadius: 2,
+                            background: "rgba(212, 74, 18, 0.16)",
+                            color: "#D44A12",
+                            padding: "6px 9px",
+                            height: "fit-content",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            flexShrink: 0,
+                          }}
+                        >
+                          {s.uniqueUserCount} solo
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+                        <button
+                          type="button"
+                          className="btn-leave"
+                          disabled={!token || suggestionBusy === s.id}
+                          onClick={() => void handleApproveSuggestion(s)}
+                          style={{ fontSize: 11.5, opacity: !token ? 0.55 : 1 }}
+                        >
+                          {suggestionBusy === s.id ? "Creating…" : "Turn into meetup"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          disabled={suggestionBusy === s.id}
+                          onClick={() => void handleDismissSuggestion(s)}
+                          style={{ fontSize: 11.5 }}
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ fontSize: 12.5, color: "var(--text-muted)", lineHeight: 1.6 }}>
+                  No patterns spotted yet. AI checks every time the page loads.
                 </div>
               )}
             </div>

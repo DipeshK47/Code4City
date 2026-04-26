@@ -64,14 +64,25 @@ export type CommunityComment = {
   replies: CommunityComment[];
 };
 
+export type CoordinatorAssignment = {
+  userId: string;
+  username: string;
+  direction: string;
+  focusCategory: string;
+  roleTitle: string;
+  task: string;
+};
+
 export type MeetupMessage = {
   id: number;
   meetupId: number;
-  userId: number;
+  userId: number | null;
   messageText: string;
   createdAt: string;
   updatedAt: string;
-  sender: UserSummary;
+  sender: UserSummary | null;
+  isCoordinator?: boolean;
+  assignments?: CoordinatorAssignment[] | null;
 };
 
 export type DMThread = {
